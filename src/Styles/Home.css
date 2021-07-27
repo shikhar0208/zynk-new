@@ -1,0 +1,12 @@
+.start-section {
+  padding: 32px 10px 80px;
+  text-align: center;
+  text-transform: none;
+  letter-spacing: 5px;
+}
+
+.start-section .section-heading {
+  color: #676770;
+  font-size: 30px;
+  font-weight: 300;
+}
