@@ -1,8 +1,11 @@
 import React, { useState, Fragment } from 'react';
+import { useHistory } from 'react-router-dom';
 import NewVerificationRequest from './NewVerificationRequest';
 import '../Styles/VerifierDashboard.css';
 
 const VerifierDashboard = () => {
+  const history = useHistory();
+
   const [isOpen, setIsOpen] = useState(false);
 
   const handleOpenModal = () => {
@@ -11,6 +14,10 @@ const VerifierDashboard = () => {
 
   const handleCloseModal = () => {
     setIsOpen(false);
+  };
+
+  const handleViewDetails = () => {
+    history.push('/verification-details');
   };
 
   return (
@@ -117,7 +124,9 @@ const VerifierDashboard = () => {
             </div>
           </div>
           <div className='view-btn'>
-            <button>View verification details</button>
+            <button onClick={handleViewDetails}>
+              View verification details
+            </button>
           </div>
         </div>
       )}

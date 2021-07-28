@@ -10,6 +10,8 @@ import VerifierDashboard from './Components/VerifierDashboard';
 import VerifierProfile from './Components/VerifierProfile';
 import EmployerDashboard from './Components/EmployerDashboard';
 import EmployerProfile from './Components/EmployerProfile';
+import VerifierViewDetails from './Components/VerifierViewDetails';
+import EmployerViewDetails from './Components/EmployerViewDetails';
 
 const App = () => {
   return (
@@ -26,8 +28,18 @@ const App = () => {
         <Route path='/employer-login' exact component={EmployerLoginForm} />
         <Route path='/verifier-dashboard' exact component={VerifierDashboard} />
         <Route path='/verifier-profile' exact component={VerifierProfile} />
+        <Route
+          path='/verification-details'
+          exact
+          component={VerifierViewDetails}
+        />
         <Route path='/employer-dashboard' exact component={EmployerDashboard} />
         <Route path='/employer-profile' exact component={EmployerProfile} />
+        <Route
+          path='/employer-verification-details'
+          exact
+          component={EmployerViewDetails}
+        />
       </Switch>
     </BrowserRouter>
   );

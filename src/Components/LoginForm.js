@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import { validator } from '../utils/helperFunctions';
+
 import '../Styles/VerifierRegistrationForm.css';
 
 const initialData = {
@@ -10,11 +12,15 @@ const initialData = {
 const LoginForm = () => {
   const [formData, setFormData] = useState(initialData);
   const [userType, setUserType] = useState('verifier');
+  const [errors, setErrors] = useState(null);
   const history = useHistory();
 
   const handleFormChange = (e) => {
     const { name } = e.target;
     setFormData({ ...formData, [name]: e.target.value });
+    if (errors) {
+      setErrors({ ...errors, [name]: '' });
+    }
   };
 
   const handleSwitch = () => {
@@ -27,7 +33,19 @@ const LoginForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(formData);
+    const requiredFields = ['email', 'password'];
+    const flag = validator(formData, requiredFields);
+    if (flag === true) {
+      setErrors(null);
+      if (userType === 'verifier') {
+        history.push('/verifier-dashboard');
+      } else if (userType === 'employer') {
+        history.push('/employer-dashboard');
+      }
+    } else {
+      setErrors(flag);
+    }
+    // console.log(formData);
   };
 
   return (
@@ -61,11 +79,17 @@ const LoginForm = () => {
             </label>
             <input
               placeholder='Email'
-              type='email'
+              type='text'
               name='email'
               value={formData.email}
               onChange={handleFormChange}
+              className={errors && errors.email !== '' ? 'error' : ''}
             />
+            {errors && errors.email !== '' && (
+              <label className='errorMessage' htmlFor='emailError'>
+                {errors.email}
+              </label>
+            )}
           </div>
           <div className='columnWise'>
             <label htmlFor='password'>
@@ -77,7 +101,13 @@ const LoginForm = () => {
               name='password'
               value={formData.password}
               onChange={handleFormChange}
+              className={errors && errors.password !== '' ? 'error' : ''}
             />
+            {errors && errors.password !== '' && (
+              <label className='errorMessage' htmlFor='passwordError'>
+                {errors.password}
+              </label>
+            )}
           </div>
           <p className='forget-password'> Forget password?</p>
           <div className='createAccount'>
