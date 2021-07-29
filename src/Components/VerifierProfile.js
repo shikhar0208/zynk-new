@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import moment from 'moment';
 import { Country, State, City } from 'country-state-city';
 import '../Styles/VerifierProfile.css';
 
@@ -6,7 +7,7 @@ const initialData = {
   verifierId: 'abcd123',
   entityType: 'I',
   verifierName: 'XYZ',
-  dateOfRegistration: '20/02/2020',
+  dateOfRegistration: moment(Date.now()).format('MM-DD-YYYY'),
   businessContactName: '',
   email: 'xyz@gmail.com',
   phoneNumber: '9326541021',
@@ -26,6 +27,7 @@ const VerifierProfile = () => {
   const [formData, setFormData] = useState(initialData);
   const [changeData, setChangeData] = useState({
     ...initialData,
+    city: '',
     state: '',
     country: '',
   });
@@ -103,11 +105,11 @@ const VerifierProfile = () => {
         <form onSubmit={handleSubmit} style={{ marginTop: '1rem' }}>
           <div className='rowWise'>
             <div className='columnWise'>
-              <label htmlFor='verifierId'>Verifier Id</label>
+              <label htmlFor='verifierId'>Verifier id</label>
               <input value={formData.verifierId} disabled />
             </div>
             <div className='custom-select columnWise'>
-              <label htmlFor='entityType'>Entity Type</label>
+              <label htmlFor='entityType'>Entity type</label>
               <input
                 value={formData.entityType === 'B' ? 'Business' : 'Individual'}
                 disabled
@@ -116,10 +118,10 @@ const VerifierProfile = () => {
           </div>
           {formData.entityType === 'B' && (
             <div className='columnWise'>
-              <label htmlFor='businessContactName'>Business Contact Name</label>
+              <label htmlFor='businessContactName'>Business contact name</label>
               {editForm ? (
                 <input
-                  placeholder='Business Contact Name'
+                  placeholder='Business contact name'
                   type='text'
                   name='businessContactName'
                   value={changeData.businessContactName}
@@ -132,20 +134,20 @@ const VerifierProfile = () => {
           )}
           <div className='rowWise'>
             <div className='columnWise'>
-              <label htmlFor='verifierName'>Verifier Name</label>
+              <label htmlFor='verifierName'>Verifier name</label>
               <input value={formData.verifierName} disabled />
             </div>
             <div className='columnWise'>
-              <label htmlFor='dateOfRegistration'>Date of Registration</label>
+              <label htmlFor='dateOfRegistration'>Date of registration</label>
               <input value={formData.dateOfRegistration} disabled />
             </div>
           </div>
           <div className='rowWise'>
             <div className='columnWise'>
-              <label htmlFor='email'>Email</label>
+              <label htmlFor='email'>Email id</label>
               {editForm ? (
                 <input
-                  placeholder='Email'
+                  placeholder='Email id'
                   type='email'
                   name='email'
                   value={changeData.email}
@@ -156,10 +158,10 @@ const VerifierProfile = () => {
               )}
             </div>
             <div className='columnWise'>
-              <label htmlFor='phoneNumber'>Phone Number</label>
+              <label htmlFor='phoneNumber'>Phone number</label>
               {editForm ? (
                 <input
-                  placeholder='Phone Number'
+                  placeholder='Phone number'
                   type='text'
                   name='phoneNumber'
                   value={changeData.phoneNumber}
@@ -180,7 +182,7 @@ const VerifierProfile = () => {
             }
           >
             <div className='columnWise'>
-              <label htmlFor='addressLine1'>Address - Line 1</label>
+              <label htmlFor='addressLine1'>Address - line 1</label>
               {editForm ? (
                 <input
                   placeholder='Address'
@@ -195,7 +197,7 @@ const VerifierProfile = () => {
             </div>
             {editForm ? (
               <div className='columnWise'>
-                <label htmlFor='addressLine2'>Address - Line 2</label>
+                <label htmlFor='addressLine2'>Address - line 2</label>
                 <input
                   placeholder='Address'
                   type='text'
@@ -216,8 +218,8 @@ const VerifierProfile = () => {
               {editForm ? (
                 <select
                   name='country'
-                  className='country'
                   onChange={handleChangeCountry}
+                  className={`${changeData.country === '' ? 'grayColor' : ''}`}
                 >
                   <option disabled selected className='demo-select'>
                     Select
@@ -242,7 +244,8 @@ const VerifierProfile = () => {
                 <select
                   name='state'
                   onChange={handleChangeState}
-                  disabled={!formData.country}
+                  disabled={!changeData.country}
+                  className={`${changeData.state === '' ? 'grayColor' : ''}`}
                 >
                   <option disabled selected className='demo-select'>
                     Select
@@ -266,7 +269,8 @@ const VerifierProfile = () => {
                 <select
                   name='city'
                   onChange={handleFormChange}
-                  disabled={!formData.state}
+                  disabled={!changeData.state}
+                  className={`${changeData.city === '' ? 'grayColor' : ''}`}
                 >
                   <option disabled selected className='demo-select'>
                     Select
@@ -283,10 +287,10 @@ const VerifierProfile = () => {
               )}
             </div>
             <div className='columnWise'>
-              <label htmlFor='pincode'>Pin Code</label>
+              <label htmlFor='pincode'>Pin code</label>
               {editForm ? (
                 <input
-                  placeholder='Pin Code'
+                  placeholder='Pin code'
                   type='text'
                   name='pincode'
                   value={changeData.pincode}
@@ -299,11 +303,11 @@ const VerifierProfile = () => {
           </div>
           <div className='rowWise'>
             <div className='columnWise'>
-              <label htmlFor='idType'>Id Type</label>
+              <label htmlFor='idType'>Id type</label>
               <input value={formData.idType} disabled />
             </div>
             <div className='columnWise'>
-              <label htmlFor='idNumber'>Id Number</label>
+              <label htmlFor='idNumber'>Id number</label>
               <input value={formData.idNumber} disabled />
             </div>
           </div>
@@ -320,9 +324,9 @@ const VerifierProfile = () => {
                 />
               </div>
               <div className='columnWise'>
-                <label htmlFor='confirmPassword'>Confirm Password</label>
+                <label htmlFor='confirmPassword'>Confirm password</label>
                 <input
-                  placeholder='Confirm Password'
+                  placeholder='Confirm password'
                   type='password'
                   name='confirmPassword'
                   value={changeData.confirmPassword}

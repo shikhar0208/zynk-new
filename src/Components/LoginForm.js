@@ -29,6 +29,7 @@ const LoginForm = () => {
 
   const handleChangeLogin = (type) => {
     setUserType(type);
+    setErrors(null);
   };
 
   const handleSubmit = (e) => {
@@ -52,7 +53,7 @@ const LoginForm = () => {
     <div className='wrapper'>
       <div className='loginForm-wrapper'>
         <div className='header'>
-          <h1>Welcome</h1>
+          <h1>Login</h1>
           <div className='login-switch'>
             <button
               className={
@@ -60,7 +61,7 @@ const LoginForm = () => {
               }
               onClick={() => handleChangeLogin('verifier')}
             >
-              Verifier Login
+              Verifier
             </button>
             <button
               className={
@@ -68,7 +69,7 @@ const LoginForm = () => {
               }
               onClick={() => handleChangeLogin('employer')}
             >
-              Employer Login
+              employer
             </button>
           </div>
         </div>
@@ -109,7 +110,7 @@ const LoginForm = () => {
               </label>
             )}
           </div>
-          <p className='forget-password'> Forget password?</p>
+          <p className='forget-password'> Forgot password?</p>
           <div className='createAccount'>
             <button type='submit'>Log in</button>
             {userType === 'verifier' && (

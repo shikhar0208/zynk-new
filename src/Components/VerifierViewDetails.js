@@ -1,11 +1,24 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import '../Styles/VerifierViewDetails.css';
+
 const VerifierViewDetails = () => {
+  const history = useHistory();
+
+  const handleBackButton = () => {
+    history.push('/verifier-dashboard');
+  };
+
   return (
     <div className='table-container'>
-      <h2 className='pageTitle'>Verification Request Details</h2>
-      <div class='table-wrapper' id='#scrollBar'>
-        <table class='fl-table'>
+      <div className='rowview'>
+        <h2 className='pageTitle'>Verification Request Details</h2>
+        <button className='backButton' onClick={handleBackButton}>
+          Back
+        </button>
+      </div>
+      <div className='table-wrapper' id='#scrollBar'>
+        <table className='fl-table'>
           <thead>
             <tr>
               <th>Request Id</th>

@@ -1,8 +1,12 @@
 .header-container {
   display: flex;
   flex-direction: row;
-  justify-content: space-evenly;
+  justify-content: space-between;
   align-items: center;
+}
+
+.titleName {
+  margin-left: 5%;
 }
 
 .brandName {
@@ -21,6 +25,7 @@
   justify-content: space-between;
   align-items: center;
   font-size: 16px;
+  margin-right: 5%;
   color: rgb(103, 103, 112);
 }
 

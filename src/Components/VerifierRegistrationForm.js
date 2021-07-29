@@ -17,6 +17,9 @@ const initialData = {
   country: '',
   state: '',
   city: '',
+  idType: '',
+  idNumber: '',
+  idAttachment: '',
   password: '',
   confirmPassword: '',
 };
@@ -41,6 +44,9 @@ const VerifierRegistrationForm = () => {
     'country',
     'state',
     'city',
+    'idType',
+    'idNumber',
+    'idAttachment',
     'password',
     'confirmPassword',
   ];
@@ -113,12 +119,36 @@ const VerifierRegistrationForm = () => {
         </div>
         <form onSubmit={handleSubmit} style={{ marginTop: '1rem' }}>
           <div className='rowWise'>
+            <div className='custom-select columnWise'>
+              <label htmlFor='entityType'>
+                Entity type <span className='required'>*</span>
+              </label>
+              <select
+                name='entityType'
+                id='selectMenu'
+                onChange={handleFormChange}
+                className={`${formData.entityType === '' ? 'grayColor' : ''} ${
+                  errors && errors.entityType !== '' ? 'error' : ''
+                }`}
+              >
+                <option disabled value='' selected>
+                  Select
+                </option>
+                <option value='B'>Business</option>
+                <option value='I'>Individual</option>
+              </select>
+              {errors && errors.entityType !== '' && (
+                <label className='errorMessage' htmlFor='entityTypeError'>
+                  {errors.entityType}
+                </label>
+              )}
+            </div>
             <div className='columnWise'>
               <label htmlFor='verifierName'>
-                Verifier Name <span className='required'>*</span>
+                Verifier name <span className='required'>*</span>
               </label>
               <input
-                placeholder='Verifier Name'
+                placeholder='Verifier name'
                 type='text'
                 name='verifierName'
                 value={formData.verifierName}
@@ -131,36 +161,14 @@ const VerifierRegistrationForm = () => {
                 </label>
               )}
             </div>
-            <div className='custom-select columnWise'>
-              <label htmlFor='entityType'>
-                Entity Type <span className='required'>*</span>
-              </label>
-              <select
-                name='entityType'
-                id='selectMenu'
-                onChange={handleFormChange}
-                className={errors && errors.entityType !== '' ? 'error' : ''}
-              >
-                <option disabled selected>
-                  Select
-                </option>
-                <option value='B'>Business</option>
-                <option value='I'>Individual</option>
-              </select>
-              {errors && errors.entityType !== '' && (
-                <label className='errorMessage' htmlFor='entityTypeError'>
-                  {errors.entityType}
-                </label>
-              )}
-            </div>
           </div>
           {formData.entityType === 'B' && (
             <div className='columnWise'>
               <label htmlFor='businessContactName'>
-                Business Contact Name <span className='required'>*</span>
+                Business contact name <span className='required'>*</span>
               </label>
               <input
-                placeholder='Business Contact Name'
+                placeholder='Business contact name'
                 type='text'
                 name='businessContactName'
                 value={formData.businessContactName}
@@ -182,10 +190,10 @@ const VerifierRegistrationForm = () => {
           <div className='rowWise'>
             <div className='columnWise'>
               <label htmlFor='email'>
-                Email <span className='required'>*</span>
+                Email id<span className='required'>*</span>
               </label>
               <input
-                placeholder='Email'
+                placeholder='Email id'
                 type='text'
                 name='email'
                 value={formData.email}
@@ -200,10 +208,10 @@ const VerifierRegistrationForm = () => {
             </div>
             <div className='columnWise'>
               <label htmlFor='phoneNumber'>
-                Phone Number <span className='required'>*</span>
+                Phone number <span className='required'>*</span>
               </label>
               <input
-                placeholder='Phone Number'
+                placeholder='Phone number'
                 type='text'
                 name='phoneNumber'
                 value={formData.phoneNumber}
@@ -220,7 +228,7 @@ const VerifierRegistrationForm = () => {
           <div className='rowWise'>
             <div className='columnWise'>
               <label htmlFor='addressLine1'>
-                Address - Line 1 <span className='required'>*</span>
+                Address - line 1 <span className='required'>*</span>
               </label>
               <input
                 placeholder='Address'
@@ -237,7 +245,7 @@ const VerifierRegistrationForm = () => {
               )}
             </div>
             <div className='columnWise'>
-              <label htmlFor='addressLine2'>Address - Line 2</label>
+              <label htmlFor='addressLine2'>Address - line 2</label>
               <input
                 placeholder='Address'
                 type='text'
@@ -255,7 +263,9 @@ const VerifierRegistrationForm = () => {
               <select
                 name='country'
                 onChange={handleChangeCountry}
-                className={errors && errors.country !== '' ? 'error' : ''}
+                className={`${formData.country === '' ? 'grayColor' : ''} ${
+                  errors && errors.country !== '' ? 'error' : ''
+                }`}
               >
                 <option disabled selected className='demo-select'>
                   Select
@@ -284,7 +294,9 @@ const VerifierRegistrationForm = () => {
                 name='state'
                 onChange={handleChangeState}
                 disabled={!formData.country}
-                className={errors && errors.state !== '' ? 'error' : ''}
+                className={`${formData.state === '' ? 'grayColor' : ''} ${
+                  errors && errors.state !== '' ? 'error' : ''
+                }`}
               >
                 <option disabled selected className='demo-select'>
                   Select
@@ -312,7 +324,9 @@ const VerifierRegistrationForm = () => {
                 name='city'
                 onChange={handleFormChange}
                 disabled={!formData.state}
-                className={errors && errors.city !== '' ? 'error' : ''}
+                className={`${formData.city === '' ? 'grayColor' : ''} ${
+                  errors && errors.city !== '' ? 'error' : ''
+                }`}
               >
                 <option disabled selected className='demo-select'>
                   Select
@@ -332,10 +346,10 @@ const VerifierRegistrationForm = () => {
             </div>
             <div className='columnWise'>
               <label htmlFor='pincode'>
-                Pin Code <span className='required'>*</span>
+                Pin code <span className='required'>*</span>
               </label>
               <input
-                placeholder='Pin Code'
+                placeholder='Pin code'
                 type='text'
                 name='pincode'
                 value={formData.pincode}
@@ -348,6 +362,76 @@ const VerifierRegistrationForm = () => {
                 </label>
               )}
             </div>
+          </div>
+          <div className='rowWise'>
+            <div className='columnWise'>
+              <label htmlFor='idType'>
+                Id type <span className='required'>*</span>
+              </label>
+              <select
+                name='idType'
+                onChange={handleFormChange}
+                className={`${formData.idType === '' ? 'grayColor' : ''} ${
+                  errors && errors.idType && errors.idType !== '' ? 'error' : ''
+                }`}
+              >
+                <option disabled value='' selected>
+                  Select
+                </option>
+                <option value='PAN'>PAN</option>
+                <option value='GST'>GST</option>
+                <option value='Aadhaar'>Aadhaar</option>
+              </select>
+              {errors && errors.idType !== '' && (
+                <label className='errorMessage' htmlFor='idTypeError'>
+                  {errors.idType}
+                </label>
+              )}
+            </div>
+            <div className='columnWise'>
+              <label htmlFor='idNumber'>
+                {formData.idType === '' ? 'Id' : formData.idType} number{' '}
+                <span className='required'>*</span>
+              </label>
+              <input
+                placeholder='Id number'
+                type='text'
+                name='idNumber'
+                value={formData.idNumber}
+                onChange={handleFormChange}
+                className={
+                  errors && errors.idNumber && errors.idNumber !== ''
+                    ? 'error'
+                    : ''
+                }
+              />
+              {errors && errors.idNumber !== '' && (
+                <label className='errorMessage' htmlFor='idNumberError'>
+                  {errors.idNumber}
+                </label>
+              )}
+            </div>
+          </div>
+          <div className='columnWise'>
+            <label htmlFor='idAttachment'>
+              Id attachment file <span className='required'>*</span>
+            </label>
+            <input
+              type='file'
+              name='idAttachment'
+              value={formData.idAttachment}
+              onChange={handleFormChange}
+              className={
+                errors && errors.idAttachment && errors.idAttachment !== ''
+                  ? 'error'
+                  : ''
+              }
+            />
+            {errors && errors.idAttachment !== '' && (
+              <label className='errorMessage' htmlFor='idAttachmentError'>
+                {errors.idAttachment}
+              </label>
+            )}
           </div>
           <div className='rowWise'>
             <div className='columnWise'>
@@ -370,10 +454,10 @@ const VerifierRegistrationForm = () => {
             </div>
             <div className='columnWise'>
               <label htmlFor='confirmPassword'>
-                Confirm Password <span className='required'>*</span>
+                Confirm password <span className='required'>*</span>
               </label>
               <input
-                placeholder='Confirm Password'
+                placeholder='Confirm password'
                 type='password'
                 name='confirmPassword'
                 value={formData.confirmPassword}
@@ -389,10 +473,11 @@ const VerifierRegistrationForm = () => {
               )}
             </div>
           </div>
+
           <div className='createAccount'>
             <button type='submit'>Register</button>
             <small>
-              Already Have an Account?{' '}
+              Already have an account?{' '}
               <span className='switch-form' onClick={handleSwitch}>
                 Log in
               </span>

@@ -12,7 +12,7 @@ const Header = () => {
 
   return (
     <div className='header-container'>
-      <div>
+      <div className='titleName'>
         {' '}
         <h2 className='brandName' onClick={goToHome}>
           Zynk

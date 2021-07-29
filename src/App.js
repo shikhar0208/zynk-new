@@ -12,6 +12,7 @@ import EmployerDashboard from './Components/EmployerDashboard';
 import EmployerProfile from './Components/EmployerProfile';
 import VerifierViewDetails from './Components/VerifierViewDetails';
 import EmployerViewDetails from './Components/EmployerViewDetails';
+import UploadVerificationDetails from './Components/UploadVerificationDetails';
 
 const App = () => {
   return (
@@ -39,6 +40,11 @@ const App = () => {
           path='/employer-verification-details'
           exact
           component={EmployerViewDetails}
+        />
+        <Route
+          path='/upload-details'
+          exact
+          component={UploadVerificationDetails}
         />
       </Switch>
     </BrowserRouter>

@@ -26,8 +26,10 @@ const EmployerProfile = () => {
   const [formData, setFormData] = useState(initialData);
   const [changeData, setChangeData] = useState({
     ...initialData,
+    city: '',
     state: '',
     country: '',
+    autoRenew: '',
   });
   const [changes, setChanges] = useState({});
   const [states, setStates] = useState('');
@@ -103,7 +105,7 @@ const EmployerProfile = () => {
         <form onSubmit={handleSubmit} style={{ marginTop: '1rem' }}>
           <div className='rowWise'>
             <div className='columnWise'>
-              <label htmlFor='employerId'>Employer Id</label>
+              <label htmlFor='employerId'>Employer id</label>
               <input value={formData.employerId} disabled />
             </div>
             <div className='custom-select columnWise'>
@@ -113,6 +115,9 @@ const EmployerProfile = () => {
                   name='autoRenew'
                   id='selectMenu'
                   onChange={handleFormChange}
+                  className={`${
+                    changeData.autoRenew === '' ? 'grayColor' : ''
+                  }`}
                 >
                   <option disabled selected>
                     Select
@@ -127,10 +132,10 @@ const EmployerProfile = () => {
           </div>
           <div className='rowWise'>
             <div className='columnWise'>
-              <label htmlFor='businessContactName'>Business Contact Name</label>
+              <label htmlFor='businessContactName'>Business contact name</label>
               {editForm ? (
                 <input
-                  placeholder='Business Contact Name'
+                  placeholder='Business contact name'
                   type='text'
                   name='businessContactName'
                   value={changeData.businessContactName}
@@ -141,26 +146,26 @@ const EmployerProfile = () => {
               )}
             </div>
             <div className='columnWise'>
-              <label htmlFor='businessName'>Business Name</label>
+              <label htmlFor='businessName'>Business name</label>
               <input value={formData.businessName} disabled />
             </div>
           </div>
           <div className='rowWise'>
             <div className='columnWise'>
-              <label htmlFor='activationDate'>Employer Activation Date</label>
+              <label htmlFor='activationDate'>Employer activation date</label>
               <input value={formData.activationDate} disabled />
             </div>
             <div className='columnWise'>
-              <label htmlFor='subscriptionEnd'>Subscription End Date</label>
+              <label htmlFor='subscriptionEnd'>Subscription end date</label>
               <input value={formData.subscriptionEnd} disabled />
             </div>
           </div>
           <div className='rowWise'>
             <div className='columnWise'>
-              <label htmlFor='email'>Email</label>
+              <label htmlFor='email'>Email id</label>
               {editForm ? (
                 <input
-                  placeholder='Email'
+                  placeholder='Email id'
                   type='email'
                   name='email'
                   value={changeData.email}
@@ -171,10 +176,10 @@ const EmployerProfile = () => {
               )}
             </div>
             <div className='columnWise'>
-              <label htmlFor='phoneNumber'>Phone Number</label>
+              <label htmlFor='phoneNumber'>Phone number</label>
               {editForm ? (
                 <input
-                  placeholder='Phone Number'
+                  placeholder='Phone number'
                   type='text'
                   name='phoneNumber'
                   value={formData.phoneNumber}
@@ -195,7 +200,7 @@ const EmployerProfile = () => {
             }
           >
             <div className='columnWise'>
-              <label htmlFor='addressLine1'>Address - Line 1</label>
+              <label htmlFor='addressLine1'>Address - line 1</label>
               {editForm ? (
                 <input
                   placeholder='Address'
@@ -210,7 +215,7 @@ const EmployerProfile = () => {
             </div>
             {editForm ? (
               <div className='columnWise'>
-                <label htmlFor='addressLine2'>Address - Line 2</label>
+                <label htmlFor='addressLine2'>Address - line 2</label>
                 <input
                   placeholder='Address'
                   type='text'
@@ -233,6 +238,7 @@ const EmployerProfile = () => {
                   name='country'
                   className='country'
                   onChange={handleChangeCountry}
+                  className={`${changeData.country === '' ? 'grayColor' : ''}`}
                 >
                   <option disabled selected className='demo-select'>
                     Select
@@ -257,7 +263,8 @@ const EmployerProfile = () => {
                 <select
                   name='state'
                   onChange={handleChangeState}
-                  disabled={!formData.country}
+                  disabled={!changeData.country}
+                  className={`${changeData.state === '' ? 'grayColor' : ''}`}
                 >
                   <option disabled selected className='demo-select'>
                     Select
@@ -281,7 +288,8 @@ const EmployerProfile = () => {
                 <select
                   name='city'
                   onChange={handleFormChange}
-                  disabled={!formData.state}
+                  disabled={!changeData.state}
+                  className={`${changeData.city === '' ? 'grayColor' : ''}`}
                 >
                   <option disabled selected className='demo-select'>
                     Select
@@ -298,10 +306,10 @@ const EmployerProfile = () => {
               )}
             </div>
             <div className='columnWise'>
-              <label htmlFor='pincode'>Pin Code</label>
+              <label htmlFor='pincode'>Pin code</label>
               {editForm ? (
                 <input
-                  placeholder='Pin Code'
+                  placeholder='Pin code'
                   type='text'
                   name='pincode'
                   value={changeData.pincode}
@@ -313,7 +321,7 @@ const EmployerProfile = () => {
             </div>
           </div>
           <div className='columnWise'>
-            <label htmlFor='gstNumber'>GST Number</label>
+            <label htmlFor='gstNumber'>GST number</label>
             <input value={formData.gstNumber} disabled />
           </div>
           {editForm && (
@@ -329,9 +337,9 @@ const EmployerProfile = () => {
                 />
               </div>
               <div className='columnWise'>
-                <label htmlFor='confirmPassword'>Confirm Password</label>
+                <label htmlFor='confirmPassword'>Confirm password</label>
                 <input
-                  placeholder='Confirm Password'
+                  placeholder='Confirm password'
                   type='password'
                   name='confirmPassword'
                   value={changeData.confirmPassword}

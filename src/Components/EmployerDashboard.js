@@ -9,114 +9,92 @@ const EmployerDashboard = () => {
     history.push('/employer-verification-details');
   };
 
+  const handleUploadDetails = () => {
+    history.push('/upload-details');
+  };
+
   return (
     <div className='dashboard-section'>
-      <div className='upload-btn'>
-        <button>Upload verification details</button>
-      </div>
-      <div className='horizontal-line'></div>
       <div className='subsection'>
         <div className='numbers'>
           <div className='propName'>Number of verifications (2021)</div>
           <div className='propValue'>100</div>
         </div>
-        <div className='view-detail-btn'>
-          <button onClick={handleViewDetails}>View details</button>
-        </div>
       </div>
       <div className='horizontal-line'></div>
       <div className='container'>
         <div className='grid'>
-          <h2>Verification breakdown</h2>
+          <h2>Verification Summary (By period)</h2>
           {/* we will add date filter here */}
           <div className='list-section'>
-            <div className='list highLight'>
-              <div className='key'>Total</div>
-              <div className='value'>100</div>
+            <div className='list'>
+              <div className='key'>Jun</div>
+              <div className='value'>15</div>
             </div>
             <div className='list'>
-              <div className='key'>Payment Pending</div>
-              <div className='value'>1</div>
+              <div className='key'>Feb</div>
+              <div className='value'>10</div>
             </div>
             <div className='list'>
-              <div className='key'>Under processing</div>
-              <div className='value'>0</div>
+              <div className='key'>Mar</div>
+              <div className='value'>25</div>
             </div>
             <div className='list'>
-              <div className='key'>
-                Employee record not found for specified employer
-              </div>
-              <div className='value'>1</div>
+              <div className='key'>Apr</div>
+              <div className='value'>15</div>
             </div>
             <div className='list'>
-              <div className='key'>Pending employee approval</div>
-              <div className='value'>8</div>
+              <div className='key'>May</div>
+              <div className='value'>25</div>
             </div>
             <div className='list'>
-              <div className='key'>
-                Verification request declined by the employee
-              </div>
-              <div className='value'>1</div>
-            </div>
-            <div className='list'>
-              <div className='key'>Employer discrepancy - On Hold</div>
-              <div className='value'>1</div>
-            </div>
-            <div className='list'>
-              <div className='key'>Verification report shared</div>
-              <div className='value'>88</div>
-            </div>
-            <div className='list'>
-              <div className='key'>System Error</div>
-              <div className='value'>0</div>
+              <div className='key'>Jun</div>
+              <div className='value'>10</div>
             </div>
           </div>
         </div>
         <div className='grid'>
-          <h2>Verification breakdown</h2>
+          <h2>Verification Summary (By reason)</h2>
           {/* we will add date filter here */}
           <div className='list-section'>
-            <div className='list highLight'>
-              <div className='key'>Total</div>
-              <div className='value'>100</div>
+            <div className='list'>
+              <div className='key'>Loan application</div>
+              <div className='value'>60</div>
             </div>
             <div className='list'>
-              <div className='key'>Payment Pending</div>
-              <div className='value'>1</div>
+              <div className='key'>Background check - Job change</div>
+              <div className='value'>15</div>
             </div>
             <div className='list'>
-              <div className='key'>Under processing</div>
-              <div className='value'>0</div>
+              <div className='key'>Background check - Property rental</div>
+              <div className='value'>10</div>
             </div>
             <div className='list'>
-              <div className='key'>
-                Employee record not found for specified employer
-              </div>
-              <div className='value'>1</div>
-            </div>
-            <div className='list'>
-              <div className='key'>Pending employee approval</div>
-              <div className='value'>8</div>
+              <div className='key'>Background check - Visa application</div>
+              <div className='value'>5</div>
             </div>
             <div className='list'>
               <div className='key'>
-                Verification request declined by the employee
+                Background check - Insurance application
               </div>
-              <div className='value'>1</div>
+              <div className='value'>5</div>
             </div>
             <div className='list'>
-              <div className='key'>Employer discrepancy - On Hold</div>
-              <div className='value'>1</div>
-            </div>
-            <div className='list'>
-              <div className='key'>Verification report shared</div>
-              <div className='value'>88</div>
-            </div>
-            <div className='list'>
-              <div className='key'>System Error</div>
-              <div className='value'>0</div>
+              <div className='key'>Other</div>
+              <div className='value'>5</div>
             </div>
           </div>
+        </div>
+      </div>
+      <div className='horizontal-line'></div>
+      <div className='buttonsDiv'>
+        <div className='upload-btn'>
+          <button onClick={handleUploadDetails}>
+            Upload verification details
+          </button>
+        </div>
+        <div className='view-detail-btn'>
+          <button onClick={handleViewDetails}>View verification details</button>
         </div>
       </div>
     </div>

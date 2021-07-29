@@ -45,7 +45,7 @@ export const validator = (details, requiredFields) => {
         : 'Field is required';
     }
 
-    // Joining Year is correct or not
+    // PinCode is correct or not
     else if (field === 'pincode') {
       if (!isNumeric(details[field], { no_symbols: true })) {
         errorObj[field] = details[field]
@@ -56,41 +56,53 @@ export const validator = (details, requiredFields) => {
           ? ''
           : 'Invalid pin code';
       }
+    } else if (field === 'phoneNumber') {
+      errorObj[field] =
+        details[field] !== ''
+          ? checkContactNumber(details.phoneNumber)
+          : 'Field is required';
+    } else if (field === 'panNumber') {
+      errorObj[field] =
+        details[field] !== ''
+          ? /^([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}?$/.test(details[field])
+            ? ''
+            : 'Invalid pan number'
+          : 'Field is required';
     } else {
       errorObj[field] = details[field] ? '' : 'Field is required';
     }
+
     return errorObj;
   });
 
   // since below fields are not required so we have check them separately only when they are available
-  if (details?.fatherName) {
-    errorObj.fatherName = checkName(details.fatherName);
-  } else {
-    errorObj.fatherName = '';
-  }
 
-  if (details.phoneNumber !== '') {
+  if (details?.phoneNumber) {
     errorObj.phoneNumber = checkContactNumber(details.phoneNumber);
-  } else {
-    errorObj.phoneNumber = 'Field is required';
   }
 
-  if (details?.fatherContactNumber) {
-    errorObj.fatherContactNumber = checkContactNumber(
-      details.fatherContactNumber
-    );
-  } else {
-    errorObj.fatherContactNumber = '';
+  if (details?.email) {
+    errorObj.email = isEmail(details.email) ? '' : 'Invalid email';
   }
 
-  if (details?.aadharCardNumber) {
-    errorObj.aadharCardNumber =
-      (details?.aadharCardNumber && details?.aadharCardNumber?.length === 0) ||
-      /^[2-9]{1}[0-9]{3}[0-9]{4}[0-9]{4}$/.test(details.aadharCardNumber)
+  if (details?.panNumber) {
+    errorObj.panNumber =
+      (details?.panNumber && details?.panNumber?.length === 0) ||
+      /^([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}?$/.test(details.panNumber)
         ? ''
-        : 'Invalid aadhar number (12-digits)';
+        : 'Invalid pan number';
   } else {
-    errorObj.aadharCardNumber = '';
+    errorObj.aadhaarNumber = '';
+  }
+
+  if (details?.aadhaarNumber) {
+    errorObj.aadhaarNumber =
+      (details?.aadhaarNumber && details?.aadhaarNumber?.length === 0) ||
+      /^[2-9]{1}[0-9]{3}[0-9]{4}[0-9]{4}$/.test(details.aadhaarNumber)
+        ? ''
+        : 'Invalid aadhaar number (12-digits)';
+  } else {
+    errorObj.aadhaarNumber = '';
   }
 
   const flag = Object.values(errorObj).every((x) => x === '' || x === null);
