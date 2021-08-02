@@ -31,17 +31,24 @@ export const validator = (details, requiredFields) => {
     }
 
     // Password is correct or not
-    else if (
-      field === 'newPassword' ||
-      field === 'password' ||
-      field === 'confirmPassword'
-    ) {
+    else if (field === 'newPassword' || field === 'confirmPassword') {
       errorObj[field] = details[field]
         ? /^(?=.*[A-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,}$/.test(
             details[field]
           )
           ? ''
           : 'Minimum 6 characters. Password must have 1 uppercase and 1 special character.'
+        : 'Field is required';
+    }
+
+    // Password is correct or not
+    else if (field === 'password') {
+      errorObj[field] = details[field]
+        ? /^(?=.*[A-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,}$/.test(
+            details[field]
+          )
+          ? ''
+          : 'Invalid password'
         : 'Field is required';
     }
 
@@ -83,6 +90,12 @@ export const validator = (details, requiredFields) => {
 
   if (details?.email) {
     errorObj.email = isEmail(details.email) ? '' : 'Invalid email';
+  }
+
+  if (details?.pincode) {
+    errorObj.pincode = /^\d{4}$|^\d{6}$/.test(details.pincode)
+      ? ''
+      : 'Invalid pin code';
   }
 
   if (details?.panNumber) {

@@ -1,0 +1,47 @@
+.admin-dashboard-section {
+  padding: 32px 50px;
+  width: 90%;
+  margin: auto;
+  text-transform: none;
+  font-family: 'Open Sans', sans-serif;
+}
+
+.admin-dashboard-subsection {
+  width: 90%;
+  padding: 1rem;
+  margin: 10px auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.admin-dashboard-numbers {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 40%;
+}
+
+.admin-dashboard-numbers .propName {
+  width: 60%;
+  letter-spacing: 1px;
+  font-weight: 700;
+  padding: 0 10px;
+  text-align: left;
+  word-wrap: break-word;
+}
+
+.admin-dashboard-numbers .propValue {
+  width: 30%;
+  text-align: center;
+  letter-spacing: 1px;
+  font-weight: 700;
+  padding: 0 10px;
+  word-wrap: break-word;
+}
+
+.partition-line {
+  border-bottom: 1px solid #d3d7d9;
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+}

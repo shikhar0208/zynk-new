@@ -4,7 +4,6 @@ import './App.css';
 import Header from './Components/Header';
 import VerifierRegistrationForm from './Components/VerifierRegistrationForm';
 import LoginForm from './Components/LoginForm';
-import EmployerLoginForm from './Components/EmployerLoginForm';
 import Home from './Components/Home';
 import VerifierDashboard from './Components/VerifierDashboard';
 import VerifierProfile from './Components/VerifierProfile';
@@ -13,6 +12,8 @@ import EmployerProfile from './Components/EmployerProfile';
 import VerifierViewDetails from './Components/VerifierViewDetails';
 import EmployerViewDetails from './Components/EmployerViewDetails';
 import UploadVerificationDetails from './Components/UploadVerificationDetails';
+import AdminLogin from './Components/AdminSection/AdminLogin';
+import AdminDashboard from './Components/AdminSection/AdminDashboard';
 
 const App = () => {
   return (
@@ -26,7 +27,7 @@ const App = () => {
           exact
           component={VerifierRegistrationForm}
         />
-        <Route path='/employer-login' exact component={EmployerLoginForm} />
+        <Route path='/admin-login' exact component={AdminLogin} />
         <Route path='/verifier-dashboard' exact component={VerifierDashboard} />
         <Route path='/verifier-profile' exact component={VerifierProfile} />
         <Route
@@ -46,6 +47,7 @@ const App = () => {
           exact
           component={UploadVerificationDetails}
         />
+        <Route path='/admin-dashboard' exact component={AdminDashboard} />
       </Switch>
     </BrowserRouter>
   );

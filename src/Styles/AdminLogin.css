@@ -1,0 +1,165 @@
+/* Colors */
+/*
+dark blue: #476A6F
+light blue: #258EA6
+dark green: #519E8A
+medium green: #7EB09B
+light green: #A3C4BC
+*/
+
+.admin-login-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.admin-login-container {
+  margin: 6rem 0 0;
+  width: 400px;
+  display: flex;
+  flex-direction: column;
+  padding: 20px 40px;
+  border-radius: 10px;
+  box-shadow: 0px 10px 30px #555;
+  background-color: #ffffff;
+}
+
+.admin-login-header {
+  margin-bottom: 1rem;
+  border-bottom: 1px solid #d3d7d9;
+}
+
+.admin-login-header h1 {
+  text-align: center;
+  width: 100%;
+  color: rgba(35, 83, 160, 0.8);
+  font-weight: 600;
+  margin: 0 0 0.5rem 0;
+}
+
+.admin-login-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  font-size: 0.8em;
+  margin-bottom: 0.25em;
+  color: rgba(35, 83, 160, 0.8);
+  font-weight: lighter;
+}
+
+.required {
+  color: #b73326;
+  font-size: 0.6rem;
+}
+
+input {
+  font-size: 12px;
+  padding: 10px 10px;
+  border-radius: 5px;
+  outline: none;
+  border: 1px solid #cfcfcf;
+}
+
+input:focus,
+input:hover {
+  outline: none !important;
+  border-color: rgb(100, 160, 255);
+  box-shadow: 0 0 10px rgb(100, 160, 255);
+}
+
+input.error {
+  border: 1px solid red;
+}
+
+.errorMessage {
+  color: red;
+  font-size: 0.75em;
+  display: relative;
+}
+
+.columnWise {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+}
+
+.rowWise {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.rowWise div {
+  width: 45%;
+}
+
+.forget-password {
+  margin: 0;
+  color: rgb(100, 160, 255);
+  font-size: 14px;
+}
+
+.forget-password:hover {
+  cursor: pointer;
+}
+
+.admin-login-submit {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.admin-login-submit button {
+  background-color: rgb(100, 160, 255);
+  color: #fff;
+  border: 1px solid rgb(100, 160, 255);
+  border-radius: 5px;
+  width: 100%;
+  margin-top: 1em;
+  padding: 8px 0px;
+  font-size: 1em;
+  font-weight: lighter;
+  letter-spacing: 1px;
+  margin-bottom: 0.4em;
+  box-shadow: 0px 3px 1px -2px rgb(0 0 0 / 20%),
+    0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%);
+}
+
+.admin-login-submit button:hover {
+  background-color: rgb(100, 160, 255);
+  transform: scale(1.01);
+  outline: none;
+  cursor: pointer;
+  box-shadow: 0px 2px 4px -1px rgb(0 0 0 / 20%),
+    0px 4px 5px 0px rgb(0 0 0 / 14%), 0px 1px 10px 0px rgb(0 0 0 / 12%);
+}
+
+.admin-login-submit small {
+  color: rgb(75, 74, 74);
+  font-weight: lighter;
+}
+
+.login-switch {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+  margin: 1rem 0.8rem;
+}
+
+.login-switch button {
+  border-radius: 5px;
+  width: 40%;
+  padding: 10px 0px;
+  font-size: 0.8rem;
+  font-weight: lighter;
+  letter-spacing: 1px;
+  box-shadow: 0px 3px 1px -2px rgb(0 0 0 / 20%),
+    0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%);
+}

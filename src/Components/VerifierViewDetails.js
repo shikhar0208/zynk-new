@@ -12,30 +12,34 @@ const VerifierViewDetails = () => {
   return (
     <div className='table-container'>
       <div className='rowview'>
-        <h2 className='pageTitle'>Verification Request Details</h2>
-        <button className='backButton' onClick={handleBackButton}>
-          Back
-        </button>
+        <div className='view-header'>
+          <h2 className='pageTitle'>Verification Request Details</h2>
+        </div>
+        <div className='view-backButton'>
+          <button className='backButton' onClick={handleBackButton}>
+            Back
+          </button>
+        </div>
       </div>
       <div className='table-wrapper' id='#scrollBar'>
         <table className='fl-table'>
           <thead>
             <tr>
-              <th>Request Id</th>
-              <th>Internal Reference</th>
-              <th>Employer Name</th>
-              <th>Employee Name</th>
-              <th>Verification Reason</th>
-              <th>Request Type</th>
-              <th>Salary Range</th>
+              <th>Request id</th>
+              <th>Internal reference</th>
+              <th>Employer name</th>
+              <th>Employee name</th>
+              <th>Verification reason</th>
+              <th>Request type</th>
+              <th>Salary range</th>
               <th>Status</th>
-              <th>Employee Rejection Reason</th>
-              <th>Creation Date</th>
-              <th>Completion Date</th>
-              <th>Aadhaar Number</th>
-              <th>Pan Number</th>
-              <th>Employee Email Id</th>
-              <th>Employee Phone no.</th>
+              <th>Employee rejection reason</th>
+              <th>Creation date</th>
+              <th>Completion date</th>
+              <th>Aadhaar number</th>
+              <th>PAN number</th>
+              <th>Employee email id</th>
+              <th>Employee phone no.</th>
             </tr>
           </thead>
           <tbody>

@@ -6,52 +6,20 @@
   font-family: 'Open Sans', sans-serif;
 }
 
-.upload-btn {
-  text-align: left;
-  margin-left: 1rem;
-}
-
-.upload-btn button {
-  background-color: rgb(100, 160, 255);
-  border: none;
-  color: #fff;
-  border-radius: 22px;
-  padding: 10px 15px;
-  font-size: 1rem;
-  font-family: 'Open Sans', sans-serif;
-  letter-spacing: 1px;
-  box-shadow: 0px 3px 1px -2px rgb(0 0 0 / 20%),
-    0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%);
-  outline: none;
-}
-
-.upload-btn button:hover {
-  transform: scale(1.01);
-  box-shadow: 0px 2px 4px -1px rgb(0 0 0 / 20%),
-    0px 4px 5px 0px rgb(0 0 0 / 14%), 0px 1px 10px 0px rgb(0 0 0 / 12%);
-  cursor: pointer;
-}
-
-.horizontal-line {
-  border-bottom: 1px solid #d3d7d9;
-  margin-top: 1rem;
-  margin-bottom: 2rem;
-}
-
 .subsection {
-  width: 100%;
+  width: 90%;
   padding: 1rem;
   margin: 8px;
   display: flex;
-  flex-direction: column;
-  justify-content: left;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
 .numbers {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  width: 30%;
+  width: 35%;
 }
 
 .numbers .propName {
@@ -70,32 +38,6 @@
   font-weight: 700;
   padding: 0 10px;
   word-wrap: break-word;
-}
-
-.view-detail-btn {
-  width: 30%;
-  /* text-align: left; */
-}
-
-.view-detail-btn button {
-  background-color: #f4f4f4;
-  border: 1px solid rgb(51, 105, 190);
-  color: rgb(51, 105, 190);
-  border-radius: 22px;
-  padding: 10px 15px;
-  font-size: 1rem;
-  font-family: 'Open Sans', sans-serif;
-  letter-spacing: 1px;
-  box-shadow: 0px 3px 1px -2px rgb(0 0 0 / 20%),
-    0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%);
-  outline: none;
-}
-
-.view-detail-btn button:hover {
-  transform: scale(1.01);
-  box-shadow: 0px 2px 4px -1px rgb(0 0 0 / 20%),
-    0px 4px 5px 0px rgb(0 0 0 / 14%), 0px 1px 10px 0px rgb(0 0 0 / 12%);
-  cursor: pointer;
 }
 
 .container {
@@ -159,4 +101,162 @@
   flex-direction: row;
   align-items: center;
   justify-content: space-evenly;
+}
+
+.upload-btn {
+  text-align: left;
+  margin-left: 1rem;
+}
+
+.upload-btn button {
+  background-color: rgb(100, 160, 255);
+  border: none;
+  color: #fff;
+  border-radius: 22px;
+  padding: 10px 15px;
+  font-size: 1rem;
+  font-family: 'Open Sans', sans-serif;
+  letter-spacing: 1px;
+  box-shadow: 0px 3px 1px -2px rgb(0 0 0 / 20%),
+    0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%);
+  outline: none;
+}
+
+.upload-btn button:hover {
+  transform: scale(1.01);
+  box-shadow: 0px 2px 4px -1px rgb(0 0 0 / 20%),
+    0px 4px 5px 0px rgb(0 0 0 / 14%), 0px 1px 10px 0px rgb(0 0 0 / 12%);
+  cursor: pointer;
+}
+
+.view-detail-btn {
+  width: 30%;
+  /* text-align: left; */
+}
+
+.view-detail-btn button {
+  background-color: #f4f4f4;
+  border: 1px solid rgb(51, 105, 190);
+  color: rgb(51, 105, 190);
+  border-radius: 22px;
+  padding: 10px 15px;
+  font-size: 1rem;
+  font-family: 'Open Sans', sans-serif;
+  letter-spacing: 1px;
+  box-shadow: 0px 3px 1px -2px rgb(0 0 0 / 20%),
+    0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%);
+  outline: none;
+}
+
+.view-detail-btn button:hover {
+  transform: scale(1.01);
+  box-shadow: 0px 2px 4px -1px rgb(0 0 0 / 20%),
+    0px 4px 5px 0px rgb(0 0 0 / 14%), 0px 1px 10px 0px rgb(0 0 0 / 12%);
+  cursor: pointer;
+}
+
+.horizontal-line {
+  border-bottom: 1px solid #d3d7d9;
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+}
+
+/*Date Picker Styles*/
+
+.date-picker {
+  width: 35%;
+}
+
+.date-picker .e-input-group {
+  width: 65%;
+  padding: 0px 10px;
+}
+
+.e-input-group:not(.e-float-icon-left):not(.e-float-input)::before,
+.e-input-group:not(.e-float-icon-left):not(.e-float-input)::after,
+.e-input-group.e-float-icon-left:not(.e-float-input) .e-input-in-wrap::before,
+.e-input-group.e-float-icon-left:not(.e-float-input) .e-input-in-wrap::after,
+.e-input-group.e-control-wrapper:not(.e-float-icon-left):not(.e-float-input)::before,
+.e-input-group.e-control-wrapper:not(.e-float-icon-left):not(.e-float-input)::after,
+.e-input-group.e-control-wrapper.e-float-icon-left:not(.e-float-input)
+  .e-input-in-wrap::before,
+.e-input-group.e-control-wrapper.e-float-icon-left:not(.e-float-input)
+  .e-input-in-wrap::after {
+  background-color: rgb(100, 160, 255);
+}
+
+.e-btn.e-flat.e-primary,
+.e-css.e-btn.e-flat.e-primary {
+  color: rgb(100, 160, 255);
+}
+
+.e-date-range-wrapper .e-input-group-icon.e-icons.e-active {
+  color: rgb(100, 160, 255);
+}
+
+.e-daterangepicker.e-popup
+  .e-calendar
+  .e-end-date.e-selected.e-range-hover
+  span.e-day,
+.e-daterangepicker.e-popup
+  .e-calendar
+  .e-start-date.e-selected.e-range-hover
+  span.e-day,
+.e-bigger.e-small
+  .e-daterangepicker.e-popup
+  .e-calendar
+  .e-end-date.e-selected.e-range-hover
+  span.e-day,
+.e-bigger.e-small
+  .e-daterangepicker.e-popup
+  .e-calendar
+  .e-start-date.e-selected.e-range-hover
+  span.e-day {
+  background-color: rgb(100, 160, 255);
+  color: #fff;
+}
+
+.e-daterangepicker.e-popup
+  .e-calendar
+  .e-content.e-month
+  .e-today.e-range-hover
+  span,
+.e-bigger.e-small
+  .e-daterangepicker.e-popup
+  .e-calendar
+  .e-content.e-month
+  .e-today.e-range-hover
+  span {
+  background-color: #eee;
+  border: 1px solid rgb(100, 160, 255);
+  color: rgb(100, 160, 255);
+}
+
+.e-calendar .e-content td.e-selected span.e-day,
+.e-bigger.e-small .e-calendar .e-content td.e-selected span.e-day {
+  background-color: rgb(100, 160, 255);
+}
+
+.e-calendar .e-content td.e-focused-date.e-today span.e-day,
+.e-bigger.e-small .e-calendar .e-content td.e-focused-date.e-today span.e-day {
+  background: #eee;
+  border: 1px solid rgb(100, 160, 255);
+  color: rgb(100, 160, 255);
+}
+
+.e-calendar .e-content td.e-focused-date.e-today span.e-day,
+.e-bigger.e-small
+  .e-calendar
+  .e-content
+  td.e-focused-date.e-today
+  span.e-day:hover {
+  background: #eee;
+  border: 1px solid rgb(100, 160, 255);
+  color: rgb(100, 160, 255);
+}
+.e-btn.e-flat.e-primary:hover,
+.e-css.e-btn.e-flat.e-primary:hover {
+  background-color: #daddde;
+  border-color: transparent;
+  color: rgb(100, 160, 255);
 }

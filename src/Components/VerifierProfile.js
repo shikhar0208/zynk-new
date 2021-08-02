@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import { Country, State, City } from 'country-state-city';
+import { validator } from '../utils/helperFunctions';
 import '../Styles/VerifierProfile.css';
 
 const initialData = {
@@ -19,7 +20,7 @@ const initialData = {
   city: 'Delhi',
   idType: 'Xy',
   idNumber: 'xyz123',
-  password: '',
+  newPassword: '',
   confirmPassword: '',
 };
 
@@ -32,9 +33,10 @@ const VerifierProfile = () => {
     country: '',
   });
   const [changes, setChanges] = useState({});
-  const [states, setStates] = useState('');
-  const [cities, setCities] = useState('');
+  const [states, setStates] = useState([]);
+  const [cities, setCities] = useState([]);
   const [editForm, setEditForm] = useState(false);
+  const [errors, setErrors] = useState(null);
 
   const countries = Country.getAllCountries();
 
@@ -56,6 +58,21 @@ const VerifierProfile = () => {
     const { name } = e.target;
     setChangeData({ ...changeData, [name]: e.target.value });
     setChanges({ ...changes, [name]: e.target.value });
+    if (errors) {
+      setErrors({ ...errors, [name]: '' });
+    }
+  };
+
+  const handleSwitchForm = () => {
+    if (editForm) {
+      setEditForm(false);
+      setChangeData({});
+      setChanges({});
+      setErrors(null);
+    } else {
+      setChangeData({ ...formData, city: '', state: '', country: '' });
+      setEditForm(true);
+    }
   };
 
   const handleChangeCountry = (e) => {
@@ -66,6 +83,9 @@ const VerifierProfile = () => {
     setChanges({ ...changes, country: e.target.value });
     const allStates = State.getStatesOfCountry(e.target.value);
     setStates(allStates);
+    if (errors) {
+      setErrors({ ...errors, country: '' });
+    }
   };
 
   const handleChangeState = (e) => {
@@ -76,14 +96,46 @@ const VerifierProfile = () => {
     setChanges({ ...changes, state: e.target.value });
     const allCities = City.getCitiesOfState(changeData.country, e.target.value);
     setCities(allCities);
+    if (errors) {
+      setErrors({ ...errors, state: '' });
+    }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(changeData);
-    console.log(changes);
-    setChanges({});
-    setEditForm(false);
+    var requiredFields = [];
+    if (changes?.country) {
+      if (states.length > 0) {
+        requiredFields = [...requiredFields, 'country', 'state'];
+      }
+      if (cities.length > 0) {
+        requiredFields = [...requiredFields, 'city', 'pincode'];
+      }
+    }
+    if (changes?.newPassword || changes?.confirmPassword) {
+      requiredFields = [...requiredFields, 'newPassword', 'confirmPassword'];
+    }
+    const flag = validator(changes, requiredFields);
+    if (flag === true) {
+      setErrors(null);
+      if (changes?.newPassword && changes?.confirmPassword) {
+        if (changes.newPassword === changes.confirmPassword) {
+          setEditForm(false);
+          setChanges({});
+        } else {
+          setErrors({
+            ...errors,
+            newPassword: '',
+            confirmPassword: "Passwords don't match",
+          });
+        }
+      } else {
+        setEditForm(false);
+        setChanges({});
+      }
+    } else {
+      setErrors(flag);
+    }
   };
 
   return (
@@ -94,7 +146,7 @@ const VerifierProfile = () => {
             {!editForm ? 'Profile Details' : 'Update Profile'}
           </h1>
           <button
-            onClick={() => setEditForm(!editForm)}
+            onClick={handleSwitchForm}
             className={`editButton ${
               editForm ? 'nonActiveButton' : 'activeButton'
             }`}
@@ -152,9 +204,17 @@ const VerifierProfile = () => {
                   name='email'
                   value={changeData.email}
                   onChange={handleFormChange}
+                  className={
+                    errors && errors.email && errors.email !== '' ? 'error' : ''
+                  }
                 />
               ) : (
-                <input value={changeData.email} disabled />
+                <input value={formData.email} disabled />
+              )}
+              {errors && errors.email !== '' && (
+                <label className='errorMessage' htmlFor='emailError'>
+                  {errors.email}
+                </label>
               )}
             </div>
             <div className='columnWise'>
@@ -166,9 +226,19 @@ const VerifierProfile = () => {
                   name='phoneNumber'
                   value={changeData.phoneNumber}
                   onChange={handleFormChange}
+                  className={
+                    errors && errors.phoneNumber && errors.phoneNumber !== ''
+                      ? 'error'
+                      : ''
+                  }
                 />
               ) : (
                 <input value={formData.phoneNumber} disabled />
+              )}
+              {errors && errors.phoneNumber !== '' && (
+                <label className='errorMessage' htmlFor='phoneNumberError'>
+                  {errors.phoneNumber}
+                </label>
               )}
             </div>
           </div>
@@ -245,7 +315,9 @@ const VerifierProfile = () => {
                   name='state'
                   onChange={handleChangeState}
                   disabled={!changeData.country}
-                  className={`${changeData.state === '' ? 'grayColor' : ''}`}
+                  className={`${changeData.state === '' ? 'grayColor' : ''} ${
+                    errors && errors.state && errors.state !== '' ? 'error' : ''
+                  }`}
                 >
                   <option disabled selected className='demo-select'>
                     Select
@@ -260,6 +332,11 @@ const VerifierProfile = () => {
               ) : (
                 <input value={location.state.name} disabled />
               )}
+              {errors && errors.state !== '' && (
+                <label className='errorMessage' htmlFor='stateError'>
+                  {errors.state}
+                </label>
+              )}
             </div>
           </div>
           <div className='rowWise'>
@@ -270,7 +347,9 @@ const VerifierProfile = () => {
                   name='city'
                   onChange={handleFormChange}
                   disabled={!changeData.state}
-                  className={`${changeData.city === '' ? 'grayColor' : ''}`}
+                  className={`${changeData.city === '' ? 'grayColor' : ''} ${
+                    errors && errors.city && errors.city !== '' ? 'error' : ''
+                  }`}
                 >
                   <option disabled selected className='demo-select'>
                     Select
@@ -285,6 +364,11 @@ const VerifierProfile = () => {
               ) : (
                 <input value={formData.city} disabled />
               )}
+              {errors && errors.city !== '' && (
+                <label className='errorMessage' htmlFor='cityError'>
+                  {errors.city}
+                </label>
+              )}
             </div>
             <div className='columnWise'>
               <label htmlFor='pincode'>Pin code</label>
@@ -295,9 +379,19 @@ const VerifierProfile = () => {
                   name='pincode'
                   value={changeData.pincode}
                   onChange={handleFormChange}
+                  className={`${
+                    errors && errors.pincode && errors.pincode !== ''
+                      ? 'error'
+                      : ''
+                  }`}
                 />
               ) : (
                 <input value={formData.pincode} disabled />
+              )}
+              {errors && errors.pincode !== '' && (
+                <label className='errorMessage' htmlFor='pincodeError'>
+                  {errors.pincode}
+                </label>
               )}
             </div>
           </div>
@@ -318,10 +412,20 @@ const VerifierProfile = () => {
                 <input
                   placeholder='Password'
                   type='password'
-                  name='password'
-                  value={changeData.password}
+                  name='newPassword'
+                  value={changeData.newPassword}
                   onChange={handleFormChange}
+                  className={`${
+                    errors && errors.newPassword && errors.newPassword !== ''
+                      ? 'error'
+                      : ''
+                  }`}
                 />
+                {errors && errors.newPassword !== '' && (
+                  <label className='errorMessage' htmlFor='passwordError'>
+                    {errors.newPassword}
+                  </label>
+                )}
               </div>
               <div className='columnWise'>
                 <label htmlFor='confirmPassword'>Confirm password</label>
@@ -331,7 +435,22 @@ const VerifierProfile = () => {
                   name='confirmPassword'
                   value={changeData.confirmPassword}
                   onChange={handleFormChange}
+                  className={`${
+                    errors &&
+                    errors.confirmPassword &&
+                    errors.confirmPassword !== ''
+                      ? 'error'
+                      : ''
+                  }`}
                 />
+                {errors && errors.confirmPassword !== '' && (
+                  <label
+                    className='errorMessage'
+                    htmlFor='confirmPasswordError'
+                  >
+                    {errors.confirmPassword}
+                  </label>
+                )}
               </div>
             </div>
           )}

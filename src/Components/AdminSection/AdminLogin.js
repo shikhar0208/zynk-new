@@ -1,17 +1,16 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { validator } from '../utils/helperFunctions';
+import { validator } from '../../utils/helperFunctions';
 
-import '../Styles/VerifierRegistrationForm.css';
+import '../../Styles/AdminLogin.css';
 
 const initialData = {
   email: '',
   password: '',
 };
 
-const LoginForm = () => {
+const AdminLogin = () => {
   const [formData, setFormData] = useState(initialData);
-  const [userType, setUserType] = useState('verifier');
   const [errors, setErrors] = useState(null);
   const history = useHistory();
 
@@ -23,26 +22,13 @@ const LoginForm = () => {
     }
   };
 
-  const handleSwitch = () => {
-    history.push('/verifier-signup');
-  };
-
-  const handleChangeLogin = (type) => {
-    setUserType(type);
-    setErrors(null);
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
     const requiredFields = ['email', 'password'];
     const flag = validator(formData, requiredFields);
     if (flag === true) {
       setErrors(null);
-      if (userType === 'verifier') {
-        history.push('/verifier-dashboard');
-      } else if (userType === 'employer') {
-        history.push('/employer-dashboard');
-      }
+      history.push('/admin-dashboard');
     } else {
       setErrors(flag);
     }
@@ -50,30 +36,12 @@ const LoginForm = () => {
   };
 
   return (
-    <div className='wrapper'>
-      <div className='loginForm-wrapper'>
-        <div className='header'>
-          <h1>Login</h1>
-          <div className='login-switch'>
-            <button
-              className={
-                userType === 'verifier' ? 'activeButton' : 'nonActiveButton'
-              }
-              onClick={() => handleChangeLogin('verifier')}
-            >
-              Verifier
-            </button>
-            <button
-              className={
-                userType === 'employer' ? 'activeButton' : 'nonActiveButton'
-              }
-              onClick={() => handleChangeLogin('employer')}
-            >
-              Employer
-            </button>
-          </div>
+    <div className='admin-login-wrapper'>
+      <div className='admin-login-container'>
+        <div className='admin-login-header'>
+          <h1>Admin Login</h1>
         </div>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className='admin-login-form'>
           <div className='columnWise'>
             <label htmlFor='email'>
               Email <span className='required'>*</span>
@@ -111,16 +79,8 @@ const LoginForm = () => {
             )}
           </div>
           <p className='forget-password'> Forgot password?</p>
-          <div className='createAccount'>
+          <div className='admin-login-submit'>
             <button type='submit'>Log in</button>
-            {userType === 'verifier' && (
-              <small>
-                Don't have an account?{' '}
-                <span className='switch-form' onClick={handleSwitch}>
-                  Sign up
-                </span>
-              </small>
-            )}
           </div>
         </form>
       </div>
@@ -128,4 +88,4 @@ const LoginForm = () => {
   );
 };
 
-export default LoginForm;
+export default AdminLogin;

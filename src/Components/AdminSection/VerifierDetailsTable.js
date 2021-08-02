@@ -1,42 +1,34 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
-import '../Styles/VerifierViewDetails.css';
+// import { useHistory } from 'react-router-dom';
+import '../../Styles/VerifierDetailsTable.css';
 
-const EmployerViewDetails = () => {
-  const history = useHistory();
-
-  const handleBackButton = () => {
-    history.push('/employer-dashboard');
-  };
+const VerifierDetailsTable = () => {
+  // const history = useHistory();
 
   return (
     <div className='table-container'>
       <div className='rowview'>
-        <div className='view-header'>
-          <h2 className='pageTitle'>Verification Request Details</h2>
-        </div>
-        <div className='view-backButton'>
-          <button className='backButton' onClick={handleBackButton}>
-            Back
-          </button>
-        </div>
+        <h2 className='pageTitle'>Verifier Details</h2>
       </div>
       <div className='table-wrapper' id='#scrollBar'>
         <table className='fl-table'>
           <thead>
             <tr>
-              <th>Request id</th>
+              <th>Verifier id</th>
+              <th>Date of registration</th>
+              <th>Entity type</th>
               <th>Verifier name</th>
-              <th>Employee id</th>
-              <th>Employee name</th>
-              <th>Salary range</th>
-              <th>Verifying employer</th>
-              <th>Verification reason</th>
-              <th>Status</th>
-              <th>Employee rejection reason</th>
-              <th>Request type</th>
+              <th>Business contact name</th>
+              <th>Email id</th>
+              <th>Phone number</th>
+              <th>Govt. id type</th>
+              <th>Govt. id number</th>
               <th>Creation date</th>
               <th>Completion date</th>
+              <th>Aadhaar number</th>
+              <th>PAN number</th>
+              <th>Employee email id</th>
+              <th>Employee phone no.</th>
             </tr>
           </thead>
           <tbody>
@@ -53,6 +45,9 @@ const EmployerViewDetails = () => {
               <td>Content 1</td>
               <td>Content 1</td>
               <td>Content 1</td>
+              <td>Content 1</td>
+              <td>Content 1</td>
+              <td>Content 1</td>
             </tr>
             <tr>
               <td>Content 2</td>
@@ -67,6 +62,9 @@ const EmployerViewDetails = () => {
               <td>Content 2</td>
               <td>Content 2</td>
               <td>Content 2</td>
+              <td>Content 2</td>
+              <td>Content 2</td>
+              <td>Content 2</td>
             </tr>
             <tr>
               <td>Content 3</td>
@@ -81,6 +79,9 @@ const EmployerViewDetails = () => {
               <td>Content 3</td>
               <td>Content 3</td>
               <td>Content 3</td>
+              <td>Content 3</td>
+              <td>Content 3</td>
+              <td>Content 3</td>
             </tr>
             <tr>
               <td>Content 4</td>
@@ -95,6 +96,9 @@ const EmployerViewDetails = () => {
               <td>Content 4</td>
               <td>Content 4</td>
               <td>Content 4</td>
+              <td>Content 4</td>
+              <td>Content 4</td>
+              <td>Content 4</td>
             </tr>
             <tr>
               <td>Content 5</td>
@@ -109,8 +113,14 @@ const EmployerViewDetails = () => {
               <td>Content 5</td>
               <td>Content 5</td>
               <td>Content 5</td>
+              <td>Content 5</td>
+              <td>Content 5</td>
+              <td>Content 5</td>
             </tr>
             <tr>
+              <td>Content 6</td>
+              <td>Content 6</td>
+              <td>Content 6</td>
               <td>Content 6</td>
               <td>Content 6</td>
               <td>Content 6</td>
@@ -131,4 +141,4 @@ const EmployerViewDetails = () => {
   );
 };
 
-export default EmployerViewDetails;
+export default VerifierDetailsTable;

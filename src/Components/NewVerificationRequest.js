@@ -13,7 +13,6 @@ const initialData = {
   requestType: '',
   salaryRange: '',
   verificationReason: '',
-  newEmployerName: '',
   verifyingEmployer: '',
 };
 
@@ -42,11 +41,7 @@ const NewVerificationRequest = (props) => {
       requiredFields = [...requiredFields, 'salaryRange'];
     }
     if (formData.verificationReason === '3') {
-      requiredFields = [
-        ...requiredFields,
-        'newEmployerName',
-        'verifyingEmployer',
-      ];
+      requiredFields = [...requiredFields, 'verifyingEmployer'];
     }
 
     const flag = validator(formData, requiredFields);
@@ -68,7 +63,7 @@ const NewVerificationRequest = (props) => {
           <div className='rowWise'>
             <div className='columnWise'>
               <label htmlFor='employerName'>
-                Employer Name <span className='required'>*</span>
+                Employer name <span className='required'>*</span>
               </label>
               <select
                 name='employerName'
@@ -92,10 +87,10 @@ const NewVerificationRequest = (props) => {
             </div>
             <div className='columnWise'>
               <label htmlFor='employeeName'>
-                Employee Full Name <span className='required'>*</span>
+                Employee full name <span className='required'>*</span>
               </label>
               <input
-                placeholder='Employee Name'
+                placeholder='Employee name'
                 type='text'
                 name='employeeName'
                 value={formData.employeeName}
@@ -111,9 +106,9 @@ const NewVerificationRequest = (props) => {
           </div>
           <div className='rowWise'>
             <div className='columnWise'>
-              <label htmlFor='aadhaarNumber'>Aadhaar Number</label>
+              <label htmlFor='aadhaarNumber'>Aadhaar number</label>
               <input
-                placeholder='Aadhaar Number'
+                placeholder='Aadhaar number'
                 type='text'
                 name='aadhaarNumber'
                 value={formData.aadhaarNumber}
@@ -131,9 +126,9 @@ const NewVerificationRequest = (props) => {
               )}
             </div>
             <div className='columnWise'>
-              <label htmlFor='panNumber'>PAN Number</label>
+              <label htmlFor='panNumber'>PAN number</label>
               <input
-                placeholder='PAN Number'
+                placeholder='PAN number'
                 type='text'
                 name='panNumber'
                 value={formData.panNumber}
@@ -153,9 +148,9 @@ const NewVerificationRequest = (props) => {
           </div>
           <div className='rowWise'>
             <div className='columnWise'>
-              <label htmlFor='email'>Employee Email Id</label>
+              <label htmlFor='email'>Employee email id</label>
               <input
-                placeholder='Email'
+                placeholder='Email id'
                 type='text'
                 name='email'
                 value={formData.email}
@@ -171,9 +166,9 @@ const NewVerificationRequest = (props) => {
               )}
             </div>
             <div className='columnWise'>
-              <label htmlFor='phoneNumber'>Phone Number</label>
+              <label htmlFor='phoneNumber'>Phone number</label>
               <input
-                placeholder='Phone Number'
+                placeholder='Phone number'
                 type='text'
                 name='phoneNumber'
                 value={formData.phoneNumber}
@@ -184,7 +179,7 @@ const NewVerificationRequest = (props) => {
           <div className='rowWise'>
             <div className='custom-select columnWise'>
               <label htmlFor='requestType'>
-                Request Type <span className='required'>*</span>
+                Request type <span className='required'>*</span>
               </label>
               <select
                 name='requestType'
@@ -197,8 +192,8 @@ const NewVerificationRequest = (props) => {
                 <option disabled selected>
                   Select
                 </option>
-                <option value='E'>Employment Only</option>
-                <option value='I'>Employment and Income</option>
+                <option value='E'>Employment only</option>
+                <option value='I'>Employment and income</option>
               </select>
               {errors && errors.requestType !== '' && (
                 <label className='errorMessage' htmlFor='requestTypeError'>
@@ -208,7 +203,7 @@ const NewVerificationRequest = (props) => {
             </div>
             <div className='columnWise'>
               <label htmlFor='verificationReason'>
-                Verification Reason <span className='required'>*</span>
+                Verification reason <span className='required'>*</span>
               </label>
               <select
                 name='verificationReason'
@@ -226,7 +221,7 @@ const NewVerificationRequest = (props) => {
                 <option value='4'>Background Check - Property rental</option>
                 <option value='5'>Background Check - Visa application</option>
                 <option value='6'>
-                  Background Check - Insurance application
+                  Background check - Insurance application
                 </option>
                 <option value='7'>Other</option>
               </select>
@@ -243,7 +238,7 @@ const NewVerificationRequest = (props) => {
           <div className='rowWise'>
             <div className='columnWise'>
               <label htmlFor='salarayRange'>
-                Salary Range{' '}
+                Salary range{' '}
                 {formData.requestType === 'I' && (
                   <span className='required'>*</span>
                 )}
@@ -270,7 +265,7 @@ const NewVerificationRequest = (props) => {
               )}
             </div>
             <div className='columnWise'>
-              <label htmlFor='internalReference'>Internal Reference</label>
+              <label htmlFor='internalReference'>Internal reference</label>
               <input
                 placeholder='Reference'
                 type='text'
@@ -282,57 +277,37 @@ const NewVerificationRequest = (props) => {
           </div>
           {formData.verificationReason === '3' && (
             <div className='columnWise'>
-              <label htmlFor='newEmployerName'>
-                New Employer Name <span className='required'>*</span>
+              <label htmlFor='verifyingEmployer'>
+                Verifying employer{' '}
+                {formData.verificationReason === '3' && (
+                  <span className='required'>*</span>
+                )}
               </label>
               <input
-                placeholder='Employer Name'
+                placeholder='Verifying employer'
                 type='text'
-                name='newEmployerName'
-                value={formData.newEmployerName}
+                name='verifyingEmployer'
+                value={formData.verifyingEmployer}
                 onChange={handleFormChange}
                 className={
                   errors &&
-                  errors.newEmployerName &&
-                  errors.newEmployerName !== ''
+                  errors.verifyingEmployer &&
+                  errors.verifyingEmployer !== ''
                     ? 'error'
                     : ''
                 }
               />
-              {errors && errors.newEmployerName !== '' && (
-                <label className='errorMessage' htmlFor='newEmployerNameError'>
-                  {errors.newEmployerName}
+              {errors && errors.verifyingEmployer !== '' && (
+                <label
+                  className='errorMessage'
+                  htmlFor='verifyingEmployerError'
+                >
+                  {errors.verifyingEmployer}
                 </label>
               )}
             </div>
           )}
-          <div className='columnWise'>
-            <label htmlFor='verifyingEmployer'>
-              Verifying Employer{' '}
-              {formData.verificationReason === '3' && (
-                <span className='required'>*</span>
-              )}
-            </label>
-            <input
-              placeholder='Verifying Employer'
-              type='text'
-              name='verifyingEmployer'
-              value={formData.verifyingEmployer}
-              onChange={handleFormChange}
-              className={
-                errors &&
-                errors.verifyingEmployer &&
-                errors.verifyingEmployer !== ''
-                  ? 'error'
-                  : ''
-              }
-            />
-            {errors && errors.verifyingEmployer !== '' && (
-              <label className='errorMessage' htmlFor='verifyingEmployerError'>
-                {errors.verifyingEmployer}
-              </label>
-            )}
-          </div>
+
           <div className='buttonDiv'>
             <button type='submit' className='submitButton activeButton'>
               Submit

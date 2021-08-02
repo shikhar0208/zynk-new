@@ -42,12 +42,10 @@ const VerifierRegistrationForm = () => {
     'addressLine1',
     'pincode',
     'country',
-    'state',
-    'city',
     'idType',
     'idNumber',
     'idAttachment',
-    'password',
+    'newPassword',
     'confirmPassword',
   ];
 
@@ -93,16 +91,24 @@ const VerifierRegistrationForm = () => {
       requiredFields = [...requiredFields, 'businessContactName'];
     }
 
+    if (states.length > 0) {
+      requiredFields = [...requiredFields, 'state'];
+    }
+
+    if (cities.length > 0) {
+      requiredFields = [...requiredFields, 'city'];
+    }
+
     const flag = validator(formData, requiredFields);
 
     if (flag === true) {
       setErrors(null);
-      if (formData.password === formData.confirmPassword) {
+      if (formData.newPassword === formData.confirmPassword) {
         alert('success');
       } else {
         setErrors({
           ...errors,
-          password: '',
+          newPassword: '',
           confirmPassword: "Passwords don't match",
         });
       }
@@ -295,7 +301,7 @@ const VerifierRegistrationForm = () => {
                 onChange={handleChangeState}
                 disabled={!formData.country}
                 className={`${formData.state === '' ? 'grayColor' : ''} ${
-                  errors && errors.state !== '' ? 'error' : ''
+                  errors && errors.state && errors.state !== '' ? 'error' : ''
                 }`}
               >
                 <option disabled selected className='demo-select'>
@@ -325,7 +331,7 @@ const VerifierRegistrationForm = () => {
                 onChange={handleFormChange}
                 disabled={!formData.state}
                 className={`${formData.city === '' ? 'grayColor' : ''} ${
-                  errors && errors.city !== '' ? 'error' : ''
+                  errors && errors.city && errors.city !== '' ? 'error' : ''
                 }`}
               >
                 <option disabled selected className='demo-select'>
@@ -441,14 +447,14 @@ const VerifierRegistrationForm = () => {
               <input
                 placeholder='Password'
                 type='password'
-                name='password'
-                value={formData.password}
+                name='newPassword'
+                value={formData.newPassword}
                 onChange={handleFormChange}
-                className={errors && errors.password !== '' ? 'error' : ''}
+                className={errors && errors.newPassword !== '' ? 'error' : ''}
               />
-              {errors && errors.password !== '' && (
+              {errors && errors.newPassword !== '' && (
                 <label className='errorMessage' htmlFor='passwordError'>
-                  {errors.password}
+                  {errors.newPassword}
                 </label>
               )}
             </div>

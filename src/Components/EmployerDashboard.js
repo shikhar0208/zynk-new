@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import { DateRangePickerComponent } from '@syncfusion/ej2-react-calendars';
 import '../Styles/EmployerDashboard.css';
 
 const EmployerDashboard = () => {
   const history = useHistory();
+
+  const [dateRange, setDateRange] = useState({ startDate: '', endDate: '' });
 
   const handleViewDetails = () => {
     history.push('/employer-verification-details');
@@ -13,12 +16,25 @@ const EmployerDashboard = () => {
     history.push('/upload-details');
   };
 
+  const handleDateChange = ({ startDate, endDate }) => {
+    setDateRange({ startDate, endDate });
+  };
   return (
     <div className='dashboard-section'>
       <div className='subsection'>
         <div className='numbers'>
           <div className='propName'>Number of verifications (2021)</div>
           <div className='propValue'>100</div>
+        </div>
+        <div className='date-picker'>
+          <DateRangePickerComponent
+            placeholder='Start Date - End Date'
+            startDate={dateRange.startDate}
+            endDate={dateRange.endDate}
+            openOnFocus={true}
+            change={handleDateChange}
+            format='dd/MM/yyyy'
+          />
         </div>
       </div>
       <div className='horizontal-line'></div>

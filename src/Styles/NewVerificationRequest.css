@@ -148,7 +148,7 @@ input.error {
 .buttonDiv {
   display: flex;
   flex-direction: row;
-  justify-content: space-evenly;
+  justify-content: space-evenly !important;
   align-items: center;
   /* margin: 0.5rem 2rem 0 2rem; */
 }
