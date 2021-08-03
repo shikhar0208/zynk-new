@@ -12,14 +12,10 @@ const EmployerViewDetails = () => {
   return (
     <div className='table-container'>
       <div className='rowview'>
-        <div className='view-header'>
-          <h2 className='pageTitle'>Verification Request Details</h2>
-        </div>
-        <div className='view-backButton'>
-          <button className='backButton' onClick={handleBackButton}>
-            Back
-          </button>
-        </div>
+        <h2 className='pageTitle'>Verification Request Details</h2>
+        <button className='backButton' onClick={handleBackButton}>
+          Back
+        </button>
       </div>
       <div className='table-wrapper' id='#scrollBar'>
         <table className='fl-table'>

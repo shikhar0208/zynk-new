@@ -3,6 +3,12 @@ import { useHistory } from 'react-router-dom';
 import { DateRangePickerComponent } from '@syncfusion/ej2-react-calendars';
 import '../Styles/EmployerDashboard.css';
 
+import EmployerReasonChart from './EmployerReasonChart';
+import EmployerPeriodChart from './EmployerPeriodChart';
+
+// import PieChart1 from './PieChart1';
+// import PieChart2 from './PieChart2';
+
 const EmployerDashboard = () => {
   const history = useHistory();
 
@@ -39,67 +45,14 @@ const EmployerDashboard = () => {
       </div>
       <div className='horizontal-line'></div>
       <div className='container'>
-        <div className='grid'>
-          <h2>Verification Summary (By period)</h2>
-          {/* we will add date filter here */}
-          <div className='list-section'>
-            <div className='list'>
-              <div className='key'>Jun</div>
-              <div className='value'>15</div>
-            </div>
-            <div className='list'>
-              <div className='key'>Feb</div>
-              <div className='value'>10</div>
-            </div>
-            <div className='list'>
-              <div className='key'>Mar</div>
-              <div className='value'>25</div>
-            </div>
-            <div className='list'>
-              <div className='key'>Apr</div>
-              <div className='value'>15</div>
-            </div>
-            <div className='list'>
-              <div className='key'>May</div>
-              <div className='value'>25</div>
-            </div>
-            <div className='list'>
-              <div className='key'>Jun</div>
-              <div className='value'>10</div>
-            </div>
-          </div>
+        <div className='employer-charts-div'>
+          {/*<PieChart1 />*/}
+          <EmployerReasonChart />
         </div>
-        <div className='grid'>
-          <h2>Verification Summary (By reason)</h2>
-          {/* we will add date filter here */}
-          <div className='list-section'>
-            <div className='list'>
-              <div className='key'>Loan application</div>
-              <div className='value'>60</div>
-            </div>
-            <div className='list'>
-              <div className='key'>Background check - Job change</div>
-              <div className='value'>15</div>
-            </div>
-            <div className='list'>
-              <div className='key'>Background check - Property rental</div>
-              <div className='value'>10</div>
-            </div>
-            <div className='list'>
-              <div className='key'>Background check - Visa application</div>
-              <div className='value'>5</div>
-            </div>
-            <div className='list'>
-              <div className='key'>
-                Background check - Insurance application
-              </div>
-              <div className='value'>5</div>
-            </div>
-            <div className='list'>
-              <div className='key'>Other</div>
-              <div className='value'>5</div>
-            </div>
-          </div>
+        <div className='employer-charts-div'>
+          {/*<PieChart2 />*/}
+
+          <EmployerPeriodChart />
         </div>
       </div>
       <div className='horizontal-line'></div>

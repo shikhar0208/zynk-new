@@ -63,12 +63,14 @@ export const validator = (details, requiredFields) => {
           ? ''
           : 'Invalid pin code';
       }
-    } else if (field === 'phoneNumber') {
-      errorObj[field] =
-        details[field] !== ''
-          ? checkContactNumber(details.phoneNumber)
-          : 'Field is required';
-    } else if (field === 'panNumber') {
+    }
+    // else if (field === 'phoneNumber') {
+    //   errorObj[field] =
+    //     details[field] !== ''
+    //       ? checkContactNumber(details.phoneNumber)
+    //       : 'Field is required';
+    // }
+    else if (field === 'panNumber') {
       errorObj[field] =
         details[field] !== ''
           ? /^([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}?$/.test(details[field])
@@ -84,9 +86,9 @@ export const validator = (details, requiredFields) => {
 
   // since below fields are not required so we have check them separately only when they are available
 
-  if (details?.phoneNumber) {
-    errorObj.phoneNumber = checkContactNumber(details.phoneNumber);
-  }
+  // if (details?.phoneNumber) {
+  //   errorObj.phoneNumber = checkContactNumber(details.phoneNumber);
+  // }
 
   if (details?.email) {
     errorObj.email = isEmail(details.email) ? '' : 'Invalid email';

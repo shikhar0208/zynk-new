@@ -1,6 +1,10 @@
 import React from 'react';
 import '../../Styles/AdminDashboard.css';
 import VerifierDetailsTable from './VerifierDetailsTable';
+import EmployerDetailsTable from './EmployerDetailsTable';
+import VerificationRequestDetailTable from './VerificationRequestDetailTable';
+import VerificationRequestStatusTable from './VerificationRequestStatusTable';
+import EmployerExtractDetailsTable from './EmployerExtractDetailsTable';
 
 const AdminDashboard = () => {
   return (
@@ -29,6 +33,10 @@ const AdminDashboard = () => {
       </div>
       <div className='partition-line'></div>
       <VerifierDetailsTable />
+      <EmployerDetailsTable />
+      <VerificationRequestDetailTable />
+      <VerificationRequestStatusTable />
+      <EmployerExtractDetailsTable />
     </div>
   );
 };

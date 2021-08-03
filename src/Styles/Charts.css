@@ -1,0 +1,21 @@
+.chart-header {
+  margin-bottom: 1rem;
+  border-bottom: 1px solid #d3d7d9;
+}
+
+.chart-title {
+  margin: 10px 0;
+  font-size: 1.7rem;
+}
+
+canvas {
+  width: 900px !important;
+  height: 450px !important;
+  margin: auto;
+}
+
+/* canvas {
+  width: 400px !important;
+  height: 400px !important;
+  margin: auto;
+} */
