@@ -2,14 +2,16 @@ import React from 'react';
 // import { useHistory } from 'react-router-dom';
 import '../../Styles/AdminSection/VerifierDetailsTable.css';
 
-const EmployerDetailsTable = () => {
+const EmployerDetailsTable = (props) => {
   // const history = useHistory();
 
   return (
     <div className='admin-table-container'>
       <div className='admin-employer-header'>
         <h2 className='admin-pageTitle'>Employer Details</h2>
-        <button className='addNewButton'>Add new</button>
+        <button className='addNewButton' onClick={props.handleOpenForm}>
+          Add new
+        </button>
       </div>
       <div className='admin-table-wrapper' id='#scrollBar'>
         <table className='admin-fl-table'>

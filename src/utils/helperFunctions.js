@@ -2,11 +2,11 @@ import isEmail from 'validator/lib/isEmail';
 import isNumeric from 'validator/lib/isNumeric';
 import isAlpha from 'validator/lib/isAlpha';
 
-const checkContactNumber = (num) => {
-  return num.length === 0 || /^[6-9]\d{9}$/.test(num)
-    ? ''
-    : 'Invalid phone number';
-};
+// const checkContactNumber = (num) => {
+//   return num.length === 0 || /^[6-9]\d{9}$/.test(num)
+//     ? ''
+//     : 'Invalid phone number';
+// };
 
 const checkName = (name) => {
   return isAlpha(name, ['en-US'], { ignore: ' ' })

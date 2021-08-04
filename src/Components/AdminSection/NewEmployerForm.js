@@ -1,49 +1,47 @@
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { validator } from '../../utils/helperFunctions';
 import { Country, State, City } from 'country-state-city';
-import { validator } from '../utils/helperFunctions';
-
-import '../Styles/VerifierRegistrationForm.css';
+import '../../Styles/AdminSection/NewEmployerForm.css';
 
 const initialData = {
-  entityType: '',
-  verifierName: '',
+  activationDate: '',
+  endDate: '',
+  autoRenew: '',
+  businessName: '',
   businessContactName: '',
   email: '',
   phoneNumber: '',
   addressLine1: '',
   addressLine2: '',
   pincode: '',
-  country: '',
   state: '',
   city: '',
-  idType: '',
-  idNumber: '',
-  idAttachment: '',
-  password: '',
+  country: '',
+  gstNumber: '',
+  newPassword: '',
   confirmPassword: '',
 };
 
-const VerifierRegistrationForm = () => {
-  const history = useHistory();
+const NewEmployerForm = (props) => {
   const [formData, setFormData] = useState(initialData);
+  const [errors, setErrors] = useState(null);
   const [states, setStates] = useState('');
   const [cities, setCities] = useState('');
-  const [errors, setErrors] = useState(null);
 
   const countries = Country.getAllCountries();
 
   var requiredFields = [
-    'entityType',
-    'verifierName',
+    'activationDate',
+    'endDate',
+    'autoRenew',
+    'businessName',
+    'businessContactName',
     'email',
     'phoneNumber',
     'addressLine1',
     'pincode',
     'country',
-    'idType',
-    'idNumber',
-    'idAttachment',
+    'gstNumber',
     'newPassword',
     'confirmPassword',
   ];
@@ -80,15 +78,8 @@ const VerifierRegistrationForm = () => {
     setCities(allCities);
   };
 
-  const handleSwitch = () => {
-    history.push('/login');
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (formData.entityType === 'B') {
-      requiredFields = [...requiredFields, 'businessContactName'];
-    }
 
     if (states.length > 0) {
       requiredFields = [...requiredFields, 'state'];
@@ -117,57 +108,99 @@ const VerifierRegistrationForm = () => {
   };
 
   return (
-    <div className='wrapper'>
-      <div className='form-wrapper'>
-        <div className='header'>
-          <h1 style={{ marginBottom: '1rem' }}>Verifier Sign Up</h1>
+    <div className='modalContainer'>
+      <div className='modalContent'>
+        <div className='header rowWise'>
+          <h1 style={{ marginBottom: '1rem' }}>Add new employer</h1>
         </div>
         <form onSubmit={handleSubmit} style={{ marginTop: '1rem' }}>
           <div className='rowWise'>
-            <div className='custom-select columnWise'>
-              <label htmlFor='entityType'>
-                Entity type <span className='required'>*</span>
+            <div className='columnWise'>
+              <label htmlFor='employerActivationDate'>
+                Activation date <span className='required'>*</span>
               </label>
-              <select
-                name='entityType'
-                id='selectMenu'
+              <input
+                type='date'
+                name='activationDate'
+                value={formData.activationDate}
                 onChange={handleFormChange}
-                className={`${formData.entityType === '' ? 'grayColor' : ''} ${
-                  errors && errors.entityType !== '' ? 'error' : ''
-                }`}
-              >
-                <option disabled value='' selected>
-                  Select
-                </option>
-                <option value='B'>Business</option>
-                <option value='I'>Individual</option>
-              </select>
-              {errors && errors.entityType !== '' && (
-                <label className='errorMessage' htmlFor='entityTypeError'>
-                  {errors.entityType}
+                className={
+                  errors && errors.activationDate !== '' ? 'error' : ''
+                }
+              />
+              {errors && errors.activationDate !== '' && (
+                <label className='errorMessage' htmlFor='activationDateError'>
+                  {errors.activationDate}
                 </label>
               )}
             </div>
             <div className='columnWise'>
-              <label htmlFor='verifierName'>
-                Verifier name <span className='required'>*</span>
+              <label htmlFor='subscriptionEndDate'>
+                Subscription end date <span className='required'>*</span>
               </label>
               <input
-                placeholder='Verifier name'
-                type='text'
-                name='verifierName'
-                value={formData.verifierName}
+                type='date'
+                name='endDate'
+                value={formData.endDate}
                 onChange={handleFormChange}
-                className={errors && errors.verifierName !== '' ? 'error' : ''}
+                className={errors && errors.endDate !== '' ? 'error' : ''}
               />
-              {errors && errors.verifierName !== '' && (
-                <label className='errorMessage' htmlFor='verifierNameError'>
-                  {errors.verifierName}
+              {errors && errors.endDate !== '' && (
+                <label className='errorMessage' htmlFor='endDateError'>
+                  {errors.endDate}
                 </label>
               )}
             </div>
           </div>
-          {formData.entityType === 'B' && (
+          <div className='rowWise'>
+            <div className='columnWise'>
+              <label htmlFor='autoRenew'>
+                Auto - renew <span className='required'>*</span>
+              </label>
+              <select
+                name='autoRenew'
+                id='selectMenu'
+                onChange={handleFormChange}
+                className={`${formData.autoRenew === '' ? 'grayColor' : ''} ${
+                  errors && errors.autoRenew !== '' ? 'error' : ''
+                }`}
+              >
+                <option disabled selected>
+                  Select
+                </option>
+                <option value={true}>Yes</option>
+                <option value={false}>No</option>
+              </select>
+              {errors && errors.autoRenew !== '' && (
+                <label className='errorMessage' htmlFor='autoRenewError'>
+                  {errors.autoRenew}
+                </label>
+              )}
+            </div>
+            <div className='columnWise'>
+              <label htmlFor='businessName'>
+                Business name <span className='required'>*</span>
+              </label>
+              <input
+                placeholder='Business name'
+                type='text'
+                name='businessName'
+                value={formData.businessName}
+                onChange={handleFormChange}
+                className={
+                  errors && errors.businessName && errors.businessName !== ''
+                    ? 'error'
+                    : ''
+                }
+              />
+              {errors && errors.businessName !== '' && (
+                <label className='errorMessage' htmlFor='businessNameError'>
+                  {errors.businessName}
+                </label>
+              )}
+            </div>
+          </div>
+          <div className='rowWise'>
             <div className='columnWise'>
               <label htmlFor='businessContactName'>
                 Business contact name <span className='required'>*</span>
@@ -179,7 +212,11 @@ const VerifierRegistrationForm = () => {
                 value={formData.businessContactName}
                 onChange={handleFormChange}
                 className={
-                  errors && errors.businessContactName !== '' ? 'error' : ''
+                  errors &&
+                  errors.businessContactName &&
+                  errors.businessContactName !== ''
+                    ? 'error'
+                    : ''
                 }
               />
               {errors && errors.businessContactName !== '' && (
@@ -191,19 +228,19 @@ const VerifierRegistrationForm = () => {
                 </label>
               )}
             </div>
-          )}
-          <div className='rowWise'>
             <div className='columnWise'>
               <label htmlFor='email'>
-                Email id<span className='required'>*</span>
+                Email id <span className='required'>*</span>
               </label>
               <input
                 placeholder='Email id'
                 type='text'
                 name='email'
                 value={formData.email}
+                className={
+                  errors && errors.email && errors.email !== '' ? 'error' : ''
+                }
                 onChange={handleFormChange}
-                className={errors && errors.email !== '' ? 'error' : ''}
               />
               {errors && errors.email !== '' && (
                 <label className='errorMessage' htmlFor='emailError'>
@@ -211,6 +248,8 @@ const VerifierRegistrationForm = () => {
                 </label>
               )}
             </div>
+          </div>
+          <div className='rowWise'>
             <div className='columnWise'>
               <label htmlFor='phoneNumber'>
                 Phone number <span className='required'>*</span>
@@ -220,12 +259,41 @@ const VerifierRegistrationForm = () => {
                 type='text'
                 name='phoneNumber'
                 value={formData.phoneNumber}
+                className={
+                  errors && errors.phoneNumber && errors.phoneNumber !== ''
+                    ? 'error'
+                    : ''
+                }
                 onChange={handleFormChange}
-                className={errors && errors.phoneNumber !== '' ? 'error' : ''}
               />
               {errors && errors.phoneNumber !== '' && (
                 <label className='errorMessage' htmlFor='phoneNumberError'>
                   {errors.phoneNumber}
+                </label>
+              )}
+            </div>
+            <div className='columnWise'>
+              <label htmlFor='gstNumber'>
+                GST number <span className='required'>*</span>
+              </label>
+              <input
+                placeholder='GST number'
+                type='text'
+                name='gstNumber'
+                value={formData.gstNumber}
+                className={
+                  errors && errors.gstNumber && errors.gstNumber !== ''
+                    ? 'error'
+                    : ''
+                }
+                onChange={handleFormChange}
+              />
+              {errors && errors.gstNumber !== '' && (
+                <label
+                  className='errorMessage'
+                  htmlFor='verificationReasonError'
+                >
+                  {errors.gstNumber}
                 </label>
               )}
             </div>
@@ -370,76 +438,6 @@ const VerifierRegistrationForm = () => {
           </div>
           <div className='rowWise'>
             <div className='columnWise'>
-              <label htmlFor='idType'>
-                Id type <span className='required'>*</span>
-              </label>
-              <select
-                name='idType'
-                onChange={handleFormChange}
-                className={`${formData.idType === '' ? 'grayColor' : ''} ${
-                  errors && errors.idType && errors.idType !== '' ? 'error' : ''
-                }`}
-              >
-                <option disabled value='' selected>
-                  Select
-                </option>
-                <option value='PAN'>PAN</option>
-                <option value='GST'>GST</option>
-                <option value='Aadhaar'>Aadhaar</option>
-              </select>
-              {errors && errors.idType !== '' && (
-                <label className='errorMessage' htmlFor='idTypeError'>
-                  {errors.idType}
-                </label>
-              )}
-            </div>
-            <div className='columnWise'>
-              <label htmlFor='idNumber'>
-                {formData.idType === '' ? 'Id' : formData.idType} number{' '}
-                <span className='required'>*</span>
-              </label>
-              <input
-                placeholder='Id number'
-                type='text'
-                name='idNumber'
-                value={formData.idNumber}
-                onChange={handleFormChange}
-                className={
-                  errors && errors.idNumber && errors.idNumber !== ''
-                    ? 'error'
-                    : ''
-                }
-              />
-              {errors && errors.idNumber !== '' && (
-                <label className='errorMessage' htmlFor='idNumberError'>
-                  {errors.idNumber}
-                </label>
-              )}
-            </div>
-          </div>
-          <div className='columnWise'>
-            <label htmlFor='idAttachment'>
-              Id attachment file <span className='required'>*</span>
-            </label>
-            <input
-              type='file'
-              name='idAttachment'
-              value={formData.idAttachment}
-              onChange={handleFormChange}
-              className={
-                errors && errors.idAttachment && errors.idAttachment !== ''
-                  ? 'error'
-                  : ''
-              }
-            />
-            {errors && errors.idAttachment !== '' && (
-              <label className='errorMessage' htmlFor='idAttachmentError'>
-                {errors.idAttachment}
-              </label>
-            )}
-          </div>
-          <div className='rowWise'>
-            <div className='columnWise'>
               <label htmlFor='password'>
                 Password <span className='required'>*</span>
               </label>
@@ -478,15 +476,16 @@ const VerifierRegistrationForm = () => {
               )}
             </div>
           </div>
-
-          <div className='createAccount'>
-            <button type='submit'>Register</button>
-            <small>
-              Already have an account?{' '}
-              <span className='switch-form' onClick={handleSwitch}>
-                Log in
-              </span>
-            </small>
+          <div className='buttonDiv'>
+            <button type='submit' className='submitButton activeButton'>
+              Submit
+            </button>
+            <button
+              className='submitButton nonActiveButton'
+              onClick={props.handleCloseForm}
+            >
+              Cancel
+            </button>
           </div>
         </form>
       </div>
@@ -494,4 +493,4 @@ const VerifierRegistrationForm = () => {
   );
 };
 
-export default VerifierRegistrationForm;
+export default NewEmployerForm;
