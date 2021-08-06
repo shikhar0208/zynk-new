@@ -120,7 +120,7 @@ const VerifierRegistrationForm = () => {
     <div className='wrapper'>
       <div className='form-wrapper'>
         <div className='header'>
-          <h1 style={{ marginBottom: '1rem' }}>Verifier Sign Up</h1>
+          <h1 style={{ marginBottom: '1rem' }}>Verifier sign up</h1>
         </div>
         <form onSubmit={handleSubmit} style={{ marginTop: '1rem' }}>
           <div className='rowWise'>

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { validator } from '../../utils/helperFunctions';
 import { Country, State, City } from 'country-state-city';
 import '../../Styles/AdminSection/NewEmployerForm.css';
@@ -22,7 +23,9 @@ const initialData = {
   confirmPassword: '',
 };
 
-const NewEmployerForm = (props) => {
+const NewEmployerForm = () => {
+  const history = useHistory();
+
   const [formData, setFormData] = useState(initialData);
   const [errors, setErrors] = useState(null);
   const [states, setStates] = useState('');
@@ -76,6 +79,10 @@ const NewEmployerForm = (props) => {
     }
     const allCities = City.getCitiesOfState(formData.country, e.target.value);
     setCities(allCities);
+  };
+
+  const handleCancel = () => {
+    history.push('/admin/dashboard');
   };
 
   const handleSubmit = (e) => {
@@ -482,7 +489,7 @@ const NewEmployerForm = (props) => {
             </button>
             <button
               className='submitButton nonActiveButton'
-              onClick={props.handleCloseForm}
+              onClick={handleCancel}
             >
               Cancel
             </button>

@@ -8,7 +8,7 @@ const VerifierDetailsTable = () => {
   return (
     <div className='admin-table-container'>
       <div className='admin-rowview'>
-        <h2 className='admin-pageTitle'>Verifier Details</h2>
+        <h2 className='admin-pageTitle'>Verifier details</h2>
       </div>
       <div className='admin-table-wrapper' id='#scrollBar'>
         <table className='admin-fl-table'>

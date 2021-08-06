@@ -57,7 +57,7 @@ const NewVerificationRequest = (props) => {
     <div className='modalContainer'>
       <div className='modalContent'>
         <div className='header rowWise'>
-          <h1 style={{ marginBottom: '1rem' }}>New Verification Request</h1>
+          <h1 style={{ marginBottom: '1rem' }}>New verification request</h1>
         </div>
         <form onSubmit={handleSubmit} style={{ marginTop: '1rem' }}>
           <div className='rowWise'>

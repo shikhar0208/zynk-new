@@ -1,15 +1,19 @@
 import React from 'react';
-// import { useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import '../../Styles/AdminSection/VerifierDetailsTable.css';
 
-const EmployerDetailsTable = (props) => {
-  // const history = useHistory();
+const EmployerDetailsTable = () => {
+  const history = useHistory();
+
+  const openForm = () => {
+    history.push('/admin/create-employer');
+  };
 
   return (
     <div className='admin-table-container'>
       <div className='admin-employer-header'>
-        <h2 className='admin-pageTitle'>Employer Details</h2>
-        <button className='addNewButton' onClick={props.handleOpenForm}>
+        <h2 className='admin-pageTitle'>Employer details</h2>
+        <button className='addNewButton' onClick={openForm}>
           Add new
         </button>
       </div>

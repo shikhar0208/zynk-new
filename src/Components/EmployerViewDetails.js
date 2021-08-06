@@ -1,18 +1,56 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
+
+import Popup from './Popup';
 import '../Styles/VerifierViewDetails.css';
 
 const EmployerViewDetails = () => {
   const history = useHistory();
 
+  const [isPopup, setIsPopup] = useState(false);
+
   const handleBackButton = () => {
     history.push('/employer-dashboard');
   };
 
+  const handleOpenPopup = () => {
+    setIsPopup(true);
+  };
+
+  const handleClosePopup = () => {
+    setIsPopup(false);
+  };
+
+  const fields = [
+    'Request id',
+    'Verifier name',
+    'Employee id',
+    'Employee name',
+    'Salary range',
+    'Verifying employer',
+    'Status',
+    'Employee rejection reason',
+    'Request type',
+    'Creation date',
+    'Completion date',
+  ];
+  const fieldValues = [
+    'Content 1',
+    'Content 1',
+    'Content 1',
+    'Content 1',
+    'Content 1',
+    'Content 1',
+    'Content 1',
+    'Content 1',
+    'Content 1',
+    'Content 1',
+    'Content 1',
+  ];
   return (
     <div className='table-container'>
       <div className='rowview'>
-        <h2 className='pageTitle'>Verification Request Details</h2>
+        <h2 className='pageTitle'>Verification request details</h2>
         <button className='backButton' onClick={handleBackButton}>
           Back
         </button>
@@ -36,7 +74,7 @@ const EmployerViewDetails = () => {
             </tr>
           </thead>
           <tbody>
-            <tr>
+            <tr onClick={handleOpenPopup}>
               <td>Content 1</td>
               <td>Content 1</td>
               <td>Content 1</td>
@@ -123,6 +161,14 @@ const EmployerViewDetails = () => {
           </tbody>
         </table>
       </div>
+      {isPopup && (
+        <Popup
+          fields={fields}
+          fieldValues={fieldValues}
+          isPopup={isPopup}
+          closePopup={handleClosePopup}
+        />
+      )}
     </div>
   );
 };

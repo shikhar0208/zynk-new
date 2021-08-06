@@ -8,7 +8,7 @@ const VerificationRequestStatusTable = () => {
   return (
     <div className='admin-table-container'>
       <div className='admin-rowview'>
-        <h2 className='admin-pageTitle'>Verification Request Status</h2>
+        <h2 className='admin-pageTitle'>Verification request status</h2>
       </div>
       <div className='admin-table-wrapper' id='#scrollBar'>
         <table className='admin-fl-table'>

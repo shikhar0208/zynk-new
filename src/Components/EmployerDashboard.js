@@ -6,9 +6,6 @@ import '../Styles/EmployerDashboard.css';
 import EmployerReasonChart from './EmployerReasonChart';
 import EmployerPeriodChart from './EmployerPeriodChart';
 
-// import PieChart1 from './PieChart1';
-// import PieChart2 from './PieChart2';
-
 const EmployerDashboard = () => {
   const history = useHistory();
 
@@ -25,6 +22,11 @@ const EmployerDashboard = () => {
   const handleDateChange = ({ startDate, endDate }) => {
     setDateRange({ startDate, endDate });
   };
+
+  const handleClearDate = () => {
+    setDateRange({ startDate: '', endDate: '' });
+  };
+
   return (
     <div className='dashboard-section'>
       <div className='subsection'>
@@ -39,6 +41,7 @@ const EmployerDashboard = () => {
             endDate={dateRange.endDate}
             openOnFocus={true}
             change={handleDateChange}
+            cleared={handleClearDate}
             format='dd/MM/yyyy'
           />
         </div>

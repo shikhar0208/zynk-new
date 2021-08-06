@@ -77,6 +77,21 @@
   box-shadow: 0px 12px 25px rgba(0, 0, 0, 0.3);
 }
 
+.admin-table-wrapper::-webkit-scrollbar {
+  width: 8px; /* width of the entire scrollbar */
+}
+
+.admin-table-wrapper::-webkit-scrollbar-track {
+  background: #fff; /* color of the tracking area */
+  border-radius: 10px;
+}
+
+.admin-table-wrapper::-webkit-scrollbar-thumb {
+  background-color: #ccced1; /* color of the scroll thumb */
+  border-radius: 10px; /* roundness of the scroll thumb */
+  border: 2px solid #fff; /*creates padding around scroll thumb */
+}
+
 .admin-fl-table {
   border-radius: 5px;
   font-size: 12px;

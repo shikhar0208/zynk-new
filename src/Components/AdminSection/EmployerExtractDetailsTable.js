@@ -8,7 +8,7 @@ const EmployerExtractDetailsTable = () => {
   return (
     <div className='admin-table-container'>
       <div className='admin-rowview'>
-        <h2 className='admin-pageTitle'>Employer Extract Details</h2>
+        <h2 className='admin-pageTitle'>Employer extract details</h2>
       </div>
       <div className='admin-table-wrapper' id='#scrollBar'>
         <table className='admin-fl-table'>

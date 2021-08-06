@@ -4,9 +4,6 @@ import NewVerificationRequest from './NewVerificationRequest';
 import VerifierStatusChart from './VerifierStatusChart';
 import VerifierPeriodChart from './VerifierPeriodChart';
 
-// import PieChart1 from './PieChart1';
-// import PieChart2 from './PieChart2';
-
 import '../Styles/VerifierDashboard.css';
 
 const VerifierDashboard = () => {

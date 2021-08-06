@@ -143,7 +143,7 @@ const VerifierProfile = () => {
       <div className='form-wrapper'>
         <div className='header rowWise'>
           <h1 style={{ marginBottom: '1rem' }}>
-            {!editForm ? 'Profile Details' : 'Update Profile'}
+            {!editForm ? 'Profile details' : 'Update profile'}
           </h1>
           <button
             onClick={handleSwitchForm}

@@ -28,7 +28,7 @@ const AdminLogin = () => {
     const flag = validator(formData, requiredFields);
     if (flag === true) {
       setErrors(null);
-      history.push('/admin-dashboard');
+      history.push('/admin/dashboard');
     } else {
       setErrors(flag);
     }
@@ -39,7 +39,7 @@ const AdminLogin = () => {
     <div className='admin-login-wrapper'>
       <div className='admin-login-container'>
         <div className='admin-login-header'>
-          <h1>Admin Login</h1>
+          <h1>Admin login</h1>
         </div>
         <form onSubmit={handleSubmit} className='admin-login-form'>
           <div className='columnWise'>

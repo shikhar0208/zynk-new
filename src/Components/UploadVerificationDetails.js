@@ -44,7 +44,7 @@ const UploadVerificationDetails = () => {
     <div className='parentContainer'>
       <div className='contentDiv'>
         <div className='upload-detail-header'>
-          <h1 style={{ marginBottom: '1rem' }}>Upload Verification Details</h1>
+          <h1 style={{ marginBottom: '1rem' }}>Upload verification details</h1>
         </div>
         <form onSubmit={handleSubmit} style={{ marginTop: '1rem' }}>
           <div className='custom-select columnWise'>

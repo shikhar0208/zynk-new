@@ -14,6 +14,7 @@ import EmployerViewDetails from './Components/EmployerViewDetails';
 import UploadVerificationDetails from './Components/UploadVerificationDetails';
 import AdminLogin from './Components/AdminSection/AdminLogin';
 import AdminDashboard from './Components/AdminSection/AdminDashboard';
+import NewEmployerForm from './Components/AdminSection/NewEmployerForm';
 
 const App = () => {
   return (
@@ -27,7 +28,6 @@ const App = () => {
           exact
           component={VerifierRegistrationForm}
         />
-        <Route path='/admin-login' exact component={AdminLogin} />
         <Route path='/verifier-dashboard' exact component={VerifierDashboard} />
         <Route path='/verifier-profile' exact component={VerifierProfile} />
         <Route
@@ -47,7 +47,13 @@ const App = () => {
           exact
           component={UploadVerificationDetails}
         />
-        <Route path='/admin-dashboard' exact component={AdminDashboard} />
+        <Route path='/admin/login' exact component={AdminLogin} />
+        <Route path='/admin/dashboard' exact component={AdminDashboard} />
+        <Route
+          path='/admin/create-employer'
+          exact
+          component={NewEmployerForm}
+        />
       </Switch>
     </BrowserRouter>
   );

@@ -67,6 +67,21 @@
   box-shadow: 0px 30px 40px rgba(0, 0, 0, 0.3);
 }
 
+.table-wrapper::-webkit-scrollbar {
+  width: 8px; /* width of the entire scrollbar */
+}
+
+.table-wrapper::-webkit-scrollbar-track {
+  background: #fff; /* color of the tracking area */
+  border-radius: 10px;
+}
+
+.table-wrapper::-webkit-scrollbar-thumb {
+  background-color: #ccced1; /* color of the scroll thumb */
+  border-radius: 10px; /* roundness of the scroll thumb */
+  border: 2px solid #fff; /*creates padding around scroll thumb */
+}
+
 .fl-table {
   border-radius: 5px;
   font-size: 12px;
@@ -84,6 +99,10 @@
 .fl-table th {
   text-align: center;
   padding: 12px 10px;
+}
+
+.fl-table tr:hover {
+  cursor: context-menu;
 }
 
 .fl-table td {
