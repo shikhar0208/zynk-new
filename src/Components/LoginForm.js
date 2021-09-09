@@ -1,19 +1,24 @@
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory,Link } from 'react-router-dom';
 import { validator } from '../utils/helperFunctions';
+import axios from "axios";
 
 import '../Styles/VerifierRegistrationForm.css';
+
+/* setting a custom schema for the hook. */
 
 const initialData = {
   email: '',
   password: '',
 };
 
-const LoginForm = () => {
+const LoginForm = (props) => {
   const [formData, setFormData] = useState(initialData);
   const [userType, setUserType] = useState('verifier');
   const [errors, setErrors] = useState(null);
   const history = useHistory();
+  
+  /* whenever an attribute inside the form is changed , the js method to update it without code redundancy. */
 
   const handleFormChange = (e) => {
     const { name } = e.target;
@@ -31,23 +36,45 @@ const LoginForm = () => {
     setUserType(type);
     setErrors(null);
   };
-
+   
+  const [zynk_id, setzync_id] = useState(null);
   const handleSubmit = (e) => {
     e.preventDefault();
     const requiredFields = ['email', 'password'];
     const flag = validator(formData, requiredFields);
+
+  
     if (flag === true) {
+          
+      axios.post('/' + {userType}+'-login', {
+        "email_id": formData.email,
+        "password": formData.password
+      })
+        .then((response) => {
+          setzync_id(response.data.verifier_zynk_id);
+        }, (error) => {
+          console.log(error);
+        });
+
       setErrors(null);
       if (userType === 'verifier') {
-        history.push('/verifier-dashboard');
+        props.history.push({
+          pathname: "/verifier_dashboard",
+          state: { verifier_zync_id: zynk_id }
+        });
       } else if (userType === 'employer') {
-        history.push('/employer-dashboard');
+        props.history.push({
+          pathname: "/employer_dashboard",
+          state: { verifier_zync_id: zynk_id }
+        });
       }
+        
     } else {
       setErrors(flag);
     }
-    // console.log(formData);
+    
   };
+  // console.log(formData);
 
   return (
     <div className='wrapper'>
@@ -87,9 +114,11 @@ const LoginForm = () => {
               className={errors && errors.email !== '' ? 'error' : ''}
             />
             {errors && errors.email !== '' && (
+              
               <label className='errorMessage' htmlFor='emailError'>
                 {errors.email}
               </label>
+            
             )}
           </div>
           <div className='columnWise'>
@@ -126,6 +155,6 @@ const LoginForm = () => {
       </div>
     </div>
   );
-};
 
+}
 export default LoginForm;

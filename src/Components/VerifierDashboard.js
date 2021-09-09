@@ -1,12 +1,12 @@
 import React, { useState, Fragment } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory} from 'react-router-dom';
 import NewVerificationRequest from './NewVerificationRequest';
 import VerifierStatusChart from './VerifierStatusChart';
 import VerifierPeriodChart from './VerifierPeriodChart';
 
 import '../Styles/VerifierDashboard.css';
 
-const VerifierDashboard = () => {
+const VerifierDashboard = (props,{verifier_zync_id}) => {
   const history = useHistory();
 
   const [isOpen, setIsOpen] = useState(false);
@@ -18,9 +18,12 @@ const VerifierDashboard = () => {
   const handleCloseModal = () => {
     setIsOpen(false);
   };
-
+  const [zync_id, setzync_id] = useState(props.location.state.verifier_zync_id);
   const handleViewDetails = () => {
-    history.push('/verification-details');
+    props.history.push({
+      pathname: "/verification-details",
+      state: { verifier_zync_id: zync_id }
+    });
   };
 
   return (

@@ -9,7 +9,7 @@ const initialData = {
   attachmentFile: '',
 };
 
-const UploadVerificationDetails = () => {
+const UploadVerificationDetails = (props) => {
   const history = useHistory();
 
   const [formData, setFormData] = useState(initialData);
