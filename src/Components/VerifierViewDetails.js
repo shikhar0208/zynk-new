@@ -1,14 +1,34 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import Popup from './Popup';
 import '../Styles/VerifierViewDetails.css';
-
-const VerifierViewDetails = () => {
+import axios from 'axios'
+const VerifierViewDetails = (props,{verifier_zync_id}) => {
   const history = useHistory();
   const [isPopup, setIsPopup] = useState(false);
 
+  useEffect((e) => {
+        
+    axios.post('/get-all-verifications-verifier', {
+      "verifier_zync_id": props.location.state.verifier_zync_id
+    })
+      .then((response) => {
+        /* here we have the complete verification details  */
+        
+        response.data.map((row) => {
+             /* for each row , we have data on a single entry*/     
+             
+        })
+
+      }, (error) => {
+        console.log(error);
+      });
+    
+  }, []);
+    
   const handleBackButton = () => {
+    
     history.push('/verifier-dashboard');
   };
 

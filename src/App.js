@@ -16,10 +16,13 @@ import AdminLogin from './Components/AdminSection/AdminLogin';
 import AdminDashboard from './Components/AdminSection/AdminDashboard';
 import NewEmployerForm from './Components/AdminSection/NewEmployerForm';
 
+
+
 const App = () => {
   return (
     <BrowserRouter>
       <Header />
+      {/* fixing the Header component at the top of every Route. */}
       <Switch>
         <Route path='/' exact component={Home} />
         <Route path='/login' exact component={LoginForm} />
