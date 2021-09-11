@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useHistory,Link } from 'react-router-dom';
+import { useHistory} from 'react-router-dom';
 import { validator } from '../utils/helperFunctions';
 import axios from "axios";
 
@@ -59,13 +59,13 @@ const LoginForm = (props) => {
       setErrors(null);
       if (userType === 'verifier') {
         props.history.push({
-          pathname: "/verifier_dashboard",
+          pathname: '/verifier_dashboard',
           state: { verifier_zync_id: zynk_id }
         });
       } else if (userType === 'employer') {
         props.history.push({
           pathname: "/employer_dashboard",
-          state: { verifier_zync_id: zynk_id }
+          state: {"verifier_zync_id": zynk_id }
         });
       }
         

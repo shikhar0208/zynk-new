@@ -6,7 +6,7 @@ import VerifierPeriodChart from './VerifierPeriodChart';
 
 import '../Styles/VerifierDashboard.css';
 
-const VerifierDashboard = (props,{verifier_zync_id}) => {
+const VerifierDashboard = (props) => {
   const history = useHistory();
 
   const [isOpen, setIsOpen] = useState(false);
@@ -18,11 +18,12 @@ const VerifierDashboard = (props,{verifier_zync_id}) => {
   const handleCloseModal = () => {
     setIsOpen(false);
   };
-  const [zync_id, setzync_id] = useState(props.location.state.verifier_zync_id);
+  const [zync_id, setzync_id] = useState(null);
   const handleViewDetails = () => {
+    setzync_id(props.location.state.verifier_zync_id)
     props.history.push({
       pathname: "/verification-details",
-      state: { verifier_zync_id: zync_id }
+      state: { "verifier_zync_id": zync_id }
     });
   };
 
