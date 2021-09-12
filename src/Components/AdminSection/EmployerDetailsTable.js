@@ -1,6 +1,26 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 import { useHistory } from 'react-router-dom';
 import '../../Styles/AdminSection/VerifierDetailsTable.css';
+import axios from 'axios'
+const initialData = {
+  employerId: 'abcd123',
+  autoRenew: false,
+  businessName: 'XYZ',
+  businessContactName: 'xyz org',
+  activationDate: '20/02/2021',
+  subscriptionEnd: '20/02/2022',
+  email: 'xyz@gmail.com',
+  phoneNumber: '9326541021',
+  addressLine1: 'pqr',
+  addressLine2: '',
+  pincode: '110051',
+  country: 'IN',
+  state: 'DL',
+  city: 'Delhi',
+  gstNumber: '12315498',
+  newPassword: '',
+  confirmPassword: '',
+};
 
 const EmployerDetailsTable = () => {
   const history = useHistory();
@@ -8,6 +28,19 @@ const EmployerDetailsTable = () => {
   const openForm = () => {
     history.push('/admin/create-employer');
   };
+
+  useEffect(() => {
+    
+    axios.post('./all-employers')
+      .then((res) => {
+        
+        /* we get an array of all the  active employers. */
+        console.log('success');
+      }, (e) => {
+        console.log(e);
+    });
+
+  }, []);
 
   return (
     <div className='admin-table-container'>

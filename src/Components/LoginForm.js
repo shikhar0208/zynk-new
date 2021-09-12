@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useHistory,Link } from 'react-router-dom';
+import { useHistory} from 'react-router-dom';
 import { validator } from '../utils/helperFunctions';
 import axios from "axios";
 
@@ -37,7 +37,7 @@ const LoginForm = (props) => {
     setErrors(null);
   };
    
-  const [zynk_id, setzync_id] = useState(null);
+  const [state, setstate] = useState(null);
   const handleSubmit = (e) => {
     e.preventDefault();
     const requiredFields = ['email', 'password'];
@@ -51,7 +51,7 @@ const LoginForm = (props) => {
         "password": formData.password
       })
         .then((response) => {
-          setzync_id(response.data.verifier_zynk_id);
+          setstate(response.data.verifier_zynk_id);
         }, (error) => {
           console.log(error);
         });
@@ -59,16 +59,15 @@ const LoginForm = (props) => {
       setErrors(null);
       if (userType === 'verifier') {
         props.history.push({
-          pathname: "/verifier_dashboard",
-          state: { verifier_zync_id: zynk_id }
+          pathname: '/verifier_dashboard',
+          state
         });
       } else if (userType === 'employer') {
         props.history.push({
           pathname: "/employer_dashboard",
-          state: { verifier_zync_id: zynk_id }
+          state
         });
       }
-        
     } else {
       setErrors(flag);
     }

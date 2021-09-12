@@ -1,9 +1,32 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 // import { useHistory } from 'react-router-dom';
 import '../../Styles/AdminSection/VerifierDetailsTable.css';
+import axios from 'axios'
+const initialData = {
+        verification_request_id: 8, 
+        status: "1", 
+        employee_rejection_reason: null, 
+        last_update: "2021-08-21T19:45:17.000Z", 
+        updated_by: "admin", 
+        verifier_zynk_id:1
+}
 
 const VerificationRequestStatusTable = () => {
   // const history = useHistory();
+  useEffect(() => {
+    
+    axios.post('./all-verification-statuses')
+      .then((res) => {
+        
+        /* we get an array of all the  verification requests statuses */
+        /* for all the values in the initial data , create a row for each request */
+
+        console.log('success');
+      }, (e) => {
+        console.log(e);
+    });
+
+  }, []);
 
   return (
     <div className='admin-table-container'>
