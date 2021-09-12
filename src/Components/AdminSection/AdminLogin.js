@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { validator } from '../../utils/helperFunctions';
 
 import '../../Styles/AdminLogin.css';
+import axios from 'axios';
 
 const initialData = {
   email: '',
@@ -27,6 +28,16 @@ const AdminLogin = () => {
     const requiredFields = ['email', 'password'];
     const flag = validator(formData, requiredFields);
     if (flag === true) {
+      axios.post('./admin-login', {
+        "email-id": formData.email,
+        "password": formData.password
+      })
+        .then((response) => {
+          console.log('success');
+        }, (error) => {
+          console.log(error);
+      });
+      
       setErrors(null);
       history.push('/admin/dashboard');
     } else {

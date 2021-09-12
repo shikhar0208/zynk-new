@@ -5,17 +5,18 @@ import Popup from './Popup';
 import '../Styles/VerifierViewDetails.css';
 import axios from 'axios'
 const VerifierViewDetails = (props) => {
+  const { verifier_zync_id } = (props.location && props.location.state) || {};
+  
   const history = useHistory();
   const [isPopup, setIsPopup] = useState(false);
 
   useEffect((e) => {
         
     axios.post('/get-all-verifications-verifier', {
-      verifier_zync_id: props.location.state.verifier_zync_id
+      verifier_zync_id: verifier_zync_id
     })
       .then((response) => {
         /* here we have the complete verification details  */
-        
         response.data.map((row) => {
              /* for each row , we have data on a single entry*/     
              

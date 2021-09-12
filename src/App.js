@@ -32,7 +32,7 @@ const App = () => {
           component={VerifierRegistrationForm}
         />
         <Route path='/verifier-dashboard' render={(props)=><VerifierDashboard {...props} />} />
-        <Route path='/verifier-profile' exact component={VerifierProfile} />
+        <Route path='/verifier-profile' exact component={VerifierProfile}/>
         <Route
           path='/verification-details'
           exact

@@ -1,9 +1,47 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 // import { useHistory } from 'react-router-dom';
 import '../../Styles/AdminSection/VerifierDetailsTable.css';
+import axios from 'axios';
+const initialData = {
+        verification_request_id: 'abcd123',
+        verifier_zynk_id: 1, 
+        employer_zynk_id: 1, 
+        verification_creation_date: "2021-08-19T18:30:00.000Z", 
+        verification_completion_date: null, 
+        employee_id: "11", 
+        employee_full_name: "Shikhar Rastogi", 
+        aadhar_number: "123456789012", 
+        pan_number: "AAJPM1688J", 
+        employee_email_id: "shikhar.rastogi@gmail.com", 
+        employee_phone: "9812345678", 
+        internal_reference: "Loan for Kia Sonet", 
+        request_type: "I", 
+        salary_range: "1", 
+        verification_reason: "2", 
+        report_url: null, 
+        verifying_employer: null, 
+        last_update: "2021-08-19T19:29:33.000Z", 
+        updated_by: "admin" 
+};
 
 const VerificationRequestDetailTable = () => {
   // const history = useHistory();
+  
+  useEffect(() => {
+    
+    axios.post('./all-verification-requests')
+      .then((res) => {
+        
+        /* we get an array of all the  verification requests. */
+        /* for all the values in the initial data , create a row for each request */
+
+        console.log('success');
+      }, (e) => {
+        console.log(e);
+    });
+
+  }, []);
+
 
   return (
     <div className='admin-table-container'>

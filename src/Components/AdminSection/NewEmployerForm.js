@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { validator } from '../../utils/helperFunctions';
 import { Country, State, City } from 'country-state-city';
 import '../../Styles/AdminSection/NewEmployerForm.css';
+import axios from 'axios';
 
 const initialData = {
   activationDate: '',
@@ -101,6 +102,31 @@ const NewEmployerForm = () => {
     if (flag === true) {
       setErrors(null);
       if (formData.newPassword === formData.confirmPassword) {
+        
+        axios.post('/add-employer', {
+          "employer_activation_date": formData.activationDate,
+          "subscription_end_date": formData.endDate,
+          "auto_renew": formData.autoRenew,
+          "business_name": formData.businessName,
+          "business_contact_name": formData.businessContactName,
+          "business_email_id": formData.email,
+          "phone_number": formData.phoneNumber,
+          "business_address_line1": formData.addressLine1,
+          "business_address_line2": formData.addressLine2,
+          "business_pincode": formData.pincode,
+          "business_city": formData.city,
+          "business_state": formData.state,
+          "business_country": formData.country,
+          "gst": formData.gstNumber,
+          "password": formData.newPassword
+        })
+          .then((res) => {
+            console.log('success');
+          }, (e) => {
+            console.log(e);
+          });
+
+
         alert('success');
       } else {
         setErrors({

@@ -25,7 +25,7 @@ const initialData = {
 };
 
 const VerifierProfile = (props) => {
-
+  const {verifier_zync_id} = (props.location && props.location.state) || {};
 
   const [formData, setFormData] = useState(initialData);
   const [changeData, setChangeData] = useState({
@@ -41,17 +41,16 @@ const VerifierProfile = (props) => {
   const [errors, setErrors] = useState(null);
 
   const countries = Country.getAllCountries();
-
   const [location, setLocation] = useState({ state: '', country: '' });
    
   useEffect(() => {
     
     axios.post('/get-verifier-profile', {
-         "verifier_zync_id":props.verifier_zync_id
+         "verifier_zync_id":verifier_zync_id
     })
       .then((response) => {
         /* now in response i get all the deets on the current verifier. */
-        formData.verifierId =response.data.verifier_zync_id;
+        formData.verifierId = response.data.verifier_zync_id;
         formData.entityType = response.data.entity_type;
         formData.verifierName = response.data.verifier_name;
         formData.businessContactName = response.data.business_contact_name;
@@ -93,31 +92,47 @@ const VerifierProfile = (props) => {
     if (errors) {
       setErrors({ ...errors, [name]: '' });
     }
-     
-    axios.post('/update-employer', {
-      "employer_zynk_id": formData.verifierId,
+    const date = new Date();
+    const [month, day, year] = [date.getMonth(), date.getDate(), date.getFullYear()];
+    axios.post('/update-verifier-profile', {
+          "verifier_zynk_id": verifier_zync_id, 
 
-      "auto_renew": 1,
+          "date_of_reg": formData.dateOfRegistration, 
+      
+          "entity_type": formData.entityType, 
+      
+          "verifier_name": formData.verifierName, 
+      
+          "business_contact_name": formData.businessContactName, 
+      
+          "email_id": formData.email, 
+      
+          "phone_number": formData.phoneNumber, 
+      
+          "govt_id_type": formData.idType , 
+       
+          "govt_id_number":formData.idNumber, 
+      
+          "govt_id_attachment": "abcd", 
+      
+          "verifier_address_line1": formData.addressLine1, 
+      
+          "verifier_address_line2":formData.addressLine2, 
+      
+          "verifier_pincode":formData.pincode, 
+      
+          "verifier_state": formData.state, 
+      
+          "verifier_city": formData.city, 
+      
+          "verifier_country":formData.country, 
+      
+          "updated_by": verifier_zync_id, 
+      
+          "last_update":  year+month+day,
+      
+          "password": formData.newPassword
 
-      "business_contact_name": formData.businessContactName,
-
-      "business_email_id": formData.email,
-
-      "phone_number": formData.phoneNumber,
-
-      "business_address_line1": formData.addressLine1,
-
-      "business_address_line2": formData.addressLine2,
-
-      "business_pincode": formData.pincode,
-
-      "business_city": formData.city,
-
-      "business_state": formData.state,
-
-      "business_country": formData.country,
-
-      "password": formData.newPassword
     })
       .then((response) => {
         console.log("success");
