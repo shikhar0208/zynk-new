@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Country, State, City } from 'country-state-city';
 import { validator } from '../utils/helperFunctions';
+import axios from 'axios'
 
 import '../Styles/VerifierRegistrationForm.css';
-
+/* set schema for our formData hook */
 const initialData = {
   entityType: '',
   verifierName: '',
@@ -24,13 +25,14 @@ const initialData = {
   confirmPassword: '',
 };
 
-const VerifierRegistrationForm = () => {
+const VerifierRegistrationForm = (props) => {
   const history = useHistory();
   const [formData, setFormData] = useState(initialData);
   const [states, setStates] = useState('');
   const [cities, setCities] = useState('');
   const [errors, setErrors] = useState(null);
-
+  const [photoID, setphotoID] = useState(null);
+  const [zyncID, setzyncID] = useState(null);
   const countries = Country.getAllCountries();
 
   var requiredFields = [
@@ -103,6 +105,52 @@ const VerifierRegistrationForm = () => {
     if (flag === true) {
       setErrors(null);
       if (formData.newPassword === formData.confirmPassword) {
+        
+      axios.post('verifier-signup', {
+             "entity_type": formData.entityType,  
+
+              "verifier_name": formData.verifierName,  
+          
+              "business_contact_name": formData.businessContactName,  
+          
+              "email_id": formData.email,  
+          
+              "phone_number": formData.phoneNumber,  
+          
+              "verifier_address_line1": formData.addressLine1,  
+          
+              "verifier_address_line2":formData.addressLine2,  
+          
+              "verifier_country": formData.country,  
+          
+              "verifier_state": formData.state,  
+          
+              "verifier_city":formData.city,  
+          
+              "verifier_pincode": formData.pincode,  
+          
+              "govt_id_type": formData.idType,  
+          
+              "govt_id_number":formData.idNumber,  
+          
+              "govt_id_attachment": photoID, 
+          
+              "password": formData.password 
+      })
+        /* everytime i reach verifier-dashboard , i need to have the zync_verifier_id to display all the info on the verifier_dashboard. */
+          .then((response) => {
+            setzyncID(response.data.verifier_zynk_id);
+            props.history.push({
+              pathname: "/verifier_dashboard",
+              state: { verifier_zync_id: zyncID }
+            });
+            
+
+        }, (error) => {
+          console.log(error);
+        });
+        
+
         alert('success');
       } else {
         setErrors({
@@ -114,6 +162,24 @@ const VerifierRegistrationForm = () => {
     } else {
       setErrors(flag);
     }
+  };
+
+  const handleIDChange = (e) => {
+       
+    const { name } = e.target;
+    setFormData({ ...formData, [name]: e.target.value });
+    if (errors) {
+      setErrors({ ...errors, [name]: '' });
+    }
+      axios.post('upload-attachment', {
+        "govt_id": formData.idAttachment
+      })
+      .then((response) => {
+          setphotoID(response.data.Key);
+        }, (error) => {
+          console.log(error);
+       });
+
   };
 
   return (
@@ -417,6 +483,7 @@ const VerifierRegistrationForm = () => {
               )}
             </div>
           </div>
+          {/* id Attachment Section */}
           <div className='columnWise'>
             <label htmlFor='idAttachment'>
               Id attachment file <span className='required'>*</span>
@@ -425,7 +492,7 @@ const VerifierRegistrationForm = () => {
               type='file'
               name='idAttachment'
               value={formData.idAttachment}
-              onChange={handleFormChange}
+              onChange={handleIDChange}
               className={
                 errors && errors.idAttachment && errors.idAttachment !== ''
                   ? 'error'
@@ -438,6 +505,7 @@ const VerifierRegistrationForm = () => {
               </label>
             )}
           </div>
+
           <div className='rowWise'>
             <div className='columnWise'>
               <label htmlFor='password'>

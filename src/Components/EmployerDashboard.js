@@ -6,7 +6,7 @@ import '../Styles/EmployerDashboard.css';
 import EmployerReasonChart from './EmployerReasonChart';
 import EmployerPeriodChart from './EmployerPeriodChart';
 
-const EmployerDashboard = () => {
+const EmployerDashboard = (props) => {
   const history = useHistory();
 
   const [dateRange, setDateRange] = useState({ startDate: '', endDate: '' });

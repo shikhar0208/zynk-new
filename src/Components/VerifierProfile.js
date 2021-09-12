@@ -3,7 +3,7 @@ import moment from 'moment';
 import { Country, State, City } from 'country-state-city';
 import { validator } from '../utils/helperFunctions';
 import '../Styles/VerifierProfile.css';
-
+import axios from 'axios';
 const initialData = {
   verifierId: 'abcd123',
   entityType: 'I',
@@ -24,7 +24,9 @@ const initialData = {
   confirmPassword: '',
 };
 
-const VerifierProfile = () => {
+const VerifierProfile = (props) => {
+
+
   const [formData, setFormData] = useState(initialData);
   const [changeData, setChangeData] = useState({
     ...initialData,
@@ -41,6 +43,36 @@ const VerifierProfile = () => {
   const countries = Country.getAllCountries();
 
   const [location, setLocation] = useState({ state: '', country: '' });
+   
+  useEffect(() => {
+    
+    axios.post('/get-verifier-profile', {
+         "verifier_zync_id":props.verifier_zync_id
+    })
+      .then((response) => {
+        /* now in response i get all the deets on the current verifier. */
+        formData.verifierId =response.data.verifier_zync_id;
+        formData.entityType = response.data.entity_type;
+        formData.verifierName = response.data.verifier_name;
+        formData.businessContactName = response.data.business_contact_name;
+        formData.email = response.data.email_id;
+        formData.phoneNumber = response.data.phone_number;
+        formData.addressLine1 = response.data.verifier_address_line1;
+        formData.addressLine2 = response.data.verifier_address_line2;
+        formData.pincode = response.data.verifier_pincode;
+        formData.country = response.data.verifier_country;
+        formData.state = response.data.verifier_state;
+        formData.city = response.data.verifier_city;
+        formData.idType = response.data.govt_id_type;
+        formData.idNumber = response.data.govt_id_number;
+        formData.newPassword = response.data.newPassword;
+        formData.confirmPassword = response.data.newPassword;
+          
+    }, (error) => {
+      console.log(error);
+    });
+  }, []);
+
 
   useEffect(() => {
     if (location.country === '' || location.state === '') {
@@ -61,6 +93,38 @@ const VerifierProfile = () => {
     if (errors) {
       setErrors({ ...errors, [name]: '' });
     }
+     
+    axios.post('/update-employer', {
+      "employer_zynk_id": formData.verifierId,
+
+      "auto_renew": 1,
+
+      "business_contact_name": formData.businessContactName,
+
+      "business_email_id": formData.email,
+
+      "phone_number": formData.phoneNumber,
+
+      "business_address_line1": formData.addressLine1,
+
+      "business_address_line2": formData.addressLine2,
+
+      "business_pincode": formData.pincode,
+
+      "business_city": formData.city,
+
+      "business_state": formData.state,
+
+      "business_country": formData.country,
+
+      "password": formData.newPassword
+    })
+      .then((response) => {
+        console.log("success");
+      }, (error) => {
+        console.log(error);
+      });
+
   };
 
   const handleSwitchForm = () => {
