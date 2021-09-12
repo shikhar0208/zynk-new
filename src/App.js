@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import './App.css';
 import Header from './Components/Header';
 import VerifierRegistrationForm from './Components/VerifierRegistrationForm';
@@ -18,7 +18,7 @@ import NewEmployerForm from './Components/AdminSection/NewEmployerForm';
 
 const App = () => {
   return (
-    <BrowserRouter>
+    <Router>
       <Header />
       <Switch>
         <Route path='/' exact component={Home} />
@@ -55,7 +55,7 @@ const App = () => {
           component={NewEmployerForm}
         />
       </Switch>
-    </BrowserRouter>
+    </Router>
   );
 };
 

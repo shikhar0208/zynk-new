@@ -474,7 +474,7 @@ const EmployerProfile = () => {
           )}
           {editForm && (
             <div className='submit-btn'>
-              <button type='submit'>Submit Changes</button>
+              <button type='submit'>Submit changes</button>
             </div>
           )}
         </form>
