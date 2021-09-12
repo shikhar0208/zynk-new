@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import Popup from './Popup';
 import '../Styles/VerifierViewDetails.css';
+import axios from 'axios';
 
-const EmployerViewDetails = () => {
+const EmployerViewDetails = (props) => {
+  const {employer_zync_id} = (props.location && props.location.state) || {};
   const history = useHistory();
 
   const [isPopup, setIsPopup] = useState(false);
@@ -47,6 +49,22 @@ const EmployerViewDetails = () => {
     'Content 1',
     'Content 1',
   ];
+
+  useEffect((e) => {
+    
+    /* will be executed once when the component is rendered. */
+    axios.post('/get-all-verifications-employer', {
+      "employer_zynk_id": employer_zync_id
+    })
+      .then((response) => {
+              /* response.data = array of verification requests for this particular employer */   
+              console.log('success');
+      }, (errors) => {
+        console.log(errors);
+      });
+    
+  }, []);
+
   return (
     <div className='table-container'>
       <div className='rowview'>

@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { validator } from '../utils/helperFunctions';
 import '../Styles/NewVerificationRequest.css';
-
+import axios from 'axios'
 const initialData = {
   employerName: '',
   employeeName: '',
+  employeeID:'',
   aadhaarNumber: '',
   panNumber: '',
   email: '',
@@ -14,6 +15,7 @@ const initialData = {
   salaryRange: '',
   verificationReason: '',
   verifyingEmployer: '',
+
 };
 
 const NewVerificationRequest = (props) => {
@@ -43,9 +45,44 @@ const NewVerificationRequest = (props) => {
     if (formData.verificationReason === '3') {
       requiredFields = [...requiredFields, 'verifyingEmployer'];
     }
-
+    
     const flag = validator(formData, requiredFields);
     if (flag === true) {
+      
+      var employer_id = null;
+      axios.post('./all-employers', {})
+        .then((response) => {
+           
+          /* gots to map through the response. */
+          response.data.map(element => {
+            if (element.business_email_id === formData.business_email_id ) {
+              employer_id = element.employer_zynk_id;
+            }
+          });
+        }, (errors) => {
+          console.log(errors);
+        });
+
+      axios.post('./submit-new-verification', {
+        "verifier-zynk-id": props.verifier_zynk_id,
+        "employer_zynk_id": employer_id,
+        "employee_full_name": formData.employeeName,
+        "employee_id": formData.employeeID,
+        "aadhar_number": formData.aadhaarNumber,
+        "pan_number": formData.panNumber,
+        "employee_email_id": formData.email,
+        "employee_phone": formData.phoneNumber,
+        "internal_reference": formData.internalReference,
+        "request_type": formData.requestType,
+        "salary_range": formData.salaryRange,
+        "verification_reason": formData.verificationReason
+      })
+        .then((response) => {
+          /* i get the verification request ID */
+          console.log('success');
+        }, (errors) => {
+          console.log(errors);
+        });
       setErrors(null);
       alert('Request Submitted');
     } else {

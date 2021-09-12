@@ -1,9 +1,44 @@
-import React from 'react';
+import axios from 'axios';
+import React,{useEffect} from 'react';
 // import { useHistory } from 'react-router-dom';
 import '../../Styles/AdminSection/VerifierDetailsTable.css';
 
+
+const initialData = {
+  employerId: 'abcd123',
+  autoRenew: false,
+  businessName: 'XYZ',
+  businessContactName: 'xyz org',
+  activationDate: '20/02/2021',
+  subscriptionEnd: '20/02/2022',
+  email: 'xyz@gmail.com',
+  phoneNumber: '9326541021',
+  addressLine1: 'pqr',
+  addressLine2: '',
+  pincode: '110051',
+  country: 'IN',
+  state: 'DL',
+  city: 'Delhi',
+  gstNumber: '12315498',
+  newPassword: '',
+  confirmPassword: '',
+};
+
 const VerifierDetailsTable = () => {
   // const history = useHistory();
+    
+  useEffect(() => {
+    
+    axios.post('./all-verifiers')
+      .then((res) => {
+
+        /* we get an array of all the  active verifiers. */
+        console.log('success');
+      }, (e) => {
+        console.log(e);
+    });
+
+  }, []);
 
   return (
     <div className='admin-table-container'>

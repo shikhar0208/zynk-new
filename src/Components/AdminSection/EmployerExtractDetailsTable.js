@@ -1,9 +1,24 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 // import { useHistory } from 'react-router-dom';
 import '../../Styles/AdminSection/VerifierDetailsTable.css';
-
+import axios from 'axios'
 const EmployerExtractDetailsTable = () => {
   // const history = useHistory();
+  
+  useEffect(() => {
+    
+    axios.post('./all-extracts')
+      .then((res) => {
+        
+        /* we get an array of all the  verification requests statuses */
+        /* for all the values in the initial data , create a row for each request */
+
+        console.log('success');
+      }, (e) => {
+        console.log(e);
+    });
+
+  }, []);
 
   return (
     <div className='admin-table-container'>

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Country, State, City } from 'country-state-city';
 import { validator } from '../utils/helperFunctions';
 import '../Styles/VerifierProfile.css';
+import axios from 'axios';
 
 const initialData = {
   employerId: 'abcd123',
@@ -23,7 +24,8 @@ const initialData = {
   confirmPassword: '',
 };
 
-const EmployerProfile = () => {
+const EmployerProfile = (props) => {
+  const {employer_zync_id} = (props.location && props.location.state) || {};
   const [formData, setFormData] = useState(initialData);
   const [changeData, setChangeData] = useState({
     ...initialData,
@@ -41,6 +43,37 @@ const EmployerProfile = () => {
   const countries = Country.getAllCountries();
 
   const [location, setLocation] = useState({ state: '', country: '' });
+  var date = new Date();
+  useEffect(() => {
+      
+    axios.post('./get-employer', {
+      "employer_zynk_id": employer_zync_id
+    })
+      .then((response) => (
+        formData.employerId=employer_zync_id,
+        formData.autoRenew=response.data.auto_renew,
+        formData.businessName=response.data.business_name,
+        formData.businessContactName=response.data.business_contact_name,
+        formData.activationDate=date.getDate(),
+        formData.subscriptionEnd=date.getDate(),
+        formData.email=response.data.business_email_id,
+        formData.phoneNumber=response.data.phone_number,
+        formData.addressLine1=response.data.business_address_line1,
+        formData.addressLine2=response.data.business_address_line2,
+        formData.pincode=response.data.business_pincode,
+        formData.country=response.data.business_country,
+        formData.state=response.data.business_state,
+        formData.city=response.data.business_city,
+        formData.gstNumber=response.data.gst,
+        formData.newPassword=response.data.new_password,
+        formData.confirmPassword=response.data.new_password
+      ), (error) => {
+        console.log(error);
+      });
+
+  }, []);
+
+
 
   useEffect(() => {
     if (location.country === '' || location.state === '') {
@@ -126,6 +159,41 @@ const EmployerProfile = () => {
       setErrors(null);
       if (changes?.newPassword && changes?.confirmPassword) {
         if (changes.newPassword === changes.confirmPassword) {
+          
+          /* complete match */
+
+          axios.post('./update-employer', {
+              
+            "employer_zynk_id": formData.employerId,
+
+            "auto_renew": formData.autoRenew,
+            
+            "business_contact_name": formData.businessContactName,
+            
+            "business_email_id": formData.email,
+            
+            "phone_number": formData.phoneNumber,
+            
+            "business_address_line1": formData.addressLine1,
+            
+            "business_address_line2": formData.addressLine2,
+            
+            "business_pincode": formData.pincode,
+            
+            "business_city": formData.city,
+            
+            "business_state": formData.state,
+            
+            "business_country": formData.country,
+            
+            "password": formData.newPassword,
+          })
+            .then((response) => {
+              console.log('successfully upadated');
+            }, (errors) => {
+              console.log(errors);
+            });
+           
           setEditForm(false);
           setChanges({});
         } else {
