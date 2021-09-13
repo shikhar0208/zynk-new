@@ -1,15 +1,31 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-
+import { useSelector, useDispatch } from 'react-redux';
 import Popup from './Popup';
+
+import { getEmployerVerifications } from '../redux/actions/EmployerActions';
+
 import '../Styles/VerifierViewDetails.css';
-import axios from 'axios';
+import moment from 'moment';
 
 const EmployerViewDetails = (props) => {
-  const {employer_zync_id} = (props.location && props.location.state) || {};
-  const history = useHistory();
+  const { employer_zynk_id } = useSelector(
+    (store) => store.employerReducer?.employerData
+  );
 
+  const history = useHistory();
+  const dispatch = useDispatch();
   const [isPopup, setIsPopup] = useState(false);
+  const [boolVal, setBoolVal] = useState(false);
+  // const [fieldValues, setFieldValues] = useState([]);
+  useEffect(() => {
+    if (!boolVal) {
+      dispatch(getEmployerVerifications(employer_zynk_id));
+      setBoolVal(true);
+    }
+  }, [boolVal, dispatch, employer_zynk_id]);
+
+  const { verificationDetails } = useSelector((store) => store.employerReducer);
 
   const handleBackButton = () => {
     history.push('/employer-dashboard');
@@ -50,21 +66,6 @@ const EmployerViewDetails = (props) => {
     'Content 1',
   ];
 
-  useEffect((e) => {
-    
-    /* will be executed once when the component is rendered. */
-    axios.post('/get-all-verifications-employer', {
-      "employer_zynk_id": employer_zync_id
-    })
-      .then((response) => {
-              /* response.data = array of verification requests for this particular employer */   
-              console.log('success');
-      }, (errors) => {
-        console.log(errors);
-      });
-    
-  }, []);
-
   return (
     <div className='table-container'>
       <div className='rowview'>
@@ -92,90 +93,32 @@ const EmployerViewDetails = (props) => {
             </tr>
           </thead>
           <tbody>
-            <tr onClick={handleOpenPopup}>
-              <td>Content 1</td>
-              <td>Content 1</td>
-              <td>Content 1</td>
-              <td>Content 1</td>
-              <td>Content 1</td>
-              <td>Content 1</td>
-              <td>Content 1</td>
-              <td>Content 1</td>
-              <td>Content 1</td>
-              <td>Content 1</td>
-              <td>Content 1</td>
-              <td>Content 1</td>
-            </tr>
-            <tr>
-              <td>Content 2</td>
-              <td>Content 2</td>
-              <td>Content 2</td>
-              <td>Content 2</td>
-              <td>Content 2</td>
-              <td>Content 2</td>
-              <td>Content 2</td>
-              <td>Content 2</td>
-              <td>Content 2</td>
-              <td>Content 2</td>
-              <td>Content 2</td>
-              <td>Content 2</td>
-            </tr>
-            <tr>
-              <td>Content 3</td>
-              <td>Content 3</td>
-              <td>Content 3</td>
-              <td>Content 3</td>
-              <td>Content 3</td>
-              <td>Content 3</td>
-              <td>Content 3</td>
-              <td>Content 3</td>
-              <td>Content 3</td>
-              <td>Content 3</td>
-              <td>Content 3</td>
-              <td>Content 3</td>
-            </tr>
-            <tr>
-              <td>Content 4</td>
-              <td>Content 4</td>
-              <td>Content 4</td>
-              <td>Content 4</td>
-              <td>Content 4</td>
-              <td>Content 4</td>
-              <td>Content 4</td>
-              <td>Content 4</td>
-              <td>Content 4</td>
-              <td>Content 4</td>
-              <td>Content 4</td>
-              <td>Content 4</td>
-            </tr>
-            <tr>
-              <td>Content 5</td>
-              <td>Content 5</td>
-              <td>Content 5</td>
-              <td>Content 5</td>
-              <td>Content 5</td>
-              <td>Content 5</td>
-              <td>Content 5</td>
-              <td>Content 5</td>
-              <td>Content 5</td>
-              <td>Content 5</td>
-              <td>Content 5</td>
-              <td>Content 5</td>
-            </tr>
-            <tr>
-              <td>Content 6</td>
-              <td>Content 6</td>
-              <td>Content 6</td>
-              <td>Content 6</td>
-              <td>Content 6</td>
-              <td>Content 6</td>
-              <td>Content 6</td>
-              <td>Content 6</td>
-              <td>Content 6</td>
-              <td>Content 6</td>
-              <td>Content 6</td>
-              <td>Content 6</td>
-            </tr>
+            {verificationDetails.map((row) => (
+              <tr onClick={handleOpenPopup}>
+                <td>{row.verification_request_id}</td>
+                <td>{'content'}</td>
+                <td>{row.employee_id}</td>
+                <td>{row.employee_full_name}</td>
+                <td>{row.salary_range}</td>
+                <td>
+                  {row.verifying_employer ? row.verifying_employer : 'Null'}
+                </td>
+                <td>{row.verification_reason}</td>
+                <td>{'content'}</td>
+                <td>{'content'}</td>
+                <td>{row.request_type}</td>
+                <td>
+                  {moment(row.verification_creation_date).format('DD/MM/YYYY')}
+                </td>
+                <td>
+                  {row.verification_completion_date
+                    ? moment(row.verification_completion_date).format(
+                        'DD/MM/YYYY'
+                      )
+                    : 'NA'}
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>

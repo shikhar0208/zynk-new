@@ -1,13 +1,19 @@
 import React, { useState, Fragment } from 'react';
+import { useHistory } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+
 import NewVerificationRequest from './NewVerificationRequest';
 import VerifierStatusChart from './VerifierStatusChart';
 import VerifierPeriodChart from './VerifierPeriodChart';
 
 import '../Styles/VerifierDashboard.css';
 
-const VerifierDashboard = props => {
+const VerifierDashboard = () => {
+  const history = useHistory();
+  const { verifier_zynk_id } = useSelector(
+    (store) => store.verifierReducer?.verifierData
+  );
 
-  const { verifier_zync_id } = (props.location && props.location.state) || {};
   const [isOpen, setIsOpen] = useState(false);
   const handleOpenModal = () => {
     setIsOpen(true);
@@ -16,20 +22,18 @@ const VerifierDashboard = props => {
   const handleCloseModal = () => {
     setIsOpen(false);
   };
-  const [state, setstate] = useState(verifier_zync_id);
-  const handleViewDetails = () => {
-           
-    props.history.push({
-      pathname: "./verification-details",
-      state
-    });
 
+  const handleViewDetails = () => {
+    history.push('/verification-details');
   };
 
   return (
     <Fragment>
       {isOpen ? (
-        <NewVerificationRequest closeModal={handleCloseModal} verifier_zync_id={verifier_zync_id} />
+        <NewVerificationRequest
+          closeModal={handleCloseModal}
+          verifier_zynk_id={verifier_zynk_id}
+        />
       ) : (
         <div className='dashboard-section'>
           <div className='add-btn'>

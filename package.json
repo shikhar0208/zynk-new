@@ -2,6 +2,7 @@
   "name": "project1",
   "version": "0.1.0",
   "private": true,
+  "proxy": "https://zyncbackend.herokuapp.com/",
   "dependencies": {
     "@syncfusion/ej2-react-calendars": "^19.2.47",
     "@testing-library/jest-dom": "^5.11.4",
@@ -18,6 +19,7 @@
     "react-chartjs-2": "^3.0.4",
     "react-cookie": "^4.1.1",
     "react-dom": "^17.0.2",
+    "react-redux": "^7.2.5",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",

@@ -61,9 +61,11 @@
 /* Table Styles */
 .table-wrapper {
   max-width: 90%;
+  height: 70vh;
   margin: auto;
-  overflow-x: auto;
+  overflow: auto;
   margin-top: 3rem;
+  margin-bottom: 3rem;
   box-shadow: 0px 30px 40px rgba(0, 0, 0, 0.3);
 }
 
@@ -91,6 +93,7 @@
   border-collapse: collapse;
   width: 100%;
   max-width: 100%;
+
   white-space: nowrap;
   background-color: white;
 }

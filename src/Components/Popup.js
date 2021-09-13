@@ -4,6 +4,7 @@ import '../Styles/Popup.css';
 
 const Popup = (props) => {
   const { fields, fieldValues } = props;
+  console.log(fieldValues);
   return (
     <div className='popupContainer' onClick={props.closePopup}>
       <div className='popup-grid'>

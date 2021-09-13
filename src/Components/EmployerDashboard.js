@@ -7,17 +7,12 @@ import EmployerReasonChart from './EmployerReasonChart';
 import EmployerPeriodChart from './EmployerPeriodChart';
 
 const EmployerDashboard = (props) => {
-  const {employer_zync_id} = (props.location && props.location.state) || {};
-  const [state, setstate] = useState(employer_zync_id);
   const history = useHistory();
 
   const [dateRange, setDateRange] = useState({ startDate: '', endDate: '' });
 
   const handleViewDetails = () => {
-    props.history.push({
-      pathname: '/employer-verification-details',
-      state
-    });
+    history.push('/employer-verification-details');
   };
 
   const handleUploadDetails = () => {

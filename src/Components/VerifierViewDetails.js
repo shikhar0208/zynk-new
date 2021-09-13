@@ -1,39 +1,56 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+import moment from 'moment';
 import { useHistory } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 
+import { getVerificationDetails } from '../redux/actions/VerfierActions';
 import Popup from './Popup';
 import '../Styles/VerifierViewDetails.css';
-import axios from 'axios'
-const VerifierViewDetails = (props) => {
-  const { verifier_zync_id } = (props.location && props.location.state) || {};
-  
+
+const VerifierViewDetails = () => {
+  const { verifier_zynk_id } = useSelector(
+    (store) => store.verifierReducer?.verifierData
+  );
+
+  const dispatch = useDispatch();
   const history = useHistory();
   const [isPopup, setIsPopup] = useState(false);
+  const [boolVal, setBoolVal] = useState(false);
+  const [fieldValues, setFieldValues] = useState([]);
+  useEffect(() => {
+    if (!boolVal) {
+      dispatch(getVerificationDetails(verifier_zynk_id));
+      setBoolVal(true);
+    }
+  }, [boolVal, dispatch, verifier_zynk_id]);
 
-  useEffect((e) => {
-        
-    axios.post('/get-all-verifications-verifier', {
-      verifier_zync_id: verifier_zync_id
-    })
-      .then((response) => {
-        /* here we have the complete verification details  */
-        response.data.map((row) => {
-             /* for each row , we have data on a single entry*/     
-             
-        })
+  const { verificationDetails } = useSelector((store) => store.verifierReducer);
 
-      }, (error) => {
-        console.log(error);
-      });
-    
-  }, []);
-    
   const handleBackButton = () => {
-    
     history.push('/verifier-dashboard');
   };
 
-  const handleOpenPopup = () => {
+  const handleOpenPopup = (data) => {
+    const values = [
+      data.verification_request_id,
+      data.internal_reference,
+      'employerName',
+      data.employee_full_name,
+      data.verification_reason,
+      data.request_type,
+      data.salary_range,
+      'status',
+      'rejectionReason',
+      moment(data.verification_creation_date).format('DD/MM/YYYY'),
+      data.verification_completion_date
+        ? moment(data.verification_completion_date).format('DD/MM/YYYY')
+        : 'NA',
+      data.aadhar_number,
+      data.pan_number,
+      data.employee_email_id,
+      data.employee_phone,
+    ];
+    setFieldValues(values);
     setIsPopup(true);
   };
 
@@ -57,23 +74,6 @@ const VerifierViewDetails = (props) => {
     'PAN number',
     'Employee email id',
     'Employee phone no.',
-  ];
-  const fieldValues = [
-    'Content 1',
-    'Content 1',
-    'Content 1',
-    'Content 1',
-    'Content 1',
-    'Content 1',
-    'Content 1',
-    'Content 1',
-    'Content 1',
-    'Content 1',
-    'Content 1',
-    'Content 1',
-    'Content 1',
-    'Content 1',
-    'Content 1',
   ];
 
   return (
@@ -106,108 +106,36 @@ const VerifierViewDetails = (props) => {
             </tr>
           </thead>
           <tbody>
-            <tr onClick={handleOpenPopup}>
-              <td>Content 1</td>
-              <td>Content 1</td>
-              <td>Content 1</td>
-              <td>Content 1</td>
-              <td>Content 1</td>
-              <td>Content 1</td>
-              <td>Content 1</td>
-              <td>Content 1</td>
-              <td>Content 1</td>
-              <td>Content 1</td>
-              <td>Content 1</td>
-              <td>Content 1</td>
-              <td>Content 1</td>
-              <td>Content 1</td>
-              <td>Content 1</td>
-            </tr>
-            <tr>
-              <td>Content 2</td>
-              <td>Content 2</td>
-              <td>Content 2</td>
-              <td>Content 2</td>
-              <td>Content 2</td>
-              <td>Content 2</td>
-              <td>Content 2</td>
-              <td>Content 2</td>
-              <td>Content 2</td>
-              <td>Content 2</td>
-              <td>Content 2</td>
-              <td>Content 2</td>
-              <td>Content 2</td>
-              <td>Content 2</td>
-              <td>Content 2</td>
-            </tr>
-            <tr>
-              <td>Content 3</td>
-              <td>Content 3</td>
-              <td>Content 3</td>
-              <td>Content 3</td>
-              <td>Content 3</td>
-              <td>Content 3</td>
-              <td>Content 3</td>
-              <td>Content 3</td>
-              <td>Content 3</td>
-              <td>Content 3</td>
-              <td>Content 3</td>
-              <td>Content 3</td>
-              <td>Content 3</td>
-              <td>Content 3</td>
-              <td>Content 3</td>
-            </tr>
-            <tr>
-              <td>Content 4</td>
-              <td>Content 4</td>
-              <td>Content 4</td>
-              <td>Content 4</td>
-              <td>Content 4</td>
-              <td>Content 4</td>
-              <td>Content 4</td>
-              <td>Content 4</td>
-              <td>Content 4</td>
-              <td>Content 4</td>
-              <td>Content 4</td>
-              <td>Content 4</td>
-              <td>Content 4</td>
-              <td>Content 4</td>
-              <td>Content 4</td>
-            </tr>
-            <tr>
-              <td>Content 5</td>
-              <td>Content 5</td>
-              <td>Content 5</td>
-              <td>Content 5</td>
-              <td>Content 5</td>
-              <td>Content 5</td>
-              <td>Content 5</td>
-              <td>Content 5</td>
-              <td>Content 5</td>
-              <td>Content 5</td>
-              <td>Content 5</td>
-              <td>Content 5</td>
-              <td>Content 5</td>
-              <td>Content 5</td>
-              <td>Content 5</td>
-            </tr>
-            <tr>
-              <td>Content 6</td>
-              <td>Content 6</td>
-              <td>Content 6</td>
-              <td>Content 6</td>
-              <td>Content 6</td>
-              <td>Content 6</td>
-              <td>Content 6</td>
-              <td>Content 6</td>
-              <td>Content 6</td>
-              <td>Content 6</td>
-              <td>Content 6</td>
-              <td>Content 6</td>
-              <td>Content 6</td>
-              <td>Content 6</td>
-              <td>Content 6</td>
-            </tr>
+            {verificationDetails.map((row) => (
+              <tr
+                onClick={() => handleOpenPopup(row)}
+                key={row.verification_request_id}
+              >
+                <td>{row.verification_request_id}</td>
+                <td>{row.internal_reference}</td>
+                <td>{'content'}</td>
+                <td>{row.employee_full_name}</td>
+                <td>{row.verification_reason}</td>
+                <td>{row.request_type}</td>
+                <td>{row.salary_range}</td>
+                <td>{'content'}</td>
+                <td>{'content'}</td>
+                <td>
+                  {moment(row.verification_creation_date).format('DD/MM/YYYY')}
+                </td>
+                <td>
+                  {row.verification_completion_date
+                    ? moment(row.verification_completion_date).format(
+                        'DD/MM/YYYY'
+                      )
+                    : 'NA'}
+                </td>
+                <td>{row.aadhar_number}</td>
+                <td>{row.pan_number}</td>
+                <td>{row.employee_email_id}</td>
+                <td>{row.employee_phone}</td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>

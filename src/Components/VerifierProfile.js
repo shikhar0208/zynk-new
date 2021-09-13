@@ -1,38 +1,25 @@
 import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import moment from 'moment';
 import { Country, State, City } from 'country-state-city';
 import { validator } from '../utils/helperFunctions';
+import { updateVerifierDetails } from '../redux/actions/VerfierActions';
 import '../Styles/VerifierProfile.css';
-import axios from 'axios';
-const initialData = {
-  verifierId: 'abcd123',
-  entityType: 'I',
-  verifierName: 'XYZ',
-  dateOfRegistration: moment(Date.now()).format('MM-DD-YYYY'),
-  businessContactName: '',
-  email: 'xyz@gmail.com',
-  phoneNumber: '9326541021',
-  addressLine1: 'pqr',
-  addressLine2: '',
-  pincode: '110051',
-  country: 'IN',
-  state: 'DL',
-  city: 'Delhi',
-  idType: 'Xy',
-  idNumber: 'xyz123',
-  newPassword: '',
-  confirmPassword: '',
-};
 
 const VerifierProfile = (props) => {
-  const {verifier_zync_id} = (props.location && props.location.state) || {};
-
-  const [formData, setFormData] = useState(initialData);
+  const { verifierData } = useSelector((store) => store.verifierReducer);
+  const dispatch = useDispatch();
+  const [formData, setFormData] = useState({
+    ...verifierData,
+    verifier_country: 'IN',
+    verifier_state: 'DL',
+    verifier_city: 'Delhi',
+  });
   const [changeData, setChangeData] = useState({
-    ...initialData,
-    city: '',
-    state: '',
-    country: '',
+    ...formData,
+    verifier_state: '',
+    verifier_city: '',
+    verifier_country: '',
   });
   const [changes, setChanges] = useState({});
   const [states, setStates] = useState([]);
@@ -42,48 +29,18 @@ const VerifierProfile = (props) => {
 
   const countries = Country.getAllCountries();
   const [location, setLocation] = useState({ state: '', country: '' });
-   
-  useEffect(() => {
-    
-    axios.post('/get-verifier-profile', {
-         "verifier_zync_id":verifier_zync_id
-    })
-      .then((response) => {
-        /* now in response i get all the deets on the current verifier. */
-        formData.verifierId = response.data.verifier_zync_id;
-        formData.entityType = response.data.entity_type;
-        formData.verifierName = response.data.verifier_name;
-        formData.businessContactName = response.data.business_contact_name;
-        formData.email = response.data.email_id;
-        formData.phoneNumber = response.data.phone_number;
-        formData.addressLine1 = response.data.verifier_address_line1;
-        formData.addressLine2 = response.data.verifier_address_line2;
-        formData.pincode = response.data.verifier_pincode;
-        formData.country = response.data.verifier_country;
-        formData.state = response.data.verifier_state;
-        formData.city = response.data.verifier_city;
-        formData.idType = response.data.govt_id_type;
-        formData.idNumber = response.data.govt_id_number;
-        formData.newPassword = response.data.newPassword;
-        formData.confirmPassword = response.data.newPassword;
-          
-    }, (error) => {
-      console.log(error);
-    });
-  }, []);
-
 
   useEffect(() => {
     if (location.country === '' || location.state === '') {
-      const country = Country.getCountryByCode(formData.country);
+      const country = Country.getCountryByCode(formData.verifier_country);
       const state = State.getStateByCodeAndCountry(
-        formData.state,
-        formData.country
+        formData.verifier_state,
+        formData.verifier_country
       );
       setLocation({ ...location, state, country });
       // console.log(country, state);
     }
-  }, [formData.country, formData.state, location]);
+  }, [formData.verifier_state, formData.verifier_country, location]);
 
   const handleFormChange = (e) => {
     const { name } = e.target;
@@ -92,54 +49,6 @@ const VerifierProfile = (props) => {
     if (errors) {
       setErrors({ ...errors, [name]: '' });
     }
-    const date = new Date();
-    const [month, day, year] = [date.getMonth(), date.getDate(), date.getFullYear()];
-    axios.post('/update-verifier-profile', {
-          "verifier_zynk_id": verifier_zync_id, 
-
-          "date_of_reg": formData.dateOfRegistration, 
-      
-          "entity_type": formData.entityType, 
-      
-          "verifier_name": formData.verifierName, 
-      
-          "business_contact_name": formData.businessContactName, 
-      
-          "email_id": formData.email, 
-      
-          "phone_number": formData.phoneNumber, 
-      
-          "govt_id_type": formData.idType , 
-       
-          "govt_id_number":formData.idNumber, 
-      
-          "govt_id_attachment": "abcd", 
-      
-          "verifier_address_line1": formData.addressLine1, 
-      
-          "verifier_address_line2":formData.addressLine2, 
-      
-          "verifier_pincode":formData.pincode, 
-      
-          "verifier_state": formData.state, 
-      
-          "verifier_city": formData.city, 
-      
-          "verifier_country":formData.country, 
-      
-          "updated_by": verifier_zync_id, 
-      
-          "last_update":  year+month+day,
-      
-          "password": formData.newPassword
-
-    })
-      .then((response) => {
-        console.log("success");
-      }, (error) => {
-        console.log(error);
-      });
-
   };
 
   const handleSwitchForm = () => {
@@ -149,7 +58,12 @@ const VerifierProfile = (props) => {
       setChanges({});
       setErrors(null);
     } else {
-      setChangeData({ ...formData, city: '', state: '', country: '' });
+      setChangeData({
+        ...formData,
+        verifier_state: '',
+        verifier_city: '',
+        verifier_country: '',
+      });
       setEditForm(true);
     }
   };
@@ -157,38 +71,45 @@ const VerifierProfile = (props) => {
   const handleChangeCountry = (e) => {
     setChangeData({
       ...changeData,
-      country: e.target.value,
+      verifier_country: e.target.value,
     });
-    setChanges({ ...changes, country: e.target.value });
+    setChanges({ ...changes, verifier_country: e.target.value });
     const allStates = State.getStatesOfCountry(e.target.value);
     setStates(allStates);
     if (errors) {
-      setErrors({ ...errors, country: '' });
+      setErrors({ ...errors, verifier_country: '' });
     }
   };
 
   const handleChangeState = (e) => {
     setChangeData({
       ...changeData,
-      state: e.target.value,
+      verifier_state: e.target.value,
     });
-    setChanges({ ...changes, state: e.target.value });
-    const allCities = City.getCitiesOfState(changeData.country, e.target.value);
+    setChanges({ ...changes, verifier_state: e.target.value });
+    const allCities = City.getCitiesOfState(
+      changeData.verifier_country,
+      e.target.value
+    );
     setCities(allCities);
     if (errors) {
-      setErrors({ ...errors, state: '' });
+      setErrors({ ...errors, verifier_state: '' });
     }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     var requiredFields = [];
-    if (changes?.country) {
+    if (changes?.verifier_country) {
       if (states.length > 0) {
-        requiredFields = [...requiredFields, 'country', 'state'];
+        requiredFields = [
+          ...requiredFields,
+          'verifier_country',
+          'verifier_state',
+        ];
       }
       if (cities.length > 0) {
-        requiredFields = [...requiredFields, 'city', 'pincode'];
+        requiredFields = [...requiredFields, 'verifier_city'];
       }
     }
     if (changes?.newPassword || changes?.confirmPassword) {
@@ -199,8 +120,16 @@ const VerifierProfile = (props) => {
       setErrors(null);
       if (changes?.newPassword && changes?.confirmPassword) {
         if (changes.newPassword === changes.confirmPassword) {
-          setEditForm(false);
-          setChanges({});
+          /* */
+          dispatch(
+            updateVerifierDetails(formData.verifier_zynk_id, {
+              ...changes,
+              password: changes.newPassword,
+            })
+          ).then(() => {
+            setEditForm(false);
+            setChanges({});
+          });
         } else {
           setErrors({
             ...errors,
@@ -209,8 +138,13 @@ const VerifierProfile = (props) => {
           });
         }
       } else {
-        setEditForm(false);
-        setChanges({});
+        /**/
+        dispatch(
+          updateVerifierDetails(formData.verifier_zynk_id, changes)
+        ).then(() => {
+          setEditForm(false);
+          setChanges({});
+        });
       }
     } else {
       setErrors(flag);
@@ -237,40 +171,43 @@ const VerifierProfile = (props) => {
           <div className='rowWise'>
             <div className='columnWise'>
               <label htmlFor='verifierId'>Verifier id</label>
-              <input value={formData.verifierId} disabled />
+              <input value={formData.verifier_zynk_id} disabled />
             </div>
             <div className='custom-select columnWise'>
               <label htmlFor='entityType'>Entity type</label>
               <input
-                value={formData.entityType === 'B' ? 'Business' : 'Individual'}
+                value={formData.entity_type === 'B' ? 'Business' : 'Individual'}
                 disabled
               />
             </div>
           </div>
-          {formData.entityType === 'B' && (
+          {formData.entity_type === 'B' && (
             <div className='columnWise'>
               <label htmlFor='businessContactName'>Business contact name</label>
               {editForm ? (
                 <input
                   placeholder='Business contact name'
                   type='text'
-                  name='businessContactName'
-                  value={changeData.businessContactName}
+                  name='business_contact_name'
+                  value={changeData.business_contact_name}
                   onChange={handleFormChange}
                 />
               ) : (
-                <input value={formData.businessContactName} disabled />
+                <input value={formData.business_contact_name} disabled />
               )}
             </div>
           )}
           <div className='rowWise'>
             <div className='columnWise'>
               <label htmlFor='verifierName'>Verifier name</label>
-              <input value={formData.verifierName} disabled />
+              <input value={formData.verifier_name} disabled />
             </div>
             <div className='columnWise'>
               <label htmlFor='dateOfRegistration'>Date of registration</label>
-              <input value={formData.dateOfRegistration} disabled />
+              <input
+                value={moment(formData.date_of_reg).format('Do MMMM, YYYY')}
+                disabled
+              />
             </div>
           </div>
           <div className='rowWise'>
@@ -280,19 +217,21 @@ const VerifierProfile = (props) => {
                 <input
                   placeholder='Email id'
                   type='email'
-                  name='email'
-                  value={changeData.email}
+                  name='email_id'
+                  value={changeData.email_id}
                   onChange={handleFormChange}
                   className={
-                    errors && errors.email && errors.email !== '' ? 'error' : ''
+                    errors && errors.email_id && errors.email_id !== ''
+                      ? 'error'
+                      : ''
                   }
                 />
               ) : (
-                <input value={formData.email} disabled />
+                <input value={formData.email_id} disabled />
               )}
-              {errors && errors.email !== '' && (
+              {errors && errors.email_id !== '' && (
                 <label className='errorMessage' htmlFor='emailError'>
-                  {errors.email}
+                  {errors.email_id}
                 </label>
               )}
             </div>
@@ -302,21 +241,21 @@ const VerifierProfile = (props) => {
                 <input
                   placeholder='Phone number'
                   type='text'
-                  name='phoneNumber'
-                  value={changeData.phoneNumber}
+                  name='phone_number'
+                  value={changeData.phone_number}
                   onChange={handleFormChange}
                   className={
-                    errors && errors.phoneNumber && errors.phoneNumber !== ''
+                    errors && errors.phone_number && errors.phone_number !== ''
                       ? 'error'
                       : ''
                   }
                 />
               ) : (
-                <input value={formData.phoneNumber} disabled />
+                <input value={formData.phone_number} disabled />
               )}
-              {errors && errors.phoneNumber !== '' && (
+              {errors && errors.phone_number !== '' && (
                 <label className='errorMessage' htmlFor='phoneNumberError'>
-                  {errors.phoneNumber}
+                  {errors.phone_number}
                 </label>
               )}
             </div>
@@ -325,7 +264,7 @@ const VerifierProfile = (props) => {
             className={
               editForm
                 ? 'rowWise'
-                : formData.addressLine2 === ''
+                : formData.verifier_address_line2 === ''
                 ? ''
                 : 'rowWise'
             }
@@ -336,12 +275,12 @@ const VerifierProfile = (props) => {
                 <input
                   placeholder='Address'
                   type='texr'
-                  name='addressLine1'
-                  value={changeData.addressLine1}
+                  name='verifier_address_line1'
+                  value={changeData.verifier_address_line1}
                   onChange={handleFormChange}
                 />
               ) : (
-                <input value={formData.addressLine1} disabled />
+                <input value={formData.verifier_address_line1} disabled />
               )}
             </div>
             {editForm ? (
@@ -350,15 +289,18 @@ const VerifierProfile = (props) => {
                 <input
                   placeholder='Address'
                   type='text'
-                  name='addressLine2'
-                  value={changeData.addressLine2}
+                  name='verifier_address_line2'
+                  value={changeData.verifier_address_line2}
                   onChange={handleFormChange}
                 />
               </div>
-            ) : formData.addressLine2 === '' ? (
+            ) : formData.verifier_address_line2 === '' ? (
               ''
             ) : (
-              <input value={formData.addressLine2} disabled />
+              <div className='columnWise'>
+                <label htmlFor='addressLine2'>Address - line 2</label>
+                <input value={formData.verifier_address_line2} disabled />
+              </div>
             )}
           </div>
           <div className='rowWise'>
@@ -366,9 +308,11 @@ const VerifierProfile = (props) => {
               <label htmlFor='country'>Country</label>
               {editForm ? (
                 <select
-                  name='country'
+                  name='verifier_country'
                   onChange={handleChangeCountry}
-                  className={`${changeData.country === '' ? 'grayColor' : ''}`}
+                  className={`${
+                    changeData.verifier_country === '' ? 'grayColor' : ''
+                  }`}
                 >
                   <option disabled selected className='demo-select'>
                     Select
@@ -391,17 +335,23 @@ const VerifierProfile = (props) => {
               <label htmlFor='state'>State</label>
               {editForm ? (
                 <select
-                  name='state'
+                  name='verifier_state'
                   onChange={handleChangeState}
-                  disabled={!changeData.country}
-                  className={`${changeData.state === '' ? 'grayColor' : ''} ${
-                    errors && errors.state && errors.state !== '' ? 'error' : ''
+                  disabled={!changeData.verifier_country}
+                  className={`${
+                    changeData.verifier_state === '' ? 'grayColor' : ''
+                  } ${
+                    errors &&
+                    errors.verifier_state &&
+                    errors.verifier_state !== ''
+                      ? 'error'
+                      : ''
                   }`}
                 >
                   <option disabled selected className='demo-select'>
                     Select
                   </option>
-                  {changeData.country !== '' &&
+                  {changeData.verifier_country !== '' &&
                     states.map((state) => (
                       <option key={state.isoCode} value={`${state.isoCode}`}>
                         {state.name}
@@ -411,9 +361,9 @@ const VerifierProfile = (props) => {
               ) : (
                 <input value={location.state.name} disabled />
               )}
-              {errors && errors.state !== '' && (
+              {errors && errors.verifier_state !== '' && (
                 <label className='errorMessage' htmlFor='stateError'>
-                  {errors.state}
+                  {errors.verifier_state}
                 </label>
               )}
             </div>
@@ -423,17 +373,23 @@ const VerifierProfile = (props) => {
               <label htmlFor='city'>City</label>
               {editForm ? (
                 <select
-                  name='city'
+                  name='verifier_city'
                   onChange={handleFormChange}
-                  disabled={!changeData.state}
-                  className={`${changeData.city === '' ? 'grayColor' : ''} ${
-                    errors && errors.city && errors.city !== '' ? 'error' : ''
+                  disabled={!changeData.verifier_state}
+                  className={`${
+                    changeData.verifier_city === '' ? 'grayColor' : ''
+                  } ${
+                    errors &&
+                    errors.verifier_city &&
+                    errors.verifier_city !== ''
+                      ? 'error'
+                      : ''
                   }`}
                 >
                   <option disabled selected className='demo-select'>
                     Select
                   </option>
-                  {changeData.state !== '' &&
+                  {changeData.verifier_state !== '' &&
                     cities.map((city) => (
                       <option key={city.name} value={`${city.name}`}>
                         {city.name}
@@ -441,11 +397,11 @@ const VerifierProfile = (props) => {
                     ))}
                 </select>
               ) : (
-                <input value={formData.city} disabled />
+                <input value={formData.verifier_city} disabled />
               )}
-              {errors && errors.city !== '' && (
+              {errors && errors.verifier_city !== '' && (
                 <label className='errorMessage' htmlFor='cityError'>
-                  {errors.city}
+                  {errors.verifier_city}
                 </label>
               )}
             </div>
@@ -455,21 +411,23 @@ const VerifierProfile = (props) => {
                 <input
                   placeholder='Pin code'
                   type='text'
-                  name='pincode'
-                  value={changeData.pincode}
+                  name='verifier_pincode'
+                  value={changeData.verifier_pincode}
                   onChange={handleFormChange}
                   className={`${
-                    errors && errors.pincode && errors.pincode !== ''
+                    errors &&
+                    errors.verifier_pincode &&
+                    errors.verifier_pincode !== ''
                       ? 'error'
                       : ''
                   }`}
                 />
               ) : (
-                <input value={formData.pincode} disabled />
+                <input value={formData.verifier_pincode} disabled />
               )}
-              {errors && errors.pincode !== '' && (
+              {errors && errors.verifier_pincode !== '' && (
                 <label className='errorMessage' htmlFor='pincodeError'>
-                  {errors.pincode}
+                  {errors.verifier_pincode}
                 </label>
               )}
             </div>
@@ -477,11 +435,11 @@ const VerifierProfile = (props) => {
           <div className='rowWise'>
             <div className='columnWise'>
               <label htmlFor='idType'>Id type</label>
-              <input value={formData.idType} disabled />
+              <input value={formData.govt_id_type} disabled />
             </div>
             <div className='columnWise'>
               <label htmlFor='idNumber'>Id number</label>
-              <input value={formData.idNumber} disabled />
+              <input value={formData.govt_id_number} disabled />
             </div>
           </div>
           {editForm && (

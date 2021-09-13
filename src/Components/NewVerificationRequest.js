@@ -1,32 +1,40 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { validator } from '../utils/helperFunctions';
+import { getAllEmployer } from '../redux/actions/api';
 import '../Styles/NewVerificationRequest.css';
-import axios from 'axios'
+import axios from 'axios';
 const initialData = {
   employerName: '',
-  employeeName: '',
-  employeeID:'',
-  aadhaarNumber: '',
-  panNumber: '',
-  email: '',
-  phoneNumber: '',
-  internalReference: '',
-  requestType: '',
-  salaryRange: '',
-  verificationReason: '',
-  verifyingEmployer: '',
-
+  employer_zynk_id: '',
+  employee_full_name: '',
+  employee_id: '',
+  aadhar_number: '',
+  pan_number: '',
+  employee_email_id: '',
+  employee_phone: '',
+  internal_reference: '',
+  request_type: '',
+  salary_range: '',
+  verification_reason: '',
 };
 
 const NewVerificationRequest = (props) => {
   const [formData, setFormData] = useState(initialData);
   const [errors, setErrors] = useState(null);
+  const [boolVal, setBoolVal] = useState(false);
+
+  useEffect(async () => {
+    if (!boolVal) {
+      const allEmployers = await getAllEmployer();
+      console.log(allEmployers);
+    }
+  }, []);
 
   var requiredFields = [
     'employerName',
-    'employeeName',
-    'requestType',
-    'verificationReason',
+    'employee_full_name',
+    'request_type',
+    'verification_reason',
   ];
 
   const handleFormChange = (e) => {
@@ -40,49 +48,50 @@ const NewVerificationRequest = (props) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (formData.requestType === 'I') {
-      requiredFields = [...requiredFields, 'salaryRange'];
+      requiredFields = [...requiredFields, 'salary_range'];
     }
-    if (formData.verificationReason === '3') {
-      requiredFields = [...requiredFields, 'verifyingEmployer'];
-    }
-    
+
     const flag = validator(formData, requiredFields);
     if (flag === true) {
-      
       var employer_id = null;
-      axios.post('./all-employers', {})
-        .then((response) => {
-           
+      axios.post('./all-employers', {}).then(
+        (response) => {
           /* gots to map through the response. */
-          response.data.map(element => {
-            if (element.business_email_id === formData.business_email_id ) {
+          response.data.map((element) => {
+            if (element.business_email_id === formData.business_email_id) {
               employer_id = element.employer_zynk_id;
             }
           });
-        }, (errors) => {
-          console.log(errors);
-        });
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
 
-      axios.post('./submit-new-verification', {
-        "verifier-zynk-id": props.verifier_zynk_id,
-        "employer_zynk_id": employer_id,
-        "employee_full_name": formData.employeeName,
-        "employee_id": formData.employeeID,
-        "aadhar_number": formData.aadhaarNumber,
-        "pan_number": formData.panNumber,
-        "employee_email_id": formData.email,
-        "employee_phone": formData.phoneNumber,
-        "internal_reference": formData.internalReference,
-        "request_type": formData.requestType,
-        "salary_range": formData.salaryRange,
-        "verification_reason": formData.verificationReason
-      })
-        .then((response) => {
-          /* i get the verification request ID */
-          console.log('success');
-        }, (errors) => {
-          console.log(errors);
-        });
+      axios
+        .post('./submit-new-verification', {
+          'verifier-zynk-id': props.verifier_zynk_id,
+          employer_zynk_id: employer_id,
+          employee_full_name: formData.employeeName,
+          employee_id: formData.employeeID,
+          aadhar_number: formData.aadhaarNumber,
+          pan_number: formData.panNumber,
+          employee_email_id: formData.email,
+          employee_phone: formData.phoneNumber,
+          internal_reference: formData.internalReference,
+          request_type: formData.requestType,
+          salary_range: formData.salaryRange,
+          verification_reason: formData.verificationReason,
+        })
+        .then(
+          (response) => {
+            /* i get the verification request ID */
+            console.log('success');
+          },
+          (err) => {
+            console.log(err);
+          }
+        );
       setErrors(null);
       alert('Request Submitted');
     } else {
@@ -129,14 +138,16 @@ const NewVerificationRequest = (props) => {
               <input
                 placeholder='Employee name'
                 type='text'
-                name='employeeName'
-                value={formData.employeeName}
+                name='employee_full_name'
+                value={formData.employee_full_name}
                 onChange={handleFormChange}
-                className={errors && errors.employeeName !== '' ? 'error' : ''}
+                className={
+                  errors && errors.employee_full_name !== '' ? 'error' : ''
+                }
               />
-              {errors && errors.employeeName !== '' && (
+              {errors && errors.employee_full_name !== '' && (
                 <label className='errorMessage' htmlFor='employeeNameError'>
-                  {errors.employeeName}
+                  {errors.employee_full_name}
                 </label>
               )}
             </div>
@@ -147,18 +158,18 @@ const NewVerificationRequest = (props) => {
               <input
                 placeholder='Aadhaar number'
                 type='text'
-                name='aadhaarNumber'
-                value={formData.aadhaarNumber}
+                name='aadhar_number'
+                value={formData.aadhar_number}
                 onChange={handleFormChange}
                 className={
-                  errors && errors.aadhaarNumber && errors.aadhaarNumber !== ''
+                  errors && errors.aadhar_number && errors.aadhar_number !== ''
                     ? 'error'
                     : ''
                 }
               />
-              {errors && errors.aadhaarNumber !== '' && (
+              {errors && errors.aadhar_number !== '' && (
                 <label className='errorMessage' htmlFor='aadhaarNumberError'>
-                  {errors.aadhaarNumber}
+                  {errors.aadhar_number}
                 </label>
               )}
             </div>
@@ -167,18 +178,18 @@ const NewVerificationRequest = (props) => {
               <input
                 placeholder='PAN number'
                 type='text'
-                name='panNumber'
-                value={formData.panNumber}
+                name='pan_number'
+                value={formData.pan_number}
                 onChange={handleFormChange}
                 className={
-                  errors && errors.panNumber && errors.panNumber !== ''
+                  errors && errors.pan_number && errors.pan_number !== ''
                     ? 'error'
                     : ''
                 }
               />
-              {errors && errors.panNumber !== '' && (
+              {errors && errors.pan_number !== '' && (
                 <label className='errorMessage' htmlFor='panNumberError'>
-                  {errors.panNumber}
+                  {errors.pan_number}
                 </label>
               )}
             </div>
@@ -189,16 +200,20 @@ const NewVerificationRequest = (props) => {
               <input
                 placeholder='Email id'
                 type='text'
-                name='email'
-                value={formData.email}
+                name='employee_email_id'
+                value={formData.employee_email_id}
                 onChange={handleFormChange}
                 className={
-                  errors && errors.email && errors.email !== '' ? 'error' : ''
+                  errors &&
+                  errors.employee_email_id &&
+                  errors.employee_email_id !== ''
+                    ? 'error'
+                    : ''
                 }
               />
-              {errors && errors.email !== '' && (
+              {errors && errors.employee_email_id !== '' && (
                 <label className='errorMessage' htmlFor='emailError'>
-                  {errors.email}
+                  {errors.employee_email_id}
                 </label>
               )}
             </div>
@@ -207,8 +222,8 @@ const NewVerificationRequest = (props) => {
               <input
                 placeholder='Phone number'
                 type='text'
-                name='phoneNumber'
-                value={formData.phoneNumber}
+                name='employee_phone'
+                value={formData.employee_phone}
                 onChange={handleFormChange}
               />
             </div>
@@ -219,12 +234,12 @@ const NewVerificationRequest = (props) => {
                 Request type <span className='required'>*</span>
               </label>
               <select
-                name='requestType'
+                name='request_type'
                 id='selectMenu'
                 onChange={handleFormChange}
-                className={`${formData.requestType === '' ? 'grayColor' : ''} ${
-                  errors && errors.requestType !== '' ? 'error' : ''
-                }`}
+                className={`${
+                  formData.request_type === '' ? 'grayColor' : ''
+                } ${errors && errors.request_type !== '' ? 'error' : ''}`}
               >
                 <option disabled selected>
                   Select
@@ -232,9 +247,9 @@ const NewVerificationRequest = (props) => {
                 <option value='E'>Employment only</option>
                 <option value='I'>Employment and income</option>
               </select>
-              {errors && errors.requestType !== '' && (
+              {errors && errors.request_type !== '' && (
                 <label className='errorMessage' htmlFor='requestTypeError'>
-                  {errors.requestType}
+                  {errors.request_type}
                 </label>
               )}
             </div>
@@ -243,11 +258,13 @@ const NewVerificationRequest = (props) => {
                 Verification reason <span className='required'>*</span>
               </label>
               <select
-                name='verificationReason'
+                name='verification_reason'
                 onChange={handleFormChange}
                 className={`${
-                  formData.verificationReason === '' ? 'grayColor' : ''
-                } ${errors && errors.verificationReason !== '' ? 'error' : ''}`}
+                  formData.verification_reason === '' ? 'grayColor' : ''
+                } ${
+                  errors && errors.verification_reason !== '' ? 'error' : ''
+                }`}
               >
                 <option disabled selected className='demo-select'>
                   Select
@@ -262,12 +279,12 @@ const NewVerificationRequest = (props) => {
                 </option>
                 <option value='7'>Other</option>
               </select>
-              {errors && errors.verificationReason !== '' && (
+              {errors && errors.verification_reason !== '' && (
                 <label
                   className='errorMessage'
                   htmlFor='verificationReasonError'
                 >
-                  {errors.verificationReason}
+                  {errors.verification_reason}
                 </label>
               )}
             </div>
@@ -276,16 +293,16 @@ const NewVerificationRequest = (props) => {
             <div className='columnWise'>
               <label htmlFor='salarayRange'>
                 Salary range{' '}
-                {formData.requestType === 'I' && (
+                {formData.request_type === 'I' && (
                   <span className='required'>*</span>
                 )}
               </label>
               <select
-                name='salaryRange'
+                name='salary_range'
                 onChange={handleFormChange}
-                className={`${formData.salaryRange === '' ? 'grayColor' : ''} ${
-                  errors && errors.salaryRange !== '' ? 'error' : ''
-                }`}
+                className={`${
+                  formData.salary_range === '' ? 'grayColor' : ''
+                } ${errors && errors.salary_range !== '' ? 'error' : ''}`}
               >
                 <option disabled selected>
                   Select
@@ -295,9 +312,9 @@ const NewVerificationRequest = (props) => {
                 <option value='6'>6 months</option>
                 <option value='Y'>12 months</option>
               </select>
-              {errors && errors.salaryRange !== '' && (
+              {errors && errors.salary_range !== '' && (
                 <label className='errorMessage' htmlFor='salaryRangeError'>
-                  {errors.salaryRange}
+                  {errors.salary_range}
                 </label>
               )}
             </div>
@@ -306,17 +323,17 @@ const NewVerificationRequest = (props) => {
               <input
                 placeholder='Reference'
                 type='text'
-                name='internalReference'
-                value={formData.internalReference}
+                name='internal_reference'
+                value={formData.internal_reference}
                 onChange={handleFormChange}
               />
             </div>
           </div>
-          {formData.verificationReason === '3' && (
+          {formData.verification_reason === '3' && (
             <div className='columnWise'>
               <label htmlFor='verifyingEmployer'>
                 Verifying employer{' '}
-                {formData.verificationReason === '3' && (
+                {formData.verification_reason === '3' && (
                   <span className='required'>*</span>
                 )}
               </label>

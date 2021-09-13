@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
-import { useHistory} from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { validator } from '../utils/helperFunctions';
-import axios from "axios";
+import { useDispatch } from 'react-redux';
+
+import { verifierLogin } from '../redux/actions/VerfierActions';
+import { employerLogin } from '../redux/actions/EmployerActions';
 
 import '../Styles/VerifierRegistrationForm.css';
 
@@ -17,7 +20,8 @@ const LoginForm = (props) => {
   const [userType, setUserType] = useState('verifier');
   const [errors, setErrors] = useState(null);
   const history = useHistory();
-  
+  const dispatch = useDispatch();
+
   /* whenever an attribute inside the form is changed , the js method to update it without code redundancy. */
 
   const handleFormChange = (e) => {
@@ -36,42 +40,31 @@ const LoginForm = (props) => {
     setUserType(type);
     setErrors(null);
   };
-   
-  const [state, setstate] = useState(null);
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    const requiredFields = ['email', 'password'];
+    const requiredFields = ['email'];
     const flag = validator(formData, requiredFields);
 
-  
     if (flag === true) {
-          
-      axios.post('/' + {userType}+'-login', {
-        "email_id": formData.email,
-        "password": formData.password
-      })
-        .then((response) => {
-          setstate(response.data.verifier_zynk_id);
-        }, (error) => {
-          console.log(error);
-        });
-
       setErrors(null);
       if (userType === 'verifier') {
-        props.history.push({
-          pathname: '/verifier_dashboard',
-          state
-        });
+        const loginData = {
+          email_id: formData.email,
+          password: formData.password,
+        };
+        dispatch(verifierLogin(loginData, history));
       } else if (userType === 'employer') {
-        props.history.push({
-          pathname: "/employer_dashboard",
-          state
-        });
+        // history.push('/employer_dashboard');
+        const loginData = {
+          business_email_id: formData.email,
+          password: formData.password,
+        };
+        dispatch(employerLogin(loginData, history));
       }
     } else {
       setErrors(flag);
     }
-    
   };
   // console.log(formData);
 
@@ -113,11 +106,9 @@ const LoginForm = (props) => {
               className={errors && errors.email !== '' ? 'error' : ''}
             />
             {errors && errors.email !== '' && (
-              
               <label className='errorMessage' htmlFor='emailError'>
                 {errors.email}
               </label>
-            
             )}
           </div>
           <div className='columnWise'>
@@ -154,6 +145,5 @@ const LoginForm = (props) => {
       </div>
     </div>
   );
-
-}
+};
 export default LoginForm;
