@@ -1,46 +1,16 @@
-import React,{useEffect} from 'react';
+import React from 'react';
 import { useHistory } from 'react-router-dom';
 import '../../Styles/AdminSection/VerifierDetailsTable.css';
-import axios from 'axios'
-const initialData = {
-  employerId: 'abcd123',
-  autoRenew: false,
-  businessName: 'XYZ',
-  businessContactName: 'xyz org',
-  activationDate: '20/02/2021',
-  subscriptionEnd: '20/02/2022',
-  email: 'xyz@gmail.com',
-  phoneNumber: '9326541021',
-  addressLine1: 'pqr',
-  addressLine2: '',
-  pincode: '110051',
-  country: 'IN',
-  state: 'DL',
-  city: 'Delhi',
-  gstNumber: '12315498',
-  newPassword: '',
-  confirmPassword: '',
-};
 
-const EmployerDetailsTable = () => {
+import moment from 'moment';
+
+const EmployerDetailsTable = (props) => {
   const history = useHistory();
+  const { employers } = props;
 
   const openForm = () => {
     history.push('/admin/create-employer');
   };
-
-  useEffect(() => {
-    
-    axios.post('./all-employers')
-      .then((res) => {
-        
-        /* we get an array of all the  active employers. */
-        console.log('success');
-      }, (e) => {
-        console.log(e);
-    });
-
-  }, []);
 
   return (
     <div className='admin-table-container'>
@@ -73,114 +43,32 @@ const EmployerDetailsTable = () => {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>Content 1</td>
-              <td>Content 1</td>
-              <td>Content 1</td>
-              <td>Content 1</td>
-              <td>Content 1</td>
-              <td>Content 1</td>
-              <td>Content 1</td>
-              <td>Content 1</td>
-              <td>Content 1</td>
-              <td>Content 1</td>
-              <td>Content 1</td>
-              <td>Content 1</td>
-              <td>Content 1</td>
-              <td>Content 1</td>
-              <td>Content 1</td>
-              <td>Content 1</td>
-            </tr>
-            <tr>
-              <td>Content 2</td>
-              <td>Content 2</td>
-              <td>Content 2</td>
-              <td>Content 2</td>
-              <td>Content 2</td>
-              <td>Content 2</td>
-              <td>Content 2</td>
-              <td>Content 2</td>
-              <td>Content 2</td>
-              <td>Content 2</td>
-              <td>Content 2</td>
-              <td>Content 2</td>
-              <td>Content 2</td>
-              <td>Content 2</td>
-              <td>Content 2</td>
-              <td>Content 2</td>
-            </tr>
-            <tr>
-              <td>Content 3</td>
-              <td>Content 3</td>
-              <td>Content 3</td>
-              <td>Content 3</td>
-              <td>Content 3</td>
-              <td>Content 3</td>
-              <td>Content 3</td>
-              <td>Content 3</td>
-              <td>Content 3</td>
-              <td>Content 3</td>
-              <td>Content 3</td>
-              <td>Content 3</td>
-              <td>Content 3</td>
-              <td>Content 3</td>
-              <td>Content 3</td>
-              <td>Content 3</td>
-            </tr>
-            <tr>
-              <td>Content 4</td>
-              <td>Content 4</td>
-              <td>Content 4</td>
-              <td>Content 4</td>
-              <td>Content 4</td>
-              <td>Content 4</td>
-              <td>Content 4</td>
-              <td>Content 4</td>
-              <td>Content 4</td>
-              <td>Content 4</td>
-              <td>Content 4</td>
-              <td>Content 4</td>
-              <td>Content 4</td>
-              <td>Content 4</td>
-              <td>Content 4</td>
-              <td>Content 4</td>
-            </tr>
-            <tr>
-              <td>Content 5</td>
-              <td>Content 5</td>
-              <td>Content 5</td>
-              <td>Content 5</td>
-              <td>Content 5</td>
-              <td>Content 5</td>
-              <td>Content 5</td>
-              <td>Content 5</td>
-              <td>Content 5</td>
-              <td>Content 5</td>
-              <td>Content 5</td>
-              <td>Content 5</td>
-              <td>Content 5</td>
-              <td>Content 5</td>
-              <td>Content 5</td>
-              <td>Content 5</td>
-            </tr>
-            <tr>
-              <td>Content 6</td>
-              <td>Content 6</td>
-              <td>Content 6</td>
-              <td>Content 6</td>
-              <td>Content 6</td>
-              <td>Content 6</td>
-              <td>Content 6</td>
-              <td>Content 6</td>
-              <td>Content 6</td>
-              <td>Content 6</td>
-              <td>Content 6</td>
-              <td>Content 6</td>
-              <td>Content 6</td>
-              <td>Content 6</td>
-              <td>Content 6</td>
-              <td>Content 6</td>
-            </tr>
+            {employers.map((employer) => (
+              <tr key={employer.employer_zynk_id}>
+                <td>{employer.employer_zynk_id}</td>
+                <td>
+                  {moment(employer.employer_activation_date).format(
+                    'DD/MM/YYYY'
+                  )}
+                </td>
+                <td>
+                  {moment(employer.subscription_end_date).format('DD/MM/YYYY')}
+                </td>
+                <td>{employer.auto_renew === '1' ? 'Yes' : 'No'}</td>
+                <td>{employer.business_name}</td>
+                <td>{employer.business_contact_name}</td>
+                <td>{employer.business_email_id}</td>
+                <td>{'phone'}</td>
+                <td>{employer.business_address_line1}</td>
+                <td>{employer.business_address_line2}</td>
+                <td>{employer.business_state}</td>
+                <td>{employer.business_city}</td>
+                <td>{employer.business_country}</td>
+                <td>{'gst'}</td>
+                <td>{moment(employer.last_update).format('DD/MM/YYYY')}</td>
+                <td>{employer.updated_by}</td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>

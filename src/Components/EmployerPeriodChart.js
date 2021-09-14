@@ -31,6 +31,16 @@ const data = {
 };
 
 const options = {
+  plugins: {
+    // 'legend' now within object 'plugins {}'
+    legend: {
+      labels: {
+        boxWidth: '0',
+        boxHeight: '0',
+        color: 'white',
+      },
+    },
+  },
   scales: {
     yAxes: [
       {

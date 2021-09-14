@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { employerLogout } from '../redux/actions/EmployerActions';
 import { verifierLogout } from '../redux/actions/VerfierActions';
+import { adminLogout } from '../redux/actions/AdminActions';
 
 import '../Styles/Header.css';
 
@@ -15,6 +16,9 @@ const Header = () => {
   );
   const employerLoggedIn = useSelector(
     (store) => store.employerReducer.isAuthenticated
+  );
+  const adminLoggedIn = useSelector(
+    (store) => store.adminReducer.isAuthenticated
   );
   const [isActive, setIsActive] = useState(false);
 
@@ -28,6 +32,9 @@ const Header = () => {
   const handleEmployerLogout = () => {
     dispatch(employerLogout());
   };
+  const handleAdminLogout = () => {
+    dispatch(adminLogout());
+  };
 
   return (
     <div className='header-container'>
@@ -38,7 +45,7 @@ const Header = () => {
         </h2>
       </div>
       <div className='functions'>
-        {!verifierLoggedIn && !employerLoggedIn && (
+        {!verifierLoggedIn && !employerLoggedIn && !adminLoggedIn && (
           <div className='dropdown'>
             <div
               className='dropdown-btn'
@@ -56,10 +63,10 @@ const Header = () => {
             )}
           </div>
         )}
-        {!verifierLoggedIn && !employerLoggedIn && (
+        {!verifierLoggedIn && !employerLoggedIn && !adminLoggedIn && (
           <div className='nav-btn'>FAQs</div>
         )}
-        {!verifierLoggedIn && !employerLoggedIn && (
+        {!verifierLoggedIn && !employerLoggedIn && !adminLoggedIn && (
           <div className='nav-btn'>Contact Us</div>
         )}
 
@@ -75,6 +82,16 @@ const Header = () => {
         {employerLoggedIn && (
           <NavLink
             to='/employer-dashboard'
+            className='navLink'
+            activeClassName='activeNav'
+          >
+            Home
+          </NavLink>
+        )}
+
+        {adminLoggedIn && (
+          <NavLink
+            to='/admin/dashboard'
             className='navLink'
             activeClassName='activeNav'
           >
@@ -101,7 +118,7 @@ const Header = () => {
           </NavLink>
         )}
 
-        {!verifierLoggedIn && !employerLoggedIn && (
+        {!verifierLoggedIn && !employerLoggedIn && !adminLoggedIn && (
           <NavLink to='/login' className='navLink' activeClassName='activeNav'>
             Log in
           </NavLink>
@@ -116,6 +133,16 @@ const Header = () => {
             Log out
           </NavLink>
         )}
+        {adminLoggedIn && (
+          <NavLink
+            to='/admin/login'
+            className='navLink'
+            activeClassName='activeNav'
+            onClick={handleAdminLogout}
+          >
+            Log out
+          </NavLink>
+        )}
         {employerLoggedIn && (
           <NavLink
             to='/login'
@@ -126,7 +153,7 @@ const Header = () => {
             Log out
           </NavLink>
         )}
-        {!verifierLoggedIn && !employerLoggedIn && (
+        {!verifierLoggedIn && !employerLoggedIn && !adminLoggedIn && (
           <NavLink
             to='/verifier-signup'
             className='navLink'

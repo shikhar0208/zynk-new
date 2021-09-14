@@ -3,6 +3,7 @@ import {
   EMPLOYER_LOGIN,
   EMPLOYER_LOGOUT,
   GET_ALL_EMPLOYER_VERIFICATION,
+  SET_EMPLOYER_PROFILE_DETAILS,
 } from '../actionTypes';
 
 export const employerLogin = (loginData, history) => async (dispatch) => {
@@ -28,6 +29,23 @@ export const getEmployerVerifications = (id) => async (dispatch) => {
     dispatch({
       type: GET_ALL_EMPLOYER_VERIFICATION,
       payload: data,
+    });
+    // console.log(data);
+  } catch (err) {
+    const message = err?.response?.data?.message
+      ? err.response.data.message
+      : 'Something went wrong';
+    console.log(message);
+  }
+};
+
+export const updateEmployerDetails = (id, updates) => async (dispatch) => {
+  try {
+    const { data } = await api.updateEmployerDetails(id, updates);
+    const response = await api.getEmployerDetails(id);
+    dispatch({
+      type: SET_EMPLOYER_PROFILE_DETAILS,
+      payload: response.data,
     });
     console.log(data);
   } catch (err) {

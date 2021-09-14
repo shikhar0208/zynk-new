@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from 'react';
+import React, { useState, Fragment, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
@@ -7,6 +7,7 @@ import VerifierStatusChart from './VerifierStatusChart';
 import VerifierPeriodChart from './VerifierPeriodChart';
 
 import '../Styles/VerifierDashboard.css';
+import { getVerificationSummaryByStatus } from '../redux/actions/api';
 
 const VerifierDashboard = () => {
   const history = useHistory();
@@ -15,6 +16,20 @@ const VerifierDashboard = () => {
   );
 
   const [isOpen, setIsOpen] = useState(false);
+  const [boolVal, setBoolVal] = useState(false);
+  const [statusSummary, setStatusSummary] = useState({});
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const { data } = await getVerificationSummaryByStatus(verifier_zynk_id);
+      setStatusSummary(data);
+    };
+    if (!boolVal) {
+      fetchData();
+      setBoolVal(true);
+    }
+  }, [boolVal, verifier_zynk_id]);
+
   const handleOpenModal = () => {
     setIsOpen(true);
   };
@@ -42,7 +57,7 @@ const VerifierDashboard = () => {
           <div className='containerVerifier'>
             <div className='verifier-charts-div'>
               {/*<PieChart1 />*/}
-              <VerifierStatusChart />
+              <VerifierStatusChart status={statusSummary} />
             </div>
             <div className='verifier-charts-div'>
               {/*<PieChart2 />*/}

@@ -2,6 +2,7 @@ import {
   EMPLOYER_LOGIN,
   EMPLOYER_LOGOUT,
   GET_ALL_EMPLOYER_VERIFICATION,
+  SET_EMPLOYER_PROFILE_DETAILS,
 } from '../actionTypes';
 
 const initialState = {
@@ -32,6 +33,11 @@ const employerReducer = (state = initialState, action) => {
       return {
         ...state,
         verificationDetails: action?.payload,
+      };
+    case SET_EMPLOYER_PROFILE_DETAILS:
+      return {
+        ...state,
+        employerData: action?.payload,
       };
     case EMPLOYER_LOGOUT:
       // Cookies.remove('userJWT');

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import moment from 'moment';
 import { Country, State, City } from 'country-state-city';
 import { validator } from '../utils/helperFunctions';
@@ -9,12 +10,15 @@ import '../Styles/VerifierProfile.css';
 const VerifierProfile = (props) => {
   const { verifierData } = useSelector((store) => store.verifierReducer);
   const dispatch = useDispatch();
-  const [formData, setFormData] = useState({
-    ...verifierData,
-    verifier_country: 'IN',
-    verifier_state: 'DL',
-    verifier_city: 'Delhi',
-  });
+  const history = useHistory();
+  // const [formData, setFormData] = useState({
+  //   ...verifierData,
+  //   verifier_country: 'IN',
+  //   verifier_state: 'DL',
+  //   verifier_city: 'Delhi',
+  // });
+  const [formData, setFormData] = useState(verifierData);
+
   const [changeData, setChangeData] = useState({
     ...formData,
     verifier_state: '',
@@ -25,6 +29,7 @@ const VerifierProfile = (props) => {
   const [states, setStates] = useState([]);
   const [cities, setCities] = useState([]);
   const [editForm, setEditForm] = useState(false);
+  const [boolVal, setBoolVal] = useState(false);
   const [errors, setErrors] = useState(null);
 
   const countries = Country.getAllCountries();
@@ -41,6 +46,13 @@ const VerifierProfile = (props) => {
       // console.log(country, state);
     }
   }, [formData.verifier_state, formData.verifier_country, location]);
+
+  useEffect(() => {
+    if (!boolVal) {
+      setFormData(verifierData);
+      setBoolVal(true);
+    }
+  }, [verifierData, boolVal]);
 
   const handleFormChange = (e) => {
     const { name } = e.target;
@@ -123,10 +135,12 @@ const VerifierProfile = (props) => {
           /* */
           dispatch(
             updateVerifierDetails(formData.verifier_zynk_id, {
+              ...formData,
               ...changes,
               password: changes.newPassword,
             })
           ).then(() => {
+            history.push('/verifier-dashboard');
             setEditForm(false);
             setChanges({});
           });
@@ -140,8 +154,12 @@ const VerifierProfile = (props) => {
       } else {
         /**/
         dispatch(
-          updateVerifierDetails(formData.verifier_zynk_id, changes)
+          updateVerifierDetails(formData.verifier_zynk_id, {
+            ...formData,
+            changes,
+          })
         ).then(() => {
+          history.push('/verifier-dashboard');
           setEditForm(false);
           setChanges({});
         });

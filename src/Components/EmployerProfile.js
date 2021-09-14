@@ -1,44 +1,35 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import { Country, State, City } from 'country-state-city';
 import { validator } from '../utils/helperFunctions';
+import { updateEmployerDetails } from '../redux/actions/EmployerActions';
 import '../Styles/VerifierProfile.css';
-import axios from 'axios';
+import moment from 'moment';
 
-const initialData = {
-  employerId: 'abcd123',
-  autoRenew: false,
-  businessName: 'XYZ',
-  businessContactName: 'xyz org',
-  activationDate: '20/02/2021',
-  subscriptionEnd: '20/02/2022',
-  email: 'xyz@gmail.com',
-  phoneNumber: '9326541021',
-  addressLine1: 'pqr',
-  addressLine2: '',
-  pincode: '110051',
-  country: 'IN',
-  state: 'DL',
-  city: 'Delhi',
-  gstNumber: '12315498',
-  newPassword: '',
-  confirmPassword: '',
-};
-
-const EmployerProfile = (props) => {
-  const { employerDetails } = useSelector((store) => store.employerReducer);
-  const [formData, setFormData] = useState(initialData);
+const EmployerProfile = () => {
+  const { employerData } = useSelector((store) => store.employerReducer);
+  const dispatch = useDispatch();
+  const history = useHistory();
+  // const [formData, setFormData] = useState({
+  //   ...employerData,
+  //   business_city: 'Delhi',
+  //   business_state: 'DL',
+  //   business_country: 'IN',
+  // });
+  const [formData, setFormData] = useState(employerData);
   const [changeData, setChangeData] = useState({
-    ...initialData,
-    city: '',
-    state: '',
-    country: '',
-    autoRenew: '',
+    ...employerData,
+    business_city: '',
+    business_state: '',
+    business_country: '',
+    auto_renew: '',
   });
   const [changes, setChanges] = useState({});
   const [states, setStates] = useState('');
   const [cities, setCities] = useState('');
   const [editForm, setEditForm] = useState(false);
+  const [boolVal, setBoolVal] = useState(false);
   const [errors, setErrors] = useState(null);
 
   const countries = Country.getAllCountries();
@@ -46,16 +37,23 @@ const EmployerProfile = (props) => {
   const [location, setLocation] = useState({ state: '', country: '' });
 
   useEffect(() => {
+    if (!boolVal) {
+      setFormData(employerData);
+      setBoolVal(true);
+    }
+  }, [boolVal, employerData]);
+
+  useEffect(() => {
     if (location.country === '' || location.state === '') {
-      const country = Country.getCountryByCode(formData.country);
+      const country = Country.getCountryByCode(formData.business_country);
       const state = State.getStateByCodeAndCountry(
-        formData.state,
-        formData.country
+        formData.business_state,
+        formData.business_country
       );
       setLocation({ ...location, state, country });
       // console.log(country, state);
     }
-  }, [formData.country, formData.state, location]);
+  }, [formData.business_country, formData.business_state, location]);
 
   const handleFormChange = (e) => {
     const { name } = e.target;
@@ -75,10 +73,10 @@ const EmployerProfile = (props) => {
     } else {
       setChangeData({
         ...formData,
-        city: '',
-        state: '',
-        country: '',
-        autoRenew: '',
+        business_city: '',
+        business_state: '',
+        business_country: '',
+        auto_renew: '',
       });
       setEditForm(true);
     }
@@ -87,38 +85,45 @@ const EmployerProfile = (props) => {
   const handleChangeCountry = (e) => {
     setChangeData({
       ...changeData,
-      country: e.target.value,
+      business_country: e.target.value,
     });
-    setChanges({ ...changes, country: e.target.value });
+    setChanges({ ...changes, business_country: e.target.value });
     const allStates = State.getStatesOfCountry(e.target.value);
     setStates(allStates);
     if (errors) {
-      setErrors({ ...errors, country: '' });
+      setErrors({ ...errors, business_country: '' });
     }
   };
 
   const handleChangeState = (e) => {
     setChangeData({
       ...changeData,
-      state: e.target.value,
+      business_state: e.target.value,
     });
-    setChanges({ ...changes, state: e.target.value });
-    const allCities = City.getCitiesOfState(changeData.country, e.target.value);
+    setChanges({ ...changes, business_state: e.target.value });
+    const allCities = City.getCitiesOfState(
+      changeData.business_country,
+      e.target.value
+    );
     setCities(allCities);
     if (errors) {
-      setErrors({ ...errors, state: '' });
+      setErrors({ ...errors, business_state: '' });
     }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     var requiredFields = [];
-    if (changes?.country) {
+    if (changes?.business_country) {
       if (states.length > 0) {
-        requiredFields = [...requiredFields, 'country', 'state'];
+        requiredFields = [
+          ...requiredFields,
+          'business_country',
+          'business_state',
+        ];
       }
       if (cities.length > 0) {
-        requiredFields = [...requiredFields, 'city', 'pincode'];
+        requiredFields = [...requiredFields, 'business_city'];
       }
     }
     if (changes?.newPassword || changes?.confirmPassword) {
@@ -130,8 +135,16 @@ const EmployerProfile = (props) => {
       if (changes?.newPassword && changes?.confirmPassword) {
         if (changes.newPassword === changes.confirmPassword) {
           /* complete match */
-          setEditForm(false);
-          setChanges({});
+          dispatch(
+            updateEmployerDetails(formData.employer_zynk_id, {
+              ...changes,
+              password: changes.newPassword,
+            })
+          ).then(() => {
+            history.push('/employer-dashboard');
+            setEditForm(false);
+            setChanges({});
+          });
         } else {
           setErrors({
             ...errors,
@@ -140,8 +153,13 @@ const EmployerProfile = (props) => {
           });
         }
       } else {
-        setEditForm(false);
-        setChanges({});
+        dispatch(
+          updateEmployerDetails(formData.employer_zynk_id, changes)
+        ).then(() => {
+          history.push('/employer-dashboard');
+          setEditForm(false);
+          setChanges({});
+        });
       }
     } else {
       setErrors(flag);
@@ -168,27 +186,30 @@ const EmployerProfile = (props) => {
           <div className='rowWise'>
             <div className='columnWise'>
               <label htmlFor='employerId'>Employer id</label>
-              <input value={formData.employerId} disabled />
+              <input value={formData.employer_zynk_id} disabled />
             </div>
             <div className='custom-select columnWise'>
               <label htmlFor='autoRenew'>Auto-renew</label>
               {editForm ? (
                 <select
-                  name='autoRenew'
+                  name='auto_renew'
                   id='selectMenu'
                   onChange={handleFormChange}
                   className={`${
-                    changeData.autoRenew === '' ? 'grayColor' : ''
+                    changeData.auto_renew === '' ? 'grayColor' : ''
                   }`}
                 >
                   <option disabled selected>
                     Select
                   </option>
-                  <option value={true}>Yes</option>
-                  <option value={false}>No</option>
+                  <option value={'1'}>Yes</option>
+                  <option value={'0'}>No</option>
                 </select>
               ) : (
-                <input value={formData.autoRenew ? 'Yes' : 'No'} disabled />
+                <input
+                  value={formData.auto_renew === '1' ? 'Yes' : 'No'}
+                  disabled
+                />
               )}
             </div>
           </div>
@@ -199,27 +220,37 @@ const EmployerProfile = (props) => {
                 <input
                   placeholder='Business contact name'
                   type='text'
-                  name='businessContactName'
-                  value={changeData.businessContactName}
+                  name='business_contact_name'
+                  value={changeData.business_contact_name}
                   onChange={handleFormChange}
                 />
               ) : (
-                <input value={formData.businessContactName} disabled />
+                <input value={formData.business_contact_name} disabled />
               )}
             </div>
             <div className='columnWise'>
               <label htmlFor='businessName'>Business name</label>
-              <input value={formData.businessName} disabled />
+              <input value={formData.business_name} disabled />
             </div>
           </div>
           <div className='rowWise'>
             <div className='columnWise'>
               <label htmlFor='activationDate'>Employer activation date</label>
-              <input value={formData.activationDate} disabled />
+              <input
+                value={moment(formData.employer_activation_date).format(
+                  'DD/MM/YYYY'
+                )}
+                disabled
+              />
             </div>
             <div className='columnWise'>
               <label htmlFor='subscriptionEnd'>Subscription end date</label>
-              <input value={formData.subscriptionEnd} disabled />
+              <input
+                value={moment(formData.subscription_end_date).format(
+                  'DD/MM/YYYY'
+                )}
+                disabled
+              />
             </div>
           </div>
           <div className='rowWise'>
@@ -229,19 +260,23 @@ const EmployerProfile = (props) => {
                 <input
                   placeholder='Email id'
                   type='email'
-                  name='email'
-                  value={changeData.email}
+                  name='business_email_id'
+                  value={changeData.business_email_id}
                   onChange={handleFormChange}
                   className={
-                    errors && errors.email && errors.email !== '' ? 'error' : ''
+                    errors &&
+                    errors.business_email_id &&
+                    errors.business_email_id !== ''
+                      ? 'error'
+                      : ''
                   }
                 />
               ) : (
-                <input value={formData.email} disabled />
+                <input value={formData.business_email_id} disabled />
               )}
-              {errors && errors.email !== '' && (
+              {errors && errors.business_email_id !== '' && (
                 <label className='errorMessage' htmlFor='emailError'>
-                  {errors.email}
+                  {errors.business_email_id}
                 </label>
               )}
             </div>
@@ -251,21 +286,21 @@ const EmployerProfile = (props) => {
                 <input
                   placeholder='Phone number'
                   type='text'
-                  name='phoneNumber'
-                  value={changeData.phoneNumber}
+                  name='phone_number'
+                  value={changeData.phone_number}
                   onChange={handleFormChange}
                   className={
-                    errors && errors.phoneNumber && errors.phoneNumber !== ''
+                    errors && errors.phone_number && errors.phone_number !== ''
                       ? 'error'
                       : ''
                   }
                 />
               ) : (
-                <input value={formData.phoneNumber} disabled />
+                <input value={formData.phone_number} disabled />
               )}
-              {errors && errors.phoneNumber !== '' && (
+              {errors && errors.phone_number !== '' && (
                 <label className='errorMessage' htmlFor='phoneNumberError'>
-                  {errors.phoneNumber}
+                  {errors.phone_number}
                 </label>
               )}
             </div>
@@ -274,7 +309,7 @@ const EmployerProfile = (props) => {
             className={
               editForm
                 ? 'rowWise'
-                : formData.addressLine2 === ''
+                : formData.business_address_line2 === ''
                 ? ''
                 : 'rowWise'
             }
@@ -284,13 +319,13 @@ const EmployerProfile = (props) => {
               {editForm ? (
                 <input
                   placeholder='Address'
-                  type='texr'
-                  name='addressLine1'
-                  value={changeData.addressLine1}
+                  type='text'
+                  name='business_address_line1'
+                  value={changeData.business_address_line1}
                   onChange={handleFormChange}
                 />
               ) : (
-                <input value={formData.addressLine1} disabled />
+                <input value={formData.business_address_line1} disabled />
               )}
             </div>
             {editForm ? (
@@ -299,15 +334,18 @@ const EmployerProfile = (props) => {
                 <input
                   placeholder='Address'
                   type='text'
-                  name='addressLine2'
-                  value={changeData.addressLine2}
+                  name='business_address_line2'
+                  value={changeData.business_address_line2}
                   onChange={handleFormChange}
                 />
               </div>
-            ) : formData.addressLine2 === '' ? (
+            ) : formData.business_address_line2 === '' ? (
               ''
             ) : (
-              <input value={formData.addressLine2} disabled />
+              <div className='columnWise'>
+                <label htmlFor='addressLine2'>Address - line 2</label>
+                <input value={formData.business_address_line2} disabled />
+              </div>
             )}
           </div>
           <div className='rowWise'>
@@ -317,7 +355,9 @@ const EmployerProfile = (props) => {
                 <select
                   name='country'
                   onChange={handleChangeCountry}
-                  className={`${changeData.country === '' ? 'grayColor' : ''}`}
+                  className={`${
+                    changeData.business_country === '' ? 'grayColor' : ''
+                  }`}
                 >
                   <option disabled selected className='demo-select'>
                     Select
@@ -340,17 +380,23 @@ const EmployerProfile = (props) => {
               <label htmlFor='state'>State</label>
               {editForm ? (
                 <select
-                  name='state'
+                  name='business_state'
                   onChange={handleChangeState}
-                  disabled={!changeData.country}
-                  className={`${changeData.state === '' ? 'grayColor' : ''} ${
-                    errors && errors.state && errors.state !== '' ? 'error' : ''
+                  disabled={!changeData.business_country}
+                  className={`${
+                    changeData.business_state === '' ? 'grayColor' : ''
+                  } ${
+                    errors &&
+                    errors.business_state &&
+                    errors.business_state !== ''
+                      ? 'error'
+                      : ''
                   }`}
                 >
                   <option disabled selected className='demo-select'>
                     Select
                   </option>
-                  {changeData.country !== '' &&
+                  {changeData.business_country !== '' &&
                     states.map((state) => (
                       <option key={state.isoCode} value={`${state.isoCode}`}>
                         {state.name}
@@ -360,9 +406,9 @@ const EmployerProfile = (props) => {
               ) : (
                 <input value={location.state.name} disabled />
               )}
-              {errors && errors.state !== '' && (
+              {errors && errors.business_state !== '' && (
                 <label className='errorMessage' htmlFor='stateError'>
-                  {errors.state}
+                  {errors.business_state}
                 </label>
               )}
             </div>
@@ -372,17 +418,23 @@ const EmployerProfile = (props) => {
               <label htmlFor='city'>City</label>
               {editForm ? (
                 <select
-                  name='city'
+                  name='business_city'
                   onChange={handleFormChange}
-                  disabled={!changeData.state}
-                  className={`${changeData.city === '' ? 'grayColor' : ''} ${
-                    errors && errors.city && errors.city !== '' ? 'error' : ''
+                  disabled={!changeData.business_state}
+                  className={`${
+                    changeData.business_city === '' ? 'grayColor' : ''
+                  } ${
+                    errors &&
+                    errors.business_city &&
+                    errors.business_city !== ''
+                      ? 'error'
+                      : ''
                   }`}
                 >
                   <option disabled selected className='demo-select'>
                     Select
                   </option>
-                  {changeData.state !== '' &&
+                  {changeData.business_state !== '' &&
                     cities.map((city) => (
                       <option key={city.name} value={`${city.name}`}>
                         {city.name}
@@ -390,11 +442,11 @@ const EmployerProfile = (props) => {
                     ))}
                 </select>
               ) : (
-                <input value={formData.city} disabled />
+                <input value={formData.business_city} disabled />
               )}
-              {errors && errors.city !== '' && (
+              {errors && errors.business_city !== '' && (
                 <label className='errorMessage' htmlFor='cityError'>
-                  {errors.city}
+                  {errors.business_city}
                 </label>
               )}
             </div>
@@ -404,28 +456,30 @@ const EmployerProfile = (props) => {
                 <input
                   placeholder='Pin code'
                   type='text'
-                  name='pincode'
-                  value={changeData.pincode}
+                  name='business_pincode'
+                  value={changeData.business_pincode}
                   onChange={handleFormChange}
                   className={`${
-                    errors && errors.pincode && errors.pincode !== ''
+                    errors &&
+                    errors.business_pincode &&
+                    errors.business_pincode !== ''
                       ? 'error'
                       : ''
                   }`}
                 />
               ) : (
-                <input value={formData.pincode} disabled />
+                <input value={formData.business_pincode} disabled />
               )}
-              {errors && errors.pincode !== '' && (
+              {errors && errors.business_pincode !== '' && (
                 <label className='errorMessage' htmlFor='pincodeError'>
-                  {errors.pincode}
+                  {errors.business_pincode}
                 </label>
               )}
             </div>
           </div>
           <div className='columnWise'>
             <label htmlFor='gstNumber'>GST number</label>
-            <input value={formData.gstNumber} disabled />
+            <input value={formData.gst} disabled />
           </div>
           {editForm && (
             <div className='rowWise'>

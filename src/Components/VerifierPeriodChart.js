@@ -31,6 +31,16 @@ const data = {
 };
 
 const options = {
+  plugins: {
+    // 'legend' now within object 'plugins {}'
+    legend: {
+      labels: {
+        boxWidth: '0',
+        boxHeight: '0',
+        color: 'white',
+      },
+    },
+  },
   scales: {
     yAxes: [
       {
@@ -42,15 +52,17 @@ const options = {
   },
 };
 
-const VerifierPeriodChart = () => (
-  <Fragment>
-    <div className='chart-header'>
-      <h1 className='chart-title'>
-        Verification summary (by verification period)
-      </h1>
-    </div>
-    <Bar data={data} options={options} />
-  </Fragment>
-);
+const VerifierPeriodChart = () => {
+  return (
+    <Fragment>
+      <div className='chart-header'>
+        <h1 className='chart-title'>
+          Verification summary (by verification period)
+        </h1>
+      </div>
+      <Bar data={data} options={options} />
+    </Fragment>
+  );
+};
 
 export default VerifierPeriodChart;

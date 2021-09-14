@@ -30,17 +30,20 @@ const verifierReducer = (state = initialState, action) => {
       // });
       return {
         ...state,
-        verfierData: action?.payload?.verfierDetails,
+        verifierData: action?.payload?.verifierDetails,
         isAuthenticated: true,
       };
 
     case GET_ALL_VERIFICATIONS_DETAILS:
-    case SET_VERIFIER_PROFILE_DETAILS:
       return {
         ...state,
         verificationDetails: action?.payload,
       };
-
+    case SET_VERIFIER_PROFILE_DETAILS:
+      return {
+        ...state,
+        verifierData: action?.payload,
+      };
     case VERIFIER_LOGOUT:
       // Cookies.remove('userJWT');
       return initialState;

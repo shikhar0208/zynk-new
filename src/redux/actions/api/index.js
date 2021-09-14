@@ -27,6 +27,11 @@ export const getAllVerificationDetails = (id) =>
     verifier_zynk_id: id,
   });
 
+export const getVerificationSummaryByStatus = (id) =>
+  API.post('/get-verification-summary', {
+    verifier_zynk_id: id,
+  });
+
 export const updateVerifierDetails = (id, changes) =>
   API.post('/update-verifier-profile', {
     verifier_zynk_id: id,
@@ -49,6 +54,32 @@ export const getAllEmployerVerifications = (id) =>
   API.post('/get-all-verifications-employer', {
     employer_zynk_id: id,
   });
+
+export const updateEmployerDetails = (id, changes) =>
+  API.post('/update-employer', {
+    employer_zynk_id: id,
+    ...changes,
+  });
+
+export const getVerificationSummaryByReason = (id) =>
+  API.post('/get-verification-summary-employer', {
+    employer_zynk_id: id,
+  });
+
+//Admin Routes
+export const adminLogin = (formData) => API.post('/admin-login', formData);
+export const adminStats = () => API.post('/admin-stats');
+
+export const addEmployer = (formData) => API.post('/add-employer', formData);
+
+export const getAllVerifiers = () => API.post('/all-verifiers');
+export const getAllEmployers = () => API.post('/all-employers');
+export const getVerificationRequestDetails = () =>
+  API.post('/all-verification-requests');
+export const getVerificationStatuses = () =>
+  API.post('all-verification-statuses');
+export const getAllExtracts = () => API.post('/all-extracts');
+
 // // Forgot password
 // export const forgotPasswordEmail = (formData) =>
 //   API.post('/api/auth/forgotpassword', formData);

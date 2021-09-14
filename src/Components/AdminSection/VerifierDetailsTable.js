@@ -1,45 +1,10 @@
-import axios from 'axios';
-import React,{useEffect} from 'react';
-// import { useHistory } from 'react-router-dom';
+import React from 'react';
+
+import moment from 'moment';
 import '../../Styles/AdminSection/VerifierDetailsTable.css';
 
-
-const initialData = {
-  employerId: 'abcd123',
-  autoRenew: false,
-  businessName: 'XYZ',
-  businessContactName: 'xyz org',
-  activationDate: '20/02/2021',
-  subscriptionEnd: '20/02/2022',
-  email: 'xyz@gmail.com',
-  phoneNumber: '9326541021',
-  addressLine1: 'pqr',
-  addressLine2: '',
-  pincode: '110051',
-  country: 'IN',
-  state: 'DL',
-  city: 'Delhi',
-  gstNumber: '12315498',
-  newPassword: '',
-  confirmPassword: '',
-};
-
-const VerifierDetailsTable = () => {
-  // const history = useHistory();
-    
-  useEffect(() => {
-    
-    axios.post('./all-verifiers')
-      .then((res) => {
-
-        /* we get an array of all the  active verifiers. */
-        console.log('success');
-      }, (e) => {
-        console.log(e);
-    });
-
-  }, []);
-
+const VerifierDetailsTable = (props) => {
+  const { verifiers } = props;
   return (
     <div className='admin-table-container'>
       <div className='admin-rowview'>
@@ -67,108 +32,31 @@ const VerifierDetailsTable = () => {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>Content 1</td>
-              <td>Content 1</td>
-              <td>Content 1</td>
-              <td>Content 1</td>
-              <td>Content 1</td>
-              <td>Content 1</td>
-              <td>Content 1</td>
-              <td>Content 1</td>
-              <td>Content 1</td>
-              <td>Content 1</td>
-              <td>Content 1</td>
-              <td>Content 1</td>
-              <td>Content 1</td>
-              <td>Content 1</td>
-              <td>Content 1</td>
-            </tr>
-            <tr>
-              <td>Content 2</td>
-              <td>Content 2</td>
-              <td>Content 2</td>
-              <td>Content 2</td>
-              <td>Content 2</td>
-              <td>Content 2</td>
-              <td>Content 2</td>
-              <td>Content 2</td>
-              <td>Content 2</td>
-              <td>Content 2</td>
-              <td>Content 2</td>
-              <td>Content 2</td>
-              <td>Content 2</td>
-              <td>Content 2</td>
-              <td>Content 2</td>
-            </tr>
-            <tr>
-              <td>Content 3</td>
-              <td>Content 3</td>
-              <td>Content 3</td>
-              <td>Content 3</td>
-              <td>Content 3</td>
-              <td>Content 3</td>
-              <td>Content 3</td>
-              <td>Content 3</td>
-              <td>Content 3</td>
-              <td>Content 3</td>
-              <td>Content 3</td>
-              <td>Content 3</td>
-              <td>Content 3</td>
-              <td>Content 3</td>
-              <td>Content 3</td>
-            </tr>
-            <tr>
-              <td>Content 4</td>
-              <td>Content 4</td>
-              <td>Content 4</td>
-              <td>Content 4</td>
-              <td>Content 4</td>
-              <td>Content 4</td>
-              <td>Content 4</td>
-              <td>Content 4</td>
-              <td>Content 4</td>
-              <td>Content 4</td>
-              <td>Content 4</td>
-              <td>Content 4</td>
-              <td>Content 4</td>
-              <td>Content 4</td>
-              <td>Content 4</td>
-            </tr>
-            <tr>
-              <td>Content 5</td>
-              <td>Content 5</td>
-              <td>Content 5</td>
-              <td>Content 5</td>
-              <td>Content 5</td>
-              <td>Content 5</td>
-              <td>Content 5</td>
-              <td>Content 5</td>
-              <td>Content 5</td>
-              <td>Content 5</td>
-              <td>Content 5</td>
-              <td>Content 5</td>
-              <td>Content 5</td>
-              <td>Content 5</td>
-              <td>Content 5</td>
-            </tr>
-            <tr>
-              <td>Content 6</td>
-              <td>Content 6</td>
-              <td>Content 6</td>
-              <td>Content 6</td>
-              <td>Content 6</td>
-              <td>Content 6</td>
-              <td>Content 6</td>
-              <td>Content 6</td>
-              <td>Content 6</td>
-              <td>Content 6</td>
-              <td>Content 6</td>
-              <td>Content 6</td>
-              <td>Content 6</td>
-              <td>Content 6</td>
-              <td>Content 6</td>
-            </tr>
+            {verifiers.map((verifier) => (
+              <tr key={verifier.verifier_zynk_id}>
+                <td>{verifier.verifier_zynk_id}</td>
+                <td>{moment(verifier.date_of_reg).format('DD/MM/YYYY')}</td>
+                <td>
+                  {verifier.entity_type === 'I' ? 'Individual' : 'Business'}
+                </td>
+                <td>{'name'}</td>
+                <td>{verifier.business_contact_name}</td>
+                <td>
+                  {verifier.email_id.length <= 30
+                    ? verifier.email_id
+                    : `${verifier.email_id.substring(0, 25)}...`}
+                </td>
+                <td>{'phone_number'}</td>
+                <td>{verifier.govt_id_type}</td>
+                <td>{'id number'}</td>
+                <td>{'creation date'}</td>
+                <td>{'completion date'}</td>
+                <td>{'aadhaar number'}</td>
+                <td>{'pan number'}</td>
+                <td>{'employee email id'}</td>
+                <td>{'employee phone'}</td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>

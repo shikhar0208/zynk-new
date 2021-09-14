@@ -16,23 +16,22 @@ import AdminLogin from './Components/AdminSection/AdminLogin';
 import AdminDashboard from './Components/AdminSection/AdminDashboard';
 import NewEmployerForm from './Components/AdminSection/NewEmployerForm';
 
-
-
 const App = () => {
   return (
     <Router>
       <Header />
       {/* fixing the Header component at the top of every Route. */}
       <Switch>
-        <Route exact path='/' exact component={Home} />
-        <Route exact path='/login' exact component={LoginForm} />
+        <Route path='/' exact component={Home} />
+        <Route path='/login' exact component={LoginForm} />
         <Route
-          exact path= '/verifier-signup'
+          path='/verifier-signup'
           exact
           component={VerifierRegistrationForm}
         />
-        <Route path='/verifier-dashboard' render={(props)=><VerifierDashboard {...props} />} />
-        <Route path='/verifier-profile' exact component={VerifierProfile}/>
+        <Route path='/verifier-dashboard' exact component={VerifierDashboard} />
+
+        <Route path='/verifier-profile' exact component={VerifierProfile} />
         <Route
           path='/verification-details'
           exact

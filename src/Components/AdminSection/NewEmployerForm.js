@@ -1,32 +1,35 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import { validator } from '../../utils/helperFunctions';
 import { Country, State, City } from 'country-state-city';
+
+import { addEmployer } from '../../redux/actions/AdminActions';
+
 import '../../Styles/AdminSection/NewEmployerForm.css';
-import axios from 'axios';
 
 const initialData = {
-  activationDate: '',
-  endDate: '',
-  autoRenew: '',
-  businessName: '',
-  businessContactName: '',
-  email: '',
-  phoneNumber: '',
-  addressLine1: '',
-  addressLine2: '',
-  pincode: '',
-  state: '',
-  city: '',
-  country: '',
-  gstNumber: '',
+  employer_activation_date: '',
+  subscription_end_date: '',
+  auto_renew: '',
+  business_name: '',
+  business_contact_name: '',
+  business_email_id: '',
+  phone_number: '',
+  business_address_line1: '',
+  business_address_line2: '',
+  business_pincode: '',
+  business_state: '',
+  business_city: '',
+  business_country: '',
+  gst: '',
   newPassword: '',
   confirmPassword: '',
 };
 
 const NewEmployerForm = () => {
   const history = useHistory();
-
+  const dispatch = useDispatch();
   const [formData, setFormData] = useState(initialData);
   const [errors, setErrors] = useState(null);
   const [states, setStates] = useState('');
@@ -35,17 +38,17 @@ const NewEmployerForm = () => {
   const countries = Country.getAllCountries();
 
   var requiredFields = [
-    'activationDate',
-    'endDate',
-    'autoRenew',
-    'businessName',
-    'businessContactName',
-    'email',
-    'phoneNumber',
-    'addressLine1',
-    'pincode',
-    'country',
-    'gstNumber',
+    'employer_activation_date',
+    'subscription_end_date',
+    'auto_renew',
+    'business_name',
+    'business_contact_name',
+    'business_email_id',
+    'phone_number',
+    'business_address_line1',
+    'business_pincode',
+    'business_country',
+    'gst',
     'newPassword',
     'confirmPassword',
   ];
@@ -61,10 +64,10 @@ const NewEmployerForm = () => {
   const handleChangeCountry = (e) => {
     setFormData({
       ...formData,
-      country: e.target.value,
+      business_country: e.target.value,
     });
     if (errors) {
-      setErrors({ ...errors, country: '' });
+      setErrors({ ...errors, business_country: '' });
     }
     const allStates = State.getStatesOfCountry(e.target.value);
     setStates(allStates);
@@ -73,12 +76,15 @@ const NewEmployerForm = () => {
   const handleChangeState = (e) => {
     setFormData({
       ...formData,
-      state: e.target.value,
+      business_state: e.target.value,
     });
     if (errors) {
-      setErrors({ ...errors, state: '' });
+      setErrors({ ...errors, business_state: '' });
     }
-    const allCities = City.getCitiesOfState(formData.country, e.target.value);
+    const allCities = City.getCitiesOfState(
+      formData.business_country,
+      e.target.value
+    );
     setCities(allCities);
   };
 
@@ -90,11 +96,11 @@ const NewEmployerForm = () => {
     e.preventDefault();
 
     if (states.length > 0) {
-      requiredFields = [...requiredFields, 'state'];
+      requiredFields = [...requiredFields, 'business_state'];
     }
 
     if (cities.length > 0) {
-      requiredFields = [...requiredFields, 'city'];
+      requiredFields = [...requiredFields, 'business_city'];
     }
 
     const flag = validator(formData, requiredFields);
@@ -102,32 +108,13 @@ const NewEmployerForm = () => {
     if (flag === true) {
       setErrors(null);
       if (formData.newPassword === formData.confirmPassword) {
-        
-        axios.post('/add-employer', {
-          "employer_activation_date": formData.activationDate,
-          "subscription_end_date": formData.endDate,
-          "auto_renew": formData.autoRenew,
-          "business_name": formData.businessName,
-          "business_contact_name": formData.businessContactName,
-          "business_email_id": formData.email,
-          "phone_number": formData.phoneNumber,
-          "business_address_line1": formData.addressLine1,
-          "business_address_line2": formData.addressLine2,
-          "business_pincode": formData.pincode,
-          "business_city": formData.city,
-          "business_state": formData.state,
-          "business_country": formData.country,
-          "gst": formData.gstNumber,
-          "password": formData.newPassword
-        })
-          .then((res) => {
-            console.log('success');
-          }, (e) => {
-            console.log(e);
-          });
-
-
-        alert('success');
+        const userDetail = {
+          ...formData,
+          employer_activation_date: new Date(formData.employer_activation_date),
+          subscription_end_date: new Date(formData.subscription_end_date),
+          password: formData.newPassword,
+        };
+        dispatch(addEmployer(userDetail)).then(() => setFormData(initialData));
       } else {
         setErrors({
           ...errors,
@@ -154,16 +141,18 @@ const NewEmployerForm = () => {
               </label>
               <input
                 type='date'
-                name='activationDate'
-                value={formData.activationDate}
+                name='employer_activation_date'
+                value={formData.employer_activation_date}
                 onChange={handleFormChange}
                 className={
-                  errors && errors.activationDate !== '' ? 'error' : ''
+                  errors && errors.employer_activation_date !== ''
+                    ? 'error'
+                    : ''
                 }
               />
-              {errors && errors.activationDate !== '' && (
+              {errors && errors.employer_activation_date !== '' && (
                 <label className='errorMessage' htmlFor='activationDateError'>
-                  {errors.activationDate}
+                  {errors.employer_activation_date}
                 </label>
               )}
             </div>
@@ -173,14 +162,16 @@ const NewEmployerForm = () => {
               </label>
               <input
                 type='date'
-                name='endDate'
-                value={formData.endDate}
+                name='subscription_end_date'
+                value={formData.subscription_end_date}
                 onChange={handleFormChange}
-                className={errors && errors.endDate !== '' ? 'error' : ''}
+                className={
+                  errors && errors.subscription_end_date !== '' ? 'error' : ''
+                }
               />
-              {errors && errors.endDate !== '' && (
+              {errors && errors.subscription_end_date !== '' && (
                 <label className='errorMessage' htmlFor='endDateError'>
-                  {errors.endDate}
+                  {errors.subscription_end_date}
                 </label>
               )}
             </div>
@@ -191,22 +182,22 @@ const NewEmployerForm = () => {
                 Auto - renew <span className='required'>*</span>
               </label>
               <select
-                name='autoRenew'
+                name='auto_renew'
                 id='selectMenu'
                 onChange={handleFormChange}
-                className={`${formData.autoRenew === '' ? 'grayColor' : ''} ${
-                  errors && errors.autoRenew !== '' ? 'error' : ''
+                className={`${formData.auto_renew === '' ? 'grayColor' : ''} ${
+                  errors && errors.auto_renew !== '' ? 'error' : ''
                 }`}
               >
                 <option disabled selected>
                   Select
                 </option>
-                <option value={true}>Yes</option>
-                <option value={false}>No</option>
+                <option value={'1'}>Yes</option>
+                <option value={'0'}>No</option>
               </select>
-              {errors && errors.autoRenew !== '' && (
+              {errors && errors.auto_renew !== '' && (
                 <label className='errorMessage' htmlFor='autoRenewError'>
-                  {errors.autoRenew}
+                  {errors.auto_renew}
                 </label>
               )}
             </div>
@@ -217,18 +208,18 @@ const NewEmployerForm = () => {
               <input
                 placeholder='Business name'
                 type='text'
-                name='businessName'
-                value={formData.businessName}
+                name='business_name'
+                value={formData.business_name}
                 onChange={handleFormChange}
                 className={
-                  errors && errors.businessName && errors.businessName !== ''
+                  errors && errors.business_name && errors.business_name !== ''
                     ? 'error'
                     : ''
                 }
               />
-              {errors && errors.businessName !== '' && (
+              {errors && errors.business_name !== '' && (
                 <label className='errorMessage' htmlFor='businessNameError'>
-                  {errors.businessName}
+                  {errors.business_name}
                 </label>
               )}
             </div>
@@ -241,23 +232,23 @@ const NewEmployerForm = () => {
               <input
                 placeholder='Business contact name'
                 type='text'
-                name='businessContactName'
-                value={formData.businessContactName}
+                name='business_contact_name'
+                value={formData.business_contact_name}
                 onChange={handleFormChange}
                 className={
                   errors &&
-                  errors.businessContactName &&
-                  errors.businessContactName !== ''
+                  errors.business_contact_name &&
+                  errors.business_contact_name !== ''
                     ? 'error'
                     : ''
                 }
               />
-              {errors && errors.businessContactName !== '' && (
+              {errors && errors.business_contact_name !== '' && (
                 <label
                   className='errorMessage'
                   htmlFor='businessContactNameError'
                 >
-                  {errors.businessContactName}
+                  {errors.business_contact_name}
                 </label>
               )}
             </div>
@@ -268,16 +259,20 @@ const NewEmployerForm = () => {
               <input
                 placeholder='Email id'
                 type='text'
-                name='email'
-                value={formData.email}
+                name='business_email_id'
+                value={formData.business_email_id}
                 className={
-                  errors && errors.email && errors.email !== '' ? 'error' : ''
+                  errors &&
+                  errors.business_email_id &&
+                  errors.business_email_id !== ''
+                    ? 'error'
+                    : ''
                 }
                 onChange={handleFormChange}
               />
-              {errors && errors.email !== '' && (
+              {errors && errors.business_email_id !== '' && (
                 <label className='errorMessage' htmlFor='emailError'>
-                  {errors.email}
+                  {errors.business_email_id}
                 </label>
               )}
             </div>
@@ -290,18 +285,18 @@ const NewEmployerForm = () => {
               <input
                 placeholder='Phone number'
                 type='text'
-                name='phoneNumber'
-                value={formData.phoneNumber}
+                name='phone_number'
+                value={formData.phone_number}
                 className={
-                  errors && errors.phoneNumber && errors.phoneNumber !== ''
+                  errors && errors.phone_number && errors.phone_number !== ''
                     ? 'error'
                     : ''
                 }
                 onChange={handleFormChange}
               />
-              {errors && errors.phoneNumber !== '' && (
+              {errors && errors.phone_number !== '' && (
                 <label className='errorMessage' htmlFor='phoneNumberError'>
-                  {errors.phoneNumber}
+                  {errors.phone_number}
                 </label>
               )}
             </div>
@@ -312,21 +307,19 @@ const NewEmployerForm = () => {
               <input
                 placeholder='GST number'
                 type='text'
-                name='gstNumber'
-                value={formData.gstNumber}
+                name='gst'
+                value={formData.gst}
                 className={
-                  errors && errors.gstNumber && errors.gstNumber !== ''
-                    ? 'error'
-                    : ''
+                  errors && errors.gst && errors.gst !== '' ? 'error' : ''
                 }
                 onChange={handleFormChange}
               />
-              {errors && errors.gstNumber !== '' && (
+              {errors && errors.gst !== '' && (
                 <label
                   className='errorMessage'
                   htmlFor='verificationReasonError'
                 >
-                  {errors.gstNumber}
+                  {errors.gst}
                 </label>
               )}
             </div>
@@ -338,15 +331,17 @@ const NewEmployerForm = () => {
               </label>
               <input
                 placeholder='Address'
-                type='texr'
-                name='addressLine1'
-                value={formData.addressLine1}
+                type='text'
+                name='business_address_line1'
+                value={formData.business_address_line1}
                 onChange={handleFormChange}
-                className={errors && errors.addressLine1 !== '' ? 'error' : ''}
+                className={
+                  errors && errors.business_address_line1 !== '' ? 'error' : ''
+                }
               />
-              {errors && errors.addressLine1 !== '' && (
+              {errors && errors.business_address_line1 !== '' && (
                 <label className='errorMessage' htmlFor='addressLine1Error'>
-                  {errors.addressLine1}
+                  {errors.business_address_line1}
                 </label>
               )}
             </div>
@@ -355,8 +350,8 @@ const NewEmployerForm = () => {
               <input
                 placeholder='Address'
                 type='text'
-                name='addressLine2'
-                value={formData.addressLine2}
+                name='business_address_line2'
+                value={formData.business_address_line2}
                 onChange={handleFormChange}
               />
             </div>
@@ -367,11 +362,11 @@ const NewEmployerForm = () => {
                 Country <span className='required'>*</span>
               </label>
               <select
-                name='country'
+                name='business_country'
                 onChange={handleChangeCountry}
-                className={`${formData.country === '' ? 'grayColor' : ''} ${
-                  errors && errors.country !== '' ? 'error' : ''
-                }`}
+                className={`${
+                  formData.business_country === '' ? 'grayColor' : ''
+                } ${errors && errors.business_country !== '' ? 'error' : ''}`}
               >
                 <option disabled selected className='demo-select'>
                   Select
@@ -386,9 +381,9 @@ const NewEmployerForm = () => {
                   </option>
                 ))}
               </select>
-              {errors && errors.country !== '' && (
+              {errors && errors.business_country !== '' && (
                 <label className='errorMessage' htmlFor='countryError'>
-                  {errors.country}
+                  {errors.business_country}
                 </label>
               )}
             </div>
@@ -397,26 +392,32 @@ const NewEmployerForm = () => {
                 State <span className='required'>*</span>
               </label>
               <select
-                name='state'
+                name='business_state'
                 onChange={handleChangeState}
-                disabled={!formData.country}
-                className={`${formData.state === '' ? 'grayColor' : ''} ${
-                  errors && errors.state && errors.state !== '' ? 'error' : ''
+                disabled={!formData.business_country}
+                className={`${
+                  formData.business_state === '' ? 'grayColor' : ''
+                } ${
+                  errors &&
+                  errors.business_state &&
+                  errors.business_state !== ''
+                    ? 'error'
+                    : ''
                 }`}
               >
                 <option disabled selected className='demo-select'>
                   Select
                 </option>
-                {formData.country !== '' &&
+                {formData.business_country !== '' &&
                   states.map((state) => (
                     <option key={state.isoCode} value={`${state.isoCode}`}>
                       {state.name}
                     </option>
                   ))}
               </select>
-              {errors && errors.state !== '' && (
+              {errors && errors.business_state !== '' && (
                 <label className='errorMessage' htmlFor='stateError'>
-                  {errors.state}
+                  {errors.business_state}
                 </label>
               )}
             </div>
@@ -427,26 +428,30 @@ const NewEmployerForm = () => {
                 City <span className='required'>*</span>
               </label>
               <select
-                name='city'
+                name='business_city'
                 onChange={handleFormChange}
-                disabled={!formData.state}
-                className={`${formData.city === '' ? 'grayColor' : ''} ${
-                  errors && errors.city && errors.city !== '' ? 'error' : ''
+                disabled={!formData.business_state}
+                className={`${
+                  formData.business_city === '' ? 'grayColor' : ''
+                } ${
+                  errors && errors.business_city && errors.business_city !== ''
+                    ? 'error'
+                    : ''
                 }`}
               >
                 <option disabled selected className='demo-select'>
                   Select
                 </option>
-                {formData.state !== '' &&
+                {formData.business_state !== '' &&
                   cities.map((city) => (
                     <option key={city.name} value={`${city.name}`}>
                       {city.name}
                     </option>
                   ))}
               </select>
-              {errors && errors.city !== '' && (
+              {errors && errors.business_city !== '' && (
                 <label className='errorMessage' htmlFor='cityError'>
-                  {errors.city}
+                  {errors.business_city}
                 </label>
               )}
             </div>
@@ -457,14 +462,16 @@ const NewEmployerForm = () => {
               <input
                 placeholder='Pin code'
                 type='text'
-                name='pincode'
-                value={formData.pincode}
+                name='business_pincode'
+                value={formData.business_pincode}
                 onChange={handleFormChange}
-                className={errors && errors.pincode !== '' ? 'error' : ''}
+                className={
+                  errors && errors.business_pincode !== '' ? 'error' : ''
+                }
               />
-              {errors && errors.pincode !== '' && (
+              {errors && errors.business_pincode !== '' && (
                 <label className='errorMessage' htmlFor='pincodeError'>
-                  {errors.pincode}
+                  {errors.business_pincode}
                 </label>
               )}
             </div>

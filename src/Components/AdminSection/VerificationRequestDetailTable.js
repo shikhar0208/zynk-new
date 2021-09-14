@@ -1,48 +1,10 @@
-import React,{useEffect} from 'react';
-// import { useHistory } from 'react-router-dom';
+import React from 'react';
+import moment from 'moment';
+
 import '../../Styles/AdminSection/VerifierDetailsTable.css';
-import axios from 'axios';
-const initialData = {
-        verification_request_id: 'abcd123',
-        verifier_zynk_id: 1, 
-        employer_zynk_id: 1, 
-        verification_creation_date: "2021-08-19T18:30:00.000Z", 
-        verification_completion_date: null, 
-        employee_id: "11", 
-        employee_full_name: "Shikhar Rastogi", 
-        aadhar_number: "123456789012", 
-        pan_number: "AAJPM1688J", 
-        employee_email_id: "shikhar.rastogi@gmail.com", 
-        employee_phone: "9812345678", 
-        internal_reference: "Loan for Kia Sonet", 
-        request_type: "I", 
-        salary_range: "1", 
-        verification_reason: "2", 
-        report_url: null, 
-        verifying_employer: null, 
-        last_update: "2021-08-19T19:29:33.000Z", 
-        updated_by: "admin" 
-};
 
-const VerificationRequestDetailTable = () => {
-  // const history = useHistory();
-  
-  useEffect(() => {
-    
-    axios.post('./all-verification-requests')
-      .then((res) => {
-        
-        /* we get an array of all the  verification requests. */
-        /* for all the values in the initial data , create a row for each request */
-
-        console.log('success');
-      }, (e) => {
-        console.log(e);
-    });
-
-  }, []);
-
-
+const VerificationRequestDetailTable = (props) => {
+  const { requestDetails } = props;
   return (
     <div className='admin-table-container'>
       <div className='admin-rowview'>
@@ -75,138 +37,44 @@ const VerificationRequestDetailTable = () => {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>Content 1</td>
-              <td>Content 1</td>
-              <td>Content 1</td>
-              <td>Content 1</td>
-              <td>Content 1</td>
-              <td>Content 1</td>
-              <td>Content 1</td>
-              <td>Content 1</td>
-              <td>Content 1</td>
-              <td>Content 1</td>
-              <td>Content 1</td>
-              <td>Content 1</td>
-              <td>Content 1</td>
-              <td>Content 1</td>
-              <td>Content 1</td>
-              <td>Content 1</td>
-              <td>Content 1</td>
-              <td>Content 1</td>
-              <td>Content 1</td>
-              <td>Content 1</td>
-            </tr>
-            <tr>
-              <td>Content 2</td>
-              <td>Content 2</td>
-              <td>Content 2</td>
-              <td>Content 2</td>
-              <td>Content 2</td>
-              <td>Content 2</td>
-              <td>Content 2</td>
-              <td>Content 2</td>
-              <td>Content 2</td>
-              <td>Content 2</td>
-              <td>Content 2</td>
-              <td>Content 2</td>
-              <td>Content 2</td>
-              <td>Content 2</td>
-              <td>Content 2</td>
-              <td>Content 2</td>
-              <td>Content 2</td>
-              <td>Content 2</td>
-              <td>Content 2</td>
-              <td>Content 2</td>
-            </tr>
-            <tr>
-              <td>Content 3</td>
-              <td>Content 3</td>
-              <td>Content 3</td>
-              <td>Content 3</td>
-              <td>Content 3</td>
-              <td>Content 3</td>
-              <td>Content 3</td>
-              <td>Content 3</td>
-              <td>Content 3</td>
-              <td>Content 3</td>
-              <td>Content 3</td>
-              <td>Content 3</td>
-              <td>Content 3</td>
-              <td>Content 3</td>
-              <td>Content 3</td>
-              <td>Content 3</td>
-              <td>Content 3</td>
-              <td>Content 3</td>
-              <td>Content 3</td>
-              <td>Content 3</td>
-            </tr>
-            <tr>
-              <td>Content 4</td>
-              <td>Content 4</td>
-              <td>Content 4</td>
-              <td>Content 4</td>
-              <td>Content 4</td>
-              <td>Content 4</td>
-              <td>Content 4</td>
-              <td>Content 4</td>
-              <td>Content 4</td>
-              <td>Content 4</td>
-              <td>Content 4</td>
-              <td>Content 4</td>
-              <td>Content 4</td>
-              <td>Content 4</td>
-              <td>Content 4</td>
-              <td>Content 4</td>
-              <td>Content 4</td>
-              <td>Content 4</td>
-              <td>Content 4</td>
-              <td>Content 4</td>
-            </tr>
-            <tr>
-              <td>Content 5</td>
-              <td>Content 5</td>
-              <td>Content 5</td>
-              <td>Content 5</td>
-              <td>Content 5</td>
-              <td>Content 5</td>
-              <td>Content 5</td>
-              <td>Content 5</td>
-              <td>Content 5</td>
-              <td>Content 5</td>
-              <td>Content 5</td>
-              <td>Content 5</td>
-              <td>Content 5</td>
-              <td>Content 5</td>
-              <td>Content 5</td>
-              <td>Content 5</td>
-              <td>Content 5</td>
-              <td>Content 5</td>
-              <td>Content 5</td>
-              <td>Content 5</td>
-            </tr>
-            <tr>
-              <td>Content 6</td>
-              <td>Content 6</td>
-              <td>Content 6</td>
-              <td>Content 6</td>
-              <td>Content 6</td>
-              <td>Content 6</td>
-              <td>Content 6</td>
-              <td>Content 6</td>
-              <td>Content 6</td>
-              <td>Content 6</td>
-              <td>Content 6</td>
-              <td>Content 6</td>
-              <td>Content 6</td>
-              <td>Content 6</td>
-              <td>Content 6</td>
-              <td>Content 6</td>
-              <td>Content 6</td>
-              <td>Content 6</td>
-              <td>Content 6</td>
-              <td>Content 6</td>
-            </tr>
+            {requestDetails.map((req) => (
+              <tr key={req.verification_request_id}>
+                <td>{req.verification_request_id}</td>
+                <td>{req.verifier_zynk_id}</td>
+                <td>{req.employer_zynk_id}</td>
+                <td>
+                  {req.verification_creation_date
+                    ? moment(req.verification_creation_date).format(
+                        'DD/MM/YYYY'
+                      )
+                    : 'NA'}
+                </td>
+                <td>
+                  {req.verification_completion_date
+                    ? moment(req.verification_completion_date).format(
+                        'DD/MM/YYYY'
+                      )
+                    : 'NA'}
+                </td>
+                <td>{req.employee_full_name}</td>
+                <td>{req.aadhar_number}</td>
+                <td>{req.pan_number}</td>
+                <td>{req.employee_email_id}</td>
+                <td>{req.employee_phone}</td>
+                <td>{req.internal_reference}</td>
+                <td>{req.request_type === 'I' ? 'Individual' : 'Business'}</td>
+                <td>{req.salary_range}</td>
+                <td>{req.verification_reason}</td>
+                <td>{req.employee_id}</td>
+                <td>{'content'}</td>
+                <td>{'content'}</td>
+                <td>{moment(req.last_update).format('MMM Do YYYY, h:mm a')}</td>
+                <td>{req.updated_by}</td>
+                <td>
+                  {req.verifying_employer ? req.verifying_employer : 'NA'}
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>

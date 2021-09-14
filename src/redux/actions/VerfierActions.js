@@ -10,15 +10,16 @@ import {
 export const verifierSignup = (signupData, history) => async (dispatch) => {
   try {
     const { data } = await api.verifierSignup(signupData);
-    if (data?.response === 0) {
-      console.log(data.message);
-    } else {
+    if (data?.verifier_zynk_id) {
       const response = await api.getVerifierDetails(data.verifier_zynk_id);
       dispatch({
         type: VERIFIER_SIGNUP,
         payload: { verifierDetails: response.data },
       });
       history.push('/verifier-dashboard');
+      // console.log(response);
+    } else {
+      console.log(data.message);
     }
   } catch (err) {
     const message = err?.response?.data?.message

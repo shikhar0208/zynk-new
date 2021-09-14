@@ -27,7 +27,9 @@ export const validator = (details, requiredFields) => {
 
     // email is correct or not
     else if (
-      (field === 'email' || field === 'email_id') &&
+      (field === 'email' ||
+        field === 'email_id' ||
+        field === 'business_email_id') &&
       !isEmail(details[field])
     ) {
       errorObj[field] = details[field] ? 'Invalid email' : 'Field is required';

@@ -71,8 +71,10 @@
 /* Table Styles */
 .admin-table-wrapper {
   max-width: 90%;
+  min-height: 20vh;
+  max-height: 50vh;
   margin: auto;
-  overflow-x: auto;
+  overflow: auto;
   margin-top: 2rem;
   box-shadow: 0px 12px 25px rgba(0, 0, 0, 0.3);
 }

@@ -1,19 +1,22 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { validator } from '../../utils/helperFunctions';
+import { useDispatch } from 'react-redux';
 
+import { adminLogin } from '../../redux/actions/AdminActions';
 import '../../Styles/AdminLogin.css';
-import axios from 'axios';
 
 const initialData = {
-  email: '',
+  email_id: '',
   password: '',
 };
 
 const AdminLogin = () => {
   const [formData, setFormData] = useState(initialData);
   const [errors, setErrors] = useState(null);
+
   const history = useHistory();
+  const dispatch = useDispatch();
 
   const handleFormChange = (e) => {
     const { name } = e.target;
@@ -25,21 +28,11 @@ const AdminLogin = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const requiredFields = ['email', 'password'];
+    const requiredFields = ['email_id'];
     const flag = validator(formData, requiredFields);
     if (flag === true) {
-      axios.post('./admin-login', {
-        "email-id": formData.email,
-        "password": formData.password
-      })
-        .then((response) => {
-          console.log('success');
-        }, (error) => {
-          console.log(error);
-      });
-      
       setErrors(null);
-      history.push('/admin/dashboard');
+      dispatch(adminLogin(formData, history));
     } else {
       setErrors(flag);
     }
@@ -60,14 +53,14 @@ const AdminLogin = () => {
             <input
               placeholder='Email'
               type='text'
-              name='email'
-              value={formData.email}
+              name='email_id'
+              value={formData.email_id}
               onChange={handleFormChange}
-              className={errors && errors.email !== '' ? 'error' : ''}
+              className={errors && errors.email_id !== '' ? 'error' : ''}
             />
-            {errors && errors.email !== '' && (
+            {errors && errors.email_id !== '' && (
               <label className='errorMessage' htmlFor='emailError'>
-                {errors.email}
+                {errors.email_id}
               </label>
             )}
           </div>
