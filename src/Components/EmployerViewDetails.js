@@ -2,7 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import Popup from './Popup';
-
+import {
+  verificationReason,
+  requestType,
+  salaryRange,
+} from '../utils/helperFunctions';
 import { getEmployerVerifications } from '../redux/actions/EmployerActions';
 import { getAllVerifiers } from '../redux/actions/api';
 import '../Styles/VerifierViewDetails.css';
@@ -18,7 +22,7 @@ const EmployerViewDetails = (props) => {
   const [verifiers, setVerifiers] = useState([]);
   const [isPopup, setIsPopup] = useState(false);
   const [boolVal, setBoolVal] = useState(false);
-  // const [fieldValues, setFieldValues] = useState([]);
+  const [fieldValues, setFieldValues] = useState([]);
   useEffect(() => {
     const getVerifiers = async () => {
       const res = await getAllVerifiers();
@@ -37,7 +41,24 @@ const EmployerViewDetails = (props) => {
     history.push('/employer-dashboard');
   };
 
-  const handleOpenPopup = () => {
+  const handleOpenPopup = (data) => {
+    const values = [
+      data.verification_request_id,
+      'verifier name',
+      data.employee_id,
+      data.employee_full_name,
+      salaryRange[data.salary_range],
+      data.verifying_employer,
+      verificationReason[data.verification_reason],
+      'status',
+      'employee rejection',
+      requestType[data.request_type],
+      moment(data.verification_creation_date).format('DD/MM/YYYY'),
+      data.verification_completion_date
+        ? moment(data.verification_completion_date).format('DD/MM/YYYY')
+        : 'NA',
+    ];
+    setFieldValues(values);
     setIsPopup(true);
   };
 
@@ -57,24 +78,12 @@ const EmployerViewDetails = (props) => {
     'Employee name',
     'Salary range',
     'Verifying employer',
+    'Verification reason',
     'Status',
     'Employee rejection reason',
     'Request type',
     'Creation date',
     'Completion date',
-  ];
-  const fieldValues = [
-    'Content 1',
-    'Content 1',
-    'Content 1',
-    'Content 1',
-    'Content 1',
-    'Content 1',
-    'Content 1',
-    'Content 1',
-    'Content 1',
-    'Content 1',
-    'Content 1',
   ];
 
   return (
@@ -105,19 +114,19 @@ const EmployerViewDetails = (props) => {
           </thead>
           <tbody>
             {verificationDetails.map((row) => (
-              <tr onClick={handleOpenPopup}>
+              <tr onClick={() => handleOpenPopup(row)}>
                 <td>{row.verification_request_id}</td>
                 <td>{'content'}</td>
                 <td>{row.employee_id}</td>
                 <td>{row.employee_full_name}</td>
-                <td>{row.salary_range}</td>
+                <td>{salaryRange[row.salary_range]}</td>
                 <td>
                   {row.verifying_employer ? row.verifying_employer : 'Null'}
                 </td>
-                <td>{row.verification_reason}</td>
+                <td>{verificationReason[row.verification_reason]}</td>
                 <td>{'content'}</td>
                 <td>{'content'}</td>
-                <td>{row.request_type}</td>
+                <td>{requestType[row.request_type]}</td>
                 <td>
                   {moment(row.verification_creation_date).format('DD/MM/YYYY')}
                 </td>

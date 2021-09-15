@@ -379,9 +379,9 @@ const NewVerificationRequest = (props) => {
                   Select
                 </option>
                 <option value='1'>1 month</option>
-                <option value='3'>3 months</option>
-                <option value='6'>6 months</option>
-                <option value='Y'>12 months</option>
+                <option value='2'>3 months</option>
+                <option value='3'>6 months</option>
+                <option value='4'>12 months</option>
               </select>
               {errors && errors.salary_range !== '' && (
                 <label className='errorMessage' htmlFor='salaryRangeError'>

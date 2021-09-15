@@ -2,7 +2,11 @@ import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-
+import {
+  verificationReason,
+  requestType,
+  salaryRange,
+} from '../utils/helperFunctions';
 import { getVerificationDetails } from '../redux/actions/VerfierActions';
 import Popup from './Popup';
 import '../Styles/VerifierViewDetails.css';
@@ -36,9 +40,9 @@ const VerifierViewDetails = () => {
       data.internal_reference,
       'employerName',
       data.employee_full_name,
-      data.verification_reason,
-      data.request_type,
-      data.salary_range,
+      verificationReason[data.verification_reason],
+      requestType[data.request_type],
+      salaryRange[data.salary_range],
       'status',
       'rejectionReason',
       moment(data.verification_creation_date).format('DD/MM/YYYY'),
@@ -115,9 +119,9 @@ const VerifierViewDetails = () => {
                 <td>{row.internal_reference}</td>
                 <td>{'content'}</td>
                 <td>{row.employee_full_name}</td>
-                <td>{row.verification_reason}</td>
-                <td>{row.request_type}</td>
-                <td>{row.salary_range}</td>
+                <td>{verificationReason[row.verification_reason]}</td>
+                <td>{requestType[row.request_type]}</td>
+                <td>{salaryRange[row.salary_range]}</td>
                 <td>{'content'}</td>
                 <td>{'content'}</td>
                 <td>

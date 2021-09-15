@@ -63,14 +63,14 @@
 }
 
 .popup-list .key {
-  width: 60%;
+  width: 55%;
   word-wrap: break-word;
   margin: 10px 0;
   text-align: left;
 }
 
 .popup-list .value {
-  width: 35%;
+  width: 40%;
   word-wrap: break-word;
   text-align: left;
   margin: 10px 0;

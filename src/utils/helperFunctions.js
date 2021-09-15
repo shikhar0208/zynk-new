@@ -133,3 +133,25 @@ export const validator = (details, requiredFields) => {
     return errorObj;
   }
 };
+
+export const verificationReason = {
+  1: 'Credit application',
+  2: 'Credit - Re-verification',
+  3: 'Pre-employment screening',
+  4: 'Property rental',
+  5: 'Visa application',
+  6: 'Insurance application',
+  7: 'Other',
+};
+
+export const requestType = {
+  I: 'Employment and income',
+  E: 'Employment only',
+};
+
+export const salaryRange = {
+  1: '1 month',
+  2: '3 months',
+  3: '6 months',
+  4: '12 months',
+};
