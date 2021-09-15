@@ -13,9 +13,11 @@ const API = axios.create({
 // });
 
 // Verifier Routes
-// export const getUser = () => API.get('/api/user/profile');
 export const verifierLogin = (loginData) =>
   API.post('/verifier-login', loginData);
+
+export const uploadAttachment = (data) => API.post('/upload-attachment', data);
+
 export const verifierSignup = (signupData) =>
   API.post('/verifier-sign-up', signupData);
 
@@ -38,10 +40,17 @@ export const updateVerifierDetails = (id, changes) =>
     ...changes,
   });
 
-export const getAllEmployer = () => API.post('/all-employers');
+export const submitNewVerification = (formData) => {
+  API.post('/submit-new-verification', formData);
+};
 
-// export const updateUserDetails = (updates) =>
-//   API.put('/api/user/update', updates);
+export const getEmployers = () => API.post('/get-employers');
+
+export const getVerificationOrder = (formData) =>
+  API.post('/get-verification-detail-order', formData);
+
+export const purchaseNewVerification = (formData) =>
+  API.post('/purchase-new-verification', formData);
 
 // Employer routes
 export const employerLogin = (loginData) =>
@@ -66,6 +75,9 @@ export const getVerificationSummaryByReason = (id) =>
     employer_zynk_id: id,
   });
 
+export const uploadVerificationDetails = (fileData) =>
+  API.post('/upload-verification-details', fileData);
+
 //Admin Routes
 export const adminLogin = (formData) => API.post('/admin-login', formData);
 export const adminStats = () => API.post('/admin-stats');
@@ -79,58 +91,3 @@ export const getVerificationRequestDetails = () =>
 export const getVerificationStatuses = () =>
   API.post('all-verification-statuses');
 export const getAllExtracts = () => API.post('/all-extracts');
-
-// // Forgot password
-// export const forgotPasswordEmail = (formData) =>
-//   API.post('/api/auth/forgotpassword', formData);
-
-// // Reset password
-// export const resetPassword = (formData) =>
-//   API.post('/api/auth/newpassword', formData);
-
-// // Courses Routes
-// export const getAllCourses = () => API.get('/admin/courses/all');
-// export const getUserCourses = () => API.get('/api/courses/self');
-
-// // Board Routes
-// export const getAllBoards = () => API.get('/admin/boards/all');
-
-// // Standard Routes
-// export const getAllStandards = () => API.get('/admin/standards/all');
-
-// // Testimonial Routes
-// export const getAllTestimonials = () => API.get('/api/testimonials');
-
-// // Event Routes
-// export const getAllEvents = () => API.get('/api/events/all');
-// export const getUserEvents = () => API.get('/api/events/self');
-// export const makeSubmission = (id, formData) =>
-//   API.post(`/api/submit/${id}`, formData);
-// export const editSubmission = (id, formData) =>
-//   API.post(`/api/submit/edit/${id}`, formData);
-
-// export const checkSubmission = (eventId) =>
-//   API.get(`/api/user/submission/${eventId}`);
-
-// // Workshop Routes
-// export const getAllWorkshops = () => API.get('/api/workshops/all');
-// export const getUserWorkshops = () => API.get('/api/workshops/self');
-
-// // Blog Routes
-// export const getAllBlogs = () => API.get('/api/blogs/all');
-
-// // Help email Routes
-// export const helpMail = (formData) => API.post('/api/connect', formData);
-
-// // Payment Routes
-// export const buyCourse = (id, formData) =>
-//   API.post(`/api/course/purchase/${id}`, formData);
-// export const buyEvent = (id, formData) =>
-//   API.post(`/api/event/purchase/${id}`, formData);
-// export const buyWorkshop = (id) => API.post(`/api/workshop/purchase/${id}`);
-// export const verifyCoursePayment = (paymentData) =>
-//   API.post('/course/verify-payment', paymentData);
-// export const verifyEventPayment = (paymentData) =>
-//   API.post('/event/verify-payment', paymentData);
-// export const verifyWorkshopPayment = (paymentData) =>
-//   API.post('/workshop/verify-payment', paymentData);

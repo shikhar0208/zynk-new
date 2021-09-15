@@ -31,6 +31,7 @@ export const getEmployerVerifications = (id) => async (dispatch) => {
       payload: data,
     });
     // console.log(data);
+    return data;
   } catch (err) {
     const message = err?.response?.data?.message
       ? err.response.data.message
@@ -53,6 +54,15 @@ export const updateEmployerDetails = (id, updates) => async (dispatch) => {
       ? err.response.data.message
       : 'Something went wrong';
     console.log(message);
+  }
+};
+
+export const uploadVerificationDetails = (fileData) => async (dispatch) => {
+  try {
+    const { data } = await api.uploadVerificationDetails(fileData);
+    console.log(data);
+  } catch (err) {
+    console.log('something went wrong');
   }
 };
 

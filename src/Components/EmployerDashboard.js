@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 import { DateRangePickerComponent } from '@syncfusion/ej2-react-calendars';
 import '../Styles/EmployerDashboard.css';
 
 import { getVerificationSummaryByReason } from '../redux/actions/api';
+import { getEmployerVerifications } from '../redux/actions/EmployerActions';
 
 import EmployerReasonChart from './EmployerReasonChart';
 import EmployerPeriodChart from './EmployerPeriodChart';
 
 const EmployerDashboard = () => {
   const history = useHistory();
+  const dispatch = useDispatch();
   const { employer_zynk_id } = useSelector(
     (store) => store.employerReducer?.employerData
   );
@@ -19,6 +21,8 @@ const EmployerDashboard = () => {
 
   const [boolVal, setBoolVal] = useState(false);
   const [reasonSummary, setReasonSummary] = useState({});
+  const [monthData, setMonthData] = useState([]);
+
   const [totalVerifications, setTotalVerifications] = useState(0);
 
   useEffect(() => {
@@ -33,16 +37,30 @@ const EmployerDashboard = () => {
       setTotalVerifications(total);
     };
 
+    const countMonthly = (res) => {
+      let months = new Array(12).fill(0);
+      res.forEach((ele) => {
+        months[new Date(ele.verification_creation_date).getMonth()] += 1;
+      });
+      setMonthData(months);
+      // console.log(res);
+    };
+
     const fetchData = async () => {
       const { data } = await getVerificationSummaryByReason(employer_zynk_id);
+
       setReasonSummary(data);
+
       countVerifications(data);
     };
     if (!boolVal) {
       fetchData();
+      dispatch(getEmployerVerifications(employer_zynk_id)).then((res) =>
+        countMonthly(res)
+      );
       setBoolVal(true);
     }
-  }, [boolVal, employer_zynk_id]);
+  }, [boolVal, employer_zynk_id, dispatch]);
 
   const handleViewDetails = () => {
     history.push('/employer-verification-details');
@@ -88,7 +106,7 @@ const EmployerDashboard = () => {
         <div className='employer-charts-div'>
           {/*<PieChart2 />*/}
 
-          <EmployerPeriodChart />
+          <EmployerPeriodChart details={monthData} />
         </div>
       </div>
       <div className='horizontal-line'></div>

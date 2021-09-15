@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import Popup from './Popup';
 
 import { getEmployerVerifications } from '../redux/actions/EmployerActions';
-
+import { getAllVerifiers } from '../redux/actions/api';
 import '../Styles/VerifierViewDetails.css';
 import moment from 'moment';
 
@@ -15,12 +15,18 @@ const EmployerViewDetails = (props) => {
 
   const history = useHistory();
   const dispatch = useDispatch();
+  const [verifiers, setVerifiers] = useState([]);
   const [isPopup, setIsPopup] = useState(false);
   const [boolVal, setBoolVal] = useState(false);
   // const [fieldValues, setFieldValues] = useState([]);
   useEffect(() => {
+    const getVerifiers = async () => {
+      const res = await getAllVerifiers();
+      setVerifiers(res.data);
+    };
     if (!boolVal) {
       dispatch(getEmployerVerifications(employer_zynk_id));
+      getVerifiers();
       setBoolVal(true);
     }
   }, [boolVal, dispatch, employer_zynk_id]);
@@ -37,6 +43,11 @@ const EmployerViewDetails = (props) => {
 
   const handleClosePopup = () => {
     setIsPopup(false);
+  };
+
+  const findVerifierName = (verifierId) => {
+    const verifier = verifiers.filter((v) => v.verifier_zynk_id === verifierId);
+    return verifier.verifier_name;
   };
 
   const fields = [

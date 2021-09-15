@@ -10,6 +10,7 @@ import {
 export const verifierSignup = (signupData, history) => async (dispatch) => {
   try {
     const { data } = await api.verifierSignup(signupData);
+    console.log(data);
     if (data?.verifier_zynk_id) {
       const response = await api.getVerifierDetails(data.verifier_zynk_id);
       dispatch({
@@ -69,7 +70,8 @@ export const getVerificationDetails = (id) => async (dispatch) => {
       type: GET_ALL_VERIFICATIONS_DETAILS,
       payload: data,
     });
-    console.log(data);
+    // console.log(data);
+    return data;
   } catch (err) {
     const message = err?.response?.data?.message
       ? err.response.data.message

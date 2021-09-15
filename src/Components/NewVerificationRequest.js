@@ -1,10 +1,16 @@
 import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
+
 import { validator } from '../utils/helperFunctions';
-import { getAllEmployer } from '../redux/actions/api';
+import {
+  getEmployers,
+  getVerificationOrder,
+  purchaseNewVerification,
+} from '../redux/actions/api';
+
 import '../Styles/NewVerificationRequest.css';
-import axios from 'axios';
+
 const initialData = {
-  employerName: '',
   employer_zynk_id: '',
   employee_full_name: '',
   employee_id: '',
@@ -18,24 +24,106 @@ const initialData = {
   verification_reason: '',
 };
 
+function loadScript(src) {
+  return new Promise((resolve) => {
+    const script = document.createElement('script');
+    script.src = src;
+    script.onload = () => {
+      resolve(true);
+    };
+    script.onerror = () => {
+      resolve(false);
+    };
+    document.body.appendChild(script);
+  });
+}
+
 const NewVerificationRequest = (props) => {
   const [formData, setFormData] = useState(initialData);
   const [errors, setErrors] = useState(null);
   const [boolVal, setBoolVal] = useState(false);
+  const [allEmployers, setAllEmployers] = useState([]);
 
-  useEffect(async () => {
+  const { verifier_zynk_id } = useSelector(
+    (store) => store.verifierReducer?.verifierData
+  );
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const { data } = await getEmployers();
+      setAllEmployers(data);
+    };
     if (!boolVal) {
-      const allEmployers = await getAllEmployer();
-      console.log(allEmployers);
+      fetchData();
+      setBoolVal(true);
     }
-  }, []);
+  }, [boolVal]);
 
   var requiredFields = [
-    'employerName',
+    'employer_zynk_id',
     'employee_full_name',
     'request_type',
     'verification_reason',
+    'employee_id',
   ];
+
+  const displayRazorpay = async () => {
+    const res = await loadScript(
+      'https://checkout.razorpay.com/v1/checkout.js'
+    );
+
+    if (!res) {
+      alert('Razorpay SDK failed to load. Are you online?');
+    }
+
+    const { data } = await getVerificationOrder({
+      employee_id: formData.employee_id,
+      verifier_zynk_id: verifier_zynk_id,
+    });
+    // console.log(data);
+    const options = {
+      key: 'rzp_test_k2yCzup0pdGZjg',
+      currency: data.currency,
+      amount: data.amount.toString(),
+      order_id: data.id,
+      name: 'Donation',
+      description: 'Thank you for nothing. Please give us some money',
+      handler: async function (response) {
+        console.log('response of razorPay ', response);
+        const datatoserver = {
+          orderCreationId: data.id,
+          razorpayPaymentId: response.razorpay_payment_id,
+          razorpayOrderId: response.razorpay_order_id,
+          razorpaySignature: response.razorpay_signature,
+          verifier_zynk_id: verifier_zynk_id,
+          employer_zynk_id: formData.employer_zynk_id,
+          employee_full_name: formData.employee_full_name,
+          employee_id: formData.employee_id,
+          aadhar_number: formData.aadhar_number,
+          pan_number: formData.pan_number,
+          employee_email_id: formData.employee_email_id,
+          employee_phone: formData.employee_phone,
+          internal_reference: formData.internal_reference,
+          request_type: formData.request_type,
+          salary_range: formData.salary_range,
+          verification_reason: formData.verification_reason,
+          verifying_employer: formData.verifying_employer,
+        };
+
+        const result = await purchaseNewVerification(datatoserver).then(() =>
+          props.closeModal()
+        );
+        console.log(result);
+      },
+      prefill: {
+        name: 'Snehangshu',
+        email: 'text@example.com',
+        phone_number: '9899999999',
+      },
+    };
+    const paymentObject = new window.Razorpay(options);
+    paymentObject.open();
+  };
 
   const handleFormChange = (e) => {
     const { name } = e.target;
@@ -53,47 +141,9 @@ const NewVerificationRequest = (props) => {
 
     const flag = validator(formData, requiredFields);
     if (flag === true) {
-      var employer_id = null;
-      axios.post('./all-employers', {}).then(
-        (response) => {
-          /* gots to map through the response. */
-          response.data.map((element) => {
-            if (element.business_email_id === formData.business_email_id) {
-              employer_id = element.employer_zynk_id;
-            }
-          });
-        },
-        (err) => {
-          console.log(err);
-        }
-      );
-
-      axios
-        .post('./submit-new-verification', {
-          'verifier-zynk-id': props.verifier_zynk_id,
-          employer_zynk_id: employer_id,
-          employee_full_name: formData.employeeName,
-          employee_id: formData.employeeID,
-          aadhar_number: formData.aadhaarNumber,
-          pan_number: formData.panNumber,
-          employee_email_id: formData.email,
-          employee_phone: formData.phoneNumber,
-          internal_reference: formData.internalReference,
-          request_type: formData.requestType,
-          salary_range: formData.salaryRange,
-          verification_reason: formData.verificationReason,
-        })
-        .then(
-          (response) => {
-            /* i get the verification request ID */
-            console.log('success');
-          },
-          (err) => {
-            console.log(err);
-          }
-        );
       setErrors(null);
-      alert('Request Submitted');
+      // const verificationDetails = { ...formData, verifier_zynk_id };
+      displayRazorpay();
     } else {
       setErrors(flag);
     }
@@ -112,45 +162,66 @@ const NewVerificationRequest = (props) => {
                 Employer name <span className='required'>*</span>
               </label>
               <select
-                name='employerName'
+                name='employer_zynk_id'
                 id='selectMenu'
                 onChange={handleFormChange}
                 className={`${
-                  formData.employerName === '' ? 'grayColor' : ''
-                } ${errors && errors.employerName !== '' ? 'error' : ''}`}
+                  formData.employer_zynk_id === '' ? 'grayColor' : ''
+                } ${errors && errors.employer_zynk_id !== '' ? 'error' : ''}`}
               >
                 <option disabled selected>
                   Select
                 </option>
-                <option value='employer1'>Employer 1</option>
-                <option value='employer2'>Employer 2</option>
+                {allEmployers.map((employer) => (
+                  <option value={employer.employer_zynk_id}>
+                    {employer.business_name}
+                  </option>
+                ))}
               </select>
-              {errors && errors.employerName !== '' && (
-                <label className='errorMessage' htmlFor='employerNameError'>
-                  {errors.employerName}
+              {errors && errors.employer_zynk_id !== '' && (
+                <label className='errorMessage' htmlFor='employerZynkIdError'>
+                  {errors.employer_zynk_id}
                 </label>
               )}
             </div>
             <div className='columnWise'>
-              <label htmlFor='employeeName'>
-                Employee full name <span className='required'>*</span>
+              <label htmlFor='employeeID'>
+                Employee id <span className='required'>*</span>
               </label>
               <input
-                placeholder='Employee name'
+                placeholder='Employee id'
                 type='text'
-                name='employee_full_name'
-                value={formData.employee_full_name}
+                name='employee_id'
+                value={formData.employee_id}
                 onChange={handleFormChange}
-                className={
-                  errors && errors.employee_full_name !== '' ? 'error' : ''
-                }
+                className={errors && errors.employee_id !== '' ? 'error' : ''}
               />
-              {errors && errors.employee_full_name !== '' && (
-                <label className='errorMessage' htmlFor='employeeNameError'>
-                  {errors.employee_full_name}
+              {errors && errors.employee_id !== '' && (
+                <label className='errorMessage' htmlFor='employeeIDError'>
+                  {errors.employee_id}
                 </label>
               )}
             </div>
+          </div>
+          <div className='columnWise'>
+            <label htmlFor='employeeName'>
+              Employee full name <span className='required'>*</span>
+            </label>
+            <input
+              placeholder='Employee full name'
+              type='text'
+              name='employee_full_name'
+              value={formData.employee_full_name}
+              onChange={handleFormChange}
+              className={
+                errors && errors.employee_full_name !== '' ? 'error' : ''
+              }
+            />
+            {errors && errors.employee_full_name !== '' && (
+              <label className='errorMessage' htmlFor='employeeFullNameError'>
+                {errors.employee_full_name}
+              </label>
+            )}
           </div>
           <div className='rowWise'>
             <div className='columnWise'>

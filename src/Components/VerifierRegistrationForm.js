@@ -5,9 +5,10 @@ import { validator } from '../utils/helperFunctions';
 import { useDispatch } from 'react-redux';
 
 import { verifierSignup } from '../redux/actions/VerfierActions';
+import { uploadAttachment } from '../redux/actions/api';
 
 import '../Styles/VerifierRegistrationForm.css';
-/* set schema for our formData hook */
+
 const initialData = {
   entity_type: '',
   verifier_name: '',
@@ -31,6 +32,7 @@ const VerifierRegistrationForm = (props) => {
   const history = useHistory();
   const dispatch = useDispatch();
   const [formData, setFormData] = useState(initialData);
+  const [image, setImage] = useState({ govt_id_attachment: '' });
   const [states, setStates] = useState('');
   const [cities, setCities] = useState('');
   const [errors, setErrors] = useState(null);
@@ -88,6 +90,19 @@ const VerifierRegistrationForm = (props) => {
 
   const handleSwitch = () => {
     history.push('/login');
+  };
+
+  const handleImageUpload = async (e) => {
+    const { name } = e.target;
+    let file = e.target.files[0];
+    setImage({ ...image, [name]: e.target.value });
+    const imageData = new FormData();
+    imageData.append('govt_id', file);
+    const { data } = await uploadAttachment(imageData);
+    setFormData({ ...formData, govt_id_attachment: data.key });
+    if (errors) {
+      setErrors({ ...errors, [name]: '' });
+    }
   };
 
   const handleSubmit = (e) => {
@@ -452,8 +467,8 @@ const VerifierRegistrationForm = (props) => {
             <input
               type='file'
               name='govt_id_attachment'
-              value={formData.govt_id_attachment}
-              onChange={handleFormChange}
+              value={image.govt_id_attachment}
+              onChange={handleImageUpload}
               className={
                 errors &&
                 errors.govt_id_attachment &&

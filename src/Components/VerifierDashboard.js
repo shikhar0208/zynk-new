@@ -1,7 +1,7 @@
 import React, { useState, Fragment, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-
+import { useSelector, useDispatch } from 'react-redux';
+import { getVerificationDetails } from '../redux/actions/VerfierActions';
 import NewVerificationRequest from './NewVerificationRequest';
 import VerifierStatusChart from './VerifierStatusChart';
 import VerifierPeriodChart from './VerifierPeriodChart';
@@ -11,6 +11,8 @@ import { getVerificationSummaryByStatus } from '../redux/actions/api';
 
 const VerifierDashboard = () => {
   const history = useHistory();
+  const dispatch = useDispatch();
+
   const { verifier_zynk_id } = useSelector(
     (store) => store.verifierReducer?.verifierData
   );
@@ -18,17 +20,28 @@ const VerifierDashboard = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [boolVal, setBoolVal] = useState(false);
   const [statusSummary, setStatusSummary] = useState({});
+  const [monthData, setMonthData] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       const { data } = await getVerificationSummaryByStatus(verifier_zynk_id);
       setStatusSummary(data);
     };
+    const countMonthly = (res) => {
+      let months = new Array(12).fill(0);
+      res.forEach((ele) => {
+        months[new Date(ele.verification_creation_date).getMonth()] += 1;
+      });
+      setMonthData(months);
+    };
     if (!boolVal) {
       fetchData();
+      dispatch(getVerificationDetails(verifier_zynk_id)).then((res) =>
+        countMonthly(res)
+      );
       setBoolVal(true);
     }
-  }, [boolVal, verifier_zynk_id]);
+  }, [boolVal, verifier_zynk_id, dispatch]);
 
   const handleOpenModal = () => {
     setIsOpen(true);
@@ -45,10 +58,7 @@ const VerifierDashboard = () => {
   return (
     <Fragment>
       {isOpen ? (
-        <NewVerificationRequest
-          closeModal={handleCloseModal}
-          verifier_zynk_id={verifier_zynk_id}
-        />
+        <NewVerificationRequest closeModal={handleCloseModal} />
       ) : (
         <div className='dashboard-section'>
           <div className='add-btn'>
@@ -62,7 +72,7 @@ const VerifierDashboard = () => {
             <div className='verifier-charts-div'>
               {/*<PieChart2 />*/}
 
-              <VerifierPeriodChart />
+              <VerifierPeriodChart details={monthData} />
             </div>
           </div>
           <div className='view-btn'>
