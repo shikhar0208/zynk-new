@@ -149,6 +149,12 @@ export const requestType = {
   E: 'Employment only',
 };
 
+export const extractType = {
+  E: 'Employee Master',
+  P: 'Payroll',
+  C: 'Custom Format',
+};
+
 export const salaryRange = {
   1: '1 month',
   2: '3 months',

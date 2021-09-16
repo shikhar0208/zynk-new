@@ -2,6 +2,7 @@ import React from 'react';
 import moment from 'moment';
 import '../../Styles/AdminSection/VerifierDetailsTable.css';
 
+import { extractType } from '../../utils/helperFunctions';
 const EmployerExtractDetailsTable = (props) => {
   const { extracts } = props;
 
@@ -30,9 +31,13 @@ const EmployerExtractDetailsTable = (props) => {
               <tr key={e.extract_batch_id}>
                 <td>{e.extract_batch_id}</td>
                 <td>{e.employer_zynk_id}</td>
-                <td>{e.extract_type}</td>
+                <td>
+                  {e.extract_type.length > 1
+                    ? e.extract_type
+                    : extractType[e.extract_type]}
+                </td>
                 <td>{moment(e.employer_extract_date).format('DD/MM/YYYY')}</td>
-                <td>{e.zynk_load_date}</td>
+                <td>{moment(e.zynk_load_date).format('DD/MM/YYYY')}</td>
                 <td>{e.submission_type}</td>
                 <td>{moment(e.last_update).format('MMM Do YYYY, h:mm a')}</td>
                 <td>{e.updated_by ? e.updated_by : 'NA'}</td>

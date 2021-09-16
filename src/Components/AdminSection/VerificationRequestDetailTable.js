@@ -1,6 +1,10 @@
 import React from 'react';
 import moment from 'moment';
-
+import {
+  verificationReason,
+  requestType,
+  salaryRange,
+} from '../../utils/helperFunctions';
 import '../../Styles/AdminSection/VerifierDetailsTable.css';
 
 const VerificationRequestDetailTable = (props) => {
@@ -62,9 +66,9 @@ const VerificationRequestDetailTable = (props) => {
                 <td>{req.employee_email_id}</td>
                 <td>{req.employee_phone}</td>
                 <td>{req.internal_reference}</td>
-                <td>{req.request_type === 'I' ? 'Individual' : 'Business'}</td>
-                <td>{req.salary_range}</td>
-                <td>{req.verification_reason}</td>
+                <td>{requestType[req.request_type]}</td>
+                <td>{salaryRange[req.salary_range]}</td>
+                <td>{verificationReason[req.verification_reason]}</td>
                 <td>{req.employee_id}</td>
                 <td>{'content'}</td>
                 <td>{'content'}</td>
