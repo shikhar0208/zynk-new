@@ -110,9 +110,10 @@ const NewVerificationRequest = (props) => {
           verifying_employer: formData.verifying_employer,
         };
 
-        const result = await purchaseNewVerification(datatoserver).then(() =>
-          props.closeModal()
-        );
+        const result = await purchaseNewVerification(datatoserver).then(() => {
+          setFormData(initialData);
+          props.closeModal();
+        });
         console.log(result);
       },
       prefill: {
