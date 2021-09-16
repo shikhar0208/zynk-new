@@ -110,10 +110,16 @@ const NewVerificationRequest = (props) => {
           verifying_employer: formData.verifying_employer,
         };
 
-        const result = await purchaseNewVerification(datatoserver).then(() => {
-          setFormData(initialData);
-          props.closeModal();
-        });
+        const result = await purchaseNewVerification(datatoserver)
+          .then(() => {
+            setFormData(initialData);
+            alert('Verification request submitted successfully');
+            props.closeModal();
+          })
+          .catch(() => {
+            setFormData(initialData);
+            alert('Error in submitting verification request');
+          });
         console.log(result);
       },
       prefill: {

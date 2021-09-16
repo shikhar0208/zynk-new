@@ -114,7 +114,15 @@ const NewEmployerForm = () => {
           subscription_end_date: new Date(formData.subscription_end_date),
           password: formData.newPassword,
         };
-        dispatch(addEmployer(userDetail)).then(() => setFormData(initialData));
+        dispatch(addEmployer(userDetail))
+          .then(() => {
+            setFormData(initialData);
+            alert('Employer created!');
+          })
+          .catch(() => {
+            setFormData(initialData);
+            alert('Something went wrong, please try later.');
+          });
       } else {
         setErrors({
           ...errors,

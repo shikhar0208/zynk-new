@@ -4,6 +4,8 @@ import { Country, State, City } from 'country-state-city';
 import { validator } from '../utils/helperFunctions';
 import { useDispatch } from 'react-redux';
 
+import Loader from '../utils/Loader';
+
 import { verifierSignup } from '../redux/actions/VerfierActions';
 import { uploadAttachment } from '../redux/actions/api';
 
@@ -31,11 +33,14 @@ const initialData = {
 const VerifierRegistrationForm = (props) => {
   const history = useHistory();
   const dispatch = useDispatch();
+
   const [formData, setFormData] = useState(initialData);
   const [image, setImage] = useState({ govt_id_attachment: '' });
   const [states, setStates] = useState('');
   const [cities, setCities] = useState('');
   const [errors, setErrors] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+
   const countries = Country.getAllCountries();
 
   var requiredFields = [
@@ -107,6 +112,9 @@ const VerifierRegistrationForm = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    setIsLoading(true);
+
     if (formData.entityType === 'B') {
       requiredFields = [...requiredFields, 'business_contact_name'];
     }
@@ -125,8 +133,12 @@ const VerifierRegistrationForm = (props) => {
       setErrors(null);
       if (formData.newPassword === formData.confirmPassword) {
         const signupData = { ...formData, password: formData.newPassword };
-        dispatch(verifierSignup(signupData, history));
+        dispatch(verifierSignup(signupData, history)).then(() => {
+          setIsLoading(false);
+          setFormData(initialData);
+        });
       } else {
+        setIsLoading(false);
         setErrors({
           ...errors,
           newPassword: '',
@@ -134,6 +146,7 @@ const VerifierRegistrationForm = (props) => {
         });
       }
     } else {
+      setIsLoading(false);
       setErrors(flag);
     }
   };
@@ -525,15 +538,19 @@ const VerifierRegistrationForm = (props) => {
             </div>
           </div>
 
-          <div className='createAccount'>
-            <button type='submit'>Register</button>
-            <small>
-              Already have an account?{' '}
-              <span className='switch-form' onClick={handleSwitch}>
-                Log in
-              </span>
-            </small>
-          </div>
+          {isLoading ? (
+            <Loader />
+          ) : (
+            <div className='createAccount'>
+              <button type='submit'>Register</button>
+              <small>
+                Already have an account?{' '}
+                <span className='switch-form' onClick={handleSwitch}>
+                  Log in
+                </span>
+              </small>
+            </div>
+          )}
         </form>
       </div>
     </div>

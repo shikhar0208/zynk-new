@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
+import Loader from '../utils/Loader';
+
 import { uploadVerificationDetails } from '../redux/actions/EmployerActions';
 import { validator } from '../utils/helperFunctions';
 import '../Styles/UploadVerificationDetails.css';
@@ -19,6 +21,7 @@ const UploadVerificationDetails = (props) => {
   const [formData, setFormData] = useState(initialData);
   const [data, setData] = useState(null);
   const [errors, setErrors] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const { employer_zynk_id } = useSelector(
     (store) => store.employerReducer?.employerData
@@ -48,6 +51,8 @@ const UploadVerificationDetails = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setIsLoading(true);
+
     const flag = validator(formData, requiredFields);
     if (flag === true) {
       setErrors(null);
@@ -60,11 +65,20 @@ const UploadVerificationDetails = (props) => {
         'employer_extract_date',
         new Date(formData.employer_extract_date)
       );
-      dispatch(uploadVerificationDetails(fileData)).then(() =>
-        setFormData(initialData)
-      );
+      dispatch(uploadVerificationDetails(fileData, formData.extract_type))
+        .then(() => {
+          setIsLoading(false);
+          setFormData(initialData);
+          alert('Detail uploaded successfully');
+        })
+        .catch(() => {
+          setIsLoading(false);
+          setFormData(initialData);
+          alert('Error in uploading');
+        });
     } else {
       setErrors(flag);
+      setIsLoading(false);
     }
   };
 
@@ -140,14 +154,18 @@ const UploadVerificationDetails = (props) => {
               </label>
             )}
           </div>
-          <div className='buttonDiv'>
-            <button type='submit' className='buttonStyle submit'>
-              Submit
-            </button>
-            <button className='buttonStyle close' onClick={handleCloseButton}>
-              Cancel
-            </button>
-          </div>
+          {isLoading ? (
+            <Loader />
+          ) : (
+            <div className='buttonDiv'>
+              <button type='submit' className='buttonStyle submit'>
+                Submit
+              </button>
+              <button className='buttonStyle close' onClick={handleCloseButton}>
+                Cancel
+              </button>
+            </div>
+          )}
         </form>
       </div>
     </div>

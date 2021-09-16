@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { validator } from '../../utils/helperFunctions';
 import { useDispatch } from 'react-redux';
+
+import Loader from '../../utils/Loader';
 
 import { adminLogin } from '../../redux/actions/AdminActions';
 import '../../Styles/AdminLogin.css';
@@ -14,6 +16,7 @@ const initialData = {
 const AdminLogin = () => {
   const [formData, setFormData] = useState(initialData);
   const [errors, setErrors] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const history = useHistory();
   const dispatch = useDispatch();
@@ -28,13 +31,18 @@ const AdminLogin = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setIsLoading(true);
     const requiredFields = ['email_id'];
     const flag = validator(formData, requiredFields);
     if (flag === true) {
       setErrors(null);
-      dispatch(adminLogin(formData, history));
+      dispatch(adminLogin(formData, history)).then(() => {
+        setIsLoading(false);
+        setFormData(initialData);
+      });
     } else {
       setErrors(flag);
+      setIsLoading(false);
     }
     // console.log(formData);
   };
@@ -82,10 +90,16 @@ const AdminLogin = () => {
               </label>
             )}
           </div>
-          <p className='forget-password'> Forgot password?</p>
-          <div className='admin-login-submit'>
-            <button type='submit'>Log in</button>
-          </div>
+          {isLoading ? (
+            <Loader />
+          ) : (
+            <Fragment>
+              <p className='forget-password'> Forgot password?</p>
+              <div className='admin-login-submit'>
+                <button type='submit'>Log in</button>
+              </div>
+            </Fragment>
+          )}
         </form>
       </div>
     </div>

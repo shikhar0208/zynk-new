@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { validator } from '../utils/helperFunctions';
 import { useDispatch } from 'react-redux';
 
 import { verifierLogin } from '../redux/actions/VerfierActions';
 import { employerLogin } from '../redux/actions/EmployerActions';
+
+import Loader from '../utils/Loader';
 
 import '../Styles/VerifierRegistrationForm.css';
 
@@ -19,6 +21,8 @@ const LoginForm = (props) => {
   const [formData, setFormData] = useState(initialData);
   const [userType, setUserType] = useState('verifier');
   const [errors, setErrors] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+
   const history = useHistory();
   const dispatch = useDispatch();
 
@@ -43,6 +47,9 @@ const LoginForm = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    setIsLoading(true);
+
     const requiredFields = ['email'];
     const flag = validator(formData, requiredFields);
 
@@ -53,16 +60,23 @@ const LoginForm = (props) => {
           email_id: formData.email,
           password: formData.password,
         };
-        dispatch(verifierLogin(loginData, history));
+        dispatch(verifierLogin(loginData, history)).then(() => {
+          setIsLoading(false);
+          setFormData(initialData);
+        });
       } else if (userType === 'employer') {
         // history.push('/employer_dashboard');
         const loginData = {
           business_email_id: formData.email,
           password: formData.password,
         };
-        dispatch(employerLogin(loginData, history));
+        dispatch(employerLogin(loginData, history)).then(() => {
+          setIsLoading(false);
+          setFormData(initialData);
+        });
       }
     } else {
+      setIsLoading(false);
       setErrors(flag);
     }
   };
@@ -129,18 +143,24 @@ const LoginForm = (props) => {
               </label>
             )}
           </div>
-          <p className='forget-password'> Forgot password?</p>
-          <div className='createAccount'>
-            <button type='submit'>Log in</button>
-            {userType === 'verifier' && (
-              <small>
-                Don't have an account?{' '}
-                <span className='switch-form' onClick={handleSwitch}>
-                  Sign up
-                </span>
-              </small>
-            )}
-          </div>
+          {isLoading ? (
+            <Loader />
+          ) : (
+            <Fragment>
+              <p className='forget-password'> Forgot password?</p>
+              <div className='createAccount'>
+                <button type='submit'>Log in</button>
+                {userType === 'verifier' && (
+                  <small>
+                    Don't have an account?{' '}
+                    <span className='switch-form' onClick={handleSwitch}>
+                      Sign up
+                    </span>
+                  </small>
+                )}
+              </div>{' '}
+            </Fragment>
+          )}
         </form>
       </div>
     </div>

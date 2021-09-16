@@ -57,14 +57,15 @@ export const updateEmployerDetails = (id, updates) => async (dispatch) => {
   }
 };
 
-export const uploadVerificationDetails = (fileData) => async (dispatch) => {
-  try {
-    const { data } = await api.uploadVerificationDetails(fileData);
-    console.log(data);
-  } catch (err) {
-    console.log('something went wrong');
-  }
-};
+export const uploadVerificationDetails =
+  (fileData, category) => async (dispatch) => {
+    try {
+      const { data } = await api.uploadVerificationDetails(fileData, category);
+      console.log(data);
+    } catch (err) {
+      console.log('something went wrong');
+    }
+  };
 
 export const employerLogout = () => async (dispatch) => {
   try {

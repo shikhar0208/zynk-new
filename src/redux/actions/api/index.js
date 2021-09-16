@@ -75,8 +75,8 @@ export const getVerificationSummaryByReason = (id) =>
     employer_zynk_id: id,
   });
 
-export const uploadVerificationDetails = (fileData) =>
-  API.post('/upload-verification-details', fileData);
+export const uploadVerificationDetails = (fileData, category) =>
+  API.post(`/upload-verification-details/${category}`, fileData);
 
 //Admin Routes
 export const adminLogin = (formData) => API.post('/admin-login', formData);
