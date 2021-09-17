@@ -111,17 +111,28 @@ const NewVerificationRequest = (props) => {
           verifying_employer: formData.verifying_employer,
         };
 
-        const result = await purchaseNewVerification(datatoserver)
-          .then(() => {
-            setFormData(initialData);
-            alert('Verification request submitted successfully');
-            props.closeModal();
-          })
-          .catch(() => {
-            setFormData(initialData);
-            alert('Error in submitting verification request');
-          });
-        console.log(result);
+        // purchaseNewVerification(datatoserver)
+        //   .then((res) => {
+        //     setFormData(initialData);
+        //     if (res.response.message === 'Mail Sent succesfully') {
+        //       alert(res.response.message);
+        //       props.closeModal();
+        //     }
+        //   })
+        //   .catch((err) => {
+        //     setFormData(initialData);
+        //     // console.log('err', err.response);
+        //     alert('E');
+        //   });
+        // console.log(result);
+        try {
+          const result = await purchaseNewVerification(datatoserver);
+          alert('Mail Sent Successfully');
+          props.closeModal();
+        } catch (e) {
+          alert('Record Not Found');
+          setFormData(initialData);
+        }
       },
       prefill: {
         name: 'Snehangshu',
