@@ -79,6 +79,7 @@ const NewVerificationRequest = (props) => {
     const { data } = await getVerificationOrder({
       employee_id: formData.employee_id,
       verifier_zynk_id: verifier_zynk_id,
+      request_type: formData.request_type,
     });
     // console.log(data);
     const options = {
