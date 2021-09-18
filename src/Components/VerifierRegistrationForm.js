@@ -436,9 +436,9 @@ const VerifierRegistrationForm = (props) => {
                 <option disabled value='' selected>
                   Select
                 </option>
-                <option value='PAN'>PAN</option>
-                <option value='GST'>GST</option>
-                <option value='Aadhaar'>Aadhaar</option>
+                <option value='P'>PAN</option>
+                <option value='G'>GST</option>
+                <option value='A'>Aadhaar</option>
               </select>
               {errors && errors.govt_id_type !== '' && (
                 <label className='errorMessage' htmlFor='idTypeError'>

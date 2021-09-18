@@ -22,6 +22,7 @@ const initialData = {
   request_type: '',
   salary_range: '',
   verification_reason: '',
+  business_contact_name: '',
 };
 
 function loadScript(src) {
@@ -44,7 +45,7 @@ const NewVerificationRequest = (props) => {
   const [boolVal, setBoolVal] = useState(false);
   const [allEmployers, setAllEmployers] = useState([]);
 
-  const { verifier_zynk_id } = useSelector(
+  const { verifier_zynk_id, entity_type } = useSelector(
     (store) => store.verifierReducer?.verifierData
   );
 
@@ -127,10 +128,15 @@ const NewVerificationRequest = (props) => {
         // console.log(result);
         try {
           const result = await purchaseNewVerification(datatoserver);
-          alert('Mail Sent Successfully');
+          alert(
+            `Your request has been received and check mail sent to your registered email. Please note request id $`
+          );
+          // console.log(result.data);
           props.closeModal();
         } catch (e) {
-          alert('Record Not Found');
+          alert(
+            'Your request has been received and check mail sent to your registered email.'
+          );
           setFormData(initialData);
         }
       },
@@ -158,6 +164,9 @@ const NewVerificationRequest = (props) => {
       requiredFields = [...requiredFields, 'salary_range'];
     }
 
+    if (entity_type === 'B') {
+      requiredFields = [...requiredFields, 'business_contact_name'];
+    }
     const flag = validator(formData, requiredFields);
     if (flag === true) {
       setErrors(null);
@@ -222,26 +231,6 @@ const NewVerificationRequest = (props) => {
               )}
             </div>
           </div>
-          <div className='columnWise'>
-            <label htmlFor='employeeName'>
-              Employee full name <span className='required'>*</span>
-            </label>
-            <input
-              placeholder='Employee full name'
-              type='text'
-              name='employee_full_name'
-              value={formData.employee_full_name}
-              onChange={handleFormChange}
-              className={
-                errors && errors.employee_full_name !== '' ? 'error' : ''
-              }
-            />
-            {errors && errors.employee_full_name !== '' && (
-              <label className='errorMessage' htmlFor='employeeFullNameError'>
-                {errors.employee_full_name}
-              </label>
-            )}
-          </div>
           <div className='rowWise'>
             <div className='columnWise'>
               <label htmlFor='aadhaarNumber'>Aadhaar number</label>
@@ -284,6 +273,80 @@ const NewVerificationRequest = (props) => {
               )}
             </div>
           </div>
+          {entity_type === 'B' ? (
+            <div className='rowWise'>
+              <div className='columnWise'>
+                <label htmlFor='employeeName'>
+                  Employee full name <span className='required'>*</span>
+                </label>
+                <input
+                  placeholder='Employee full name'
+                  type='text'
+                  name='employee_full_name'
+                  value={formData.employee_full_name}
+                  onChange={handleFormChange}
+                  className={
+                    errors && errors.employee_full_name !== '' ? 'error' : ''
+                  }
+                />
+                {errors && errors.employee_full_name !== '' && (
+                  <label
+                    className='errorMessage'
+                    htmlFor='employeeFullNameError'
+                  >
+                    {errors.employee_full_name}
+                  </label>
+                )}
+              </div>
+              <div className='columnWise'>
+                <label htmlFor='businessContactName'>
+                  Business contact name
+                </label>
+                <input
+                  placeholder='Business contact name'
+                  type='text'
+                  name='business_contact_name'
+                  value={formData.business_contact_name}
+                  onChange={handleFormChange}
+                  className={
+                    errors &&
+                    errors.business_contact_name &&
+                    errors.business_contact_name !== ''
+                      ? 'error'
+                      : ''
+                  }
+                />
+                {errors && errors.business_contact_name !== '' && (
+                  <label className='errorMessage' htmlFor='aadhaarNumberError'>
+                    {errors.business_contact_name}
+                  </label>
+                )}
+              </div>
+            </div>
+          ) : (
+            <div className='columnWise'>
+              <label htmlFor='employeeName'>
+                Employee full name <span className='required'>*</span>
+              </label>
+              <input
+                placeholder='Employee full name'
+                type='text'
+                name='employee_full_name'
+                value={formData.employee_full_name}
+                onChange={handleFormChange}
+                className={
+                  errors && errors.employee_full_name !== '' ? 'error' : ''
+                }
+              />
+              {errors && errors.employee_full_name !== '' && (
+                <label className='errorMessage' htmlFor='employeeFullNameError'>
+                  {errors.employee_full_name}
+                </label>
+              )}
+            </div>
+          )}
+
+          {/*
           <div className='rowWise'>
             <div className='columnWise'>
               <label htmlFor='email'>Employee email id</label>
@@ -317,7 +380,7 @@ const NewVerificationRequest = (props) => {
                 onChange={handleFormChange}
               />
             </div>
-          </div>
+              </div>*/}
           <div className='rowWise'>
             <div className='custom-select columnWise'>
               <label htmlFor='requestType'>
@@ -379,35 +442,48 @@ const NewVerificationRequest = (props) => {
               )}
             </div>
           </div>
-          <div className='rowWise'>
-            <div className='columnWise'>
-              <label htmlFor='salarayRange'>
-                Salary range{' '}
-                {formData.request_type === 'I' && (
-                  <span className='required'>*</span>
-                )}
-              </label>
-              <select
-                name='salary_range'
-                onChange={handleFormChange}
-                className={`${
-                  formData.salary_range === '' ? 'grayColor' : ''
-                } ${errors && errors.salary_range !== '' ? 'error' : ''}`}
-              >
-                <option disabled selected>
-                  Select
-                </option>
-                <option value='1'>1 month</option>
-                <option value='2'>3 months</option>
-                <option value='3'>6 months</option>
-                <option value='4'>12 months</option>
-              </select>
-              {errors && errors.salary_range !== '' && (
-                <label className='errorMessage' htmlFor='salaryRangeError'>
-                  {errors.salary_range}
+          {formData.request_type === 'I' ? (
+            <div className='rowWise'>
+              <div className='columnWise'>
+                <label htmlFor='salarayRange'>
+                  Salary range{' '}
+                  {formData.request_type === 'I' && (
+                    <span className='required'>*</span>
+                  )}
                 </label>
-              )}
+                <select
+                  name='salary_range'
+                  onChange={handleFormChange}
+                  className={`${
+                    formData.salary_range === '' ? 'grayColor' : ''
+                  } ${errors && errors.salary_range !== '' ? 'error' : ''}`}
+                >
+                  <option disabled selected>
+                    Select
+                  </option>
+                  <option value='1'>1 month</option>
+                  <option value='2'>3 months</option>
+                  <option value='3'>6 months</option>
+                  <option value='4'>12 months</option>
+                </select>
+                {errors && errors.salary_range !== '' && (
+                  <label className='errorMessage' htmlFor='salaryRangeError'>
+                    {errors.salary_range}
+                  </label>
+                )}
+              </div>
+              <div className='columnWise'>
+                <label htmlFor='internalReference'>Internal reference</label>
+                <input
+                  placeholder='Reference'
+                  type='text'
+                  name='internal_reference'
+                  value={formData.internal_reference}
+                  onChange={handleFormChange}
+                />
+              </div>
             </div>
+          ) : (
             <div className='columnWise'>
               <label htmlFor='internalReference'>Internal reference</label>
               <input
@@ -418,7 +494,8 @@ const NewVerificationRequest = (props) => {
                 onChange={handleFormChange}
               />
             </div>
-          </div>
+          )}
+
           {formData.verification_reason === '3' && (
             <div className='columnWise'>
               <label htmlFor='verifyingEmployer'>

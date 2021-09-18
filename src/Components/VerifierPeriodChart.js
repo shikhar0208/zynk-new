@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { Bar } from 'react-chartjs-2';
 
 import '../Styles/Charts.css';
@@ -27,21 +27,39 @@ const options = {
 
 const VerifierPeriodChart = (props) => {
   const { details } = props;
+  const [boolVal, setBoolVal] = useState(false);
+  const [label, setLabel] = useState([
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'June',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec',
+  ]);
+
+  useEffect(() => {
+    const initialiseLabels = () => {
+      let fetchLabel = [];
+      let currentMonth = new Date().getMonth();
+      for (var i = 0; i <= currentMonth; i++) {
+        fetchLabel.push(label[i]);
+      }
+      setLabel(fetchLabel);
+    };
+    if (!boolVal) {
+      initialiseLabels();
+      setBoolVal(true);
+    }
+  }, [boolVal, label]);
+
   const data = {
-    labels: [
-      'Jun',
-      'Feb',
-      'Mar',
-      'Apr',
-      'May',
-      'June',
-      'Jul',
-      'Aug',
-      'Sep',
-      'Oct',
-      'Nov',
-      'Dec',
-    ],
+    labels: label,
     datasets: [
       {
         label: '# of requests',

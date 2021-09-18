@@ -3,7 +3,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import moment from 'moment';
 import { Country, State, City } from 'country-state-city';
-import { validator } from '../utils/helperFunctions';
+
+import { validator, idType } from '../utils/helperFunctions';
 import { updateVerifierDetails } from '../redux/actions/VerfierActions';
 import '../Styles/VerifierProfile.css';
 
@@ -453,7 +454,7 @@ const VerifierProfile = (props) => {
           <div className='rowWise'>
             <div className='columnWise'>
               <label htmlFor='idType'>Id type</label>
-              <input value={formData.govt_id_type} disabled />
+              <input value={idType[formData.govt_id_type]} disabled />
             </div>
             <div className='columnWise'>
               <label htmlFor='idNumber'>Id number</label>

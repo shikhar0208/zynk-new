@@ -118,6 +118,7 @@ const NewEmployerForm = () => {
           .then(() => {
             setFormData(initialData);
             alert('Employer created!');
+            history.push('/admin/dashboard');
           })
           .catch(() => {
             setFormData(initialData);

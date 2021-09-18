@@ -161,3 +161,9 @@ export const salaryRange = {
   3: '6 months',
   4: '12 months',
 };
+
+export const idType = {
+  P: 'PAN',
+  G: 'GST',
+  A: 'Aadhaar',
+};
