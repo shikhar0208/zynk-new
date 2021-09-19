@@ -128,7 +128,7 @@ const NewVerificationRequest = (props) => {
         try {
           const result = await purchaseNewVerification(datatoserver);
           alert(
-            `Your request has been received and check mail sent to your registered email. Please note request id $`
+            `Your request has been received and check mail sent to your registered email.`
           );
           // console.log(result.data);
           props.closeModal();
