@@ -27,13 +27,25 @@ const EmployerDashboard = () => {
 
   useEffect(() => {
     const countVerifications = (data) => {
-      const total =
-        data.LoanApplications +
-        data.JobChange +
-        data.PropertyRental +
-        data.VisaApplications +
-        data.InsuranceApplications +
-        data.Other;
+      var total = 0;
+      if (data.LoanApplications) {
+        total += data.LoanApplications;
+      }
+      if (data.JobChange) {
+        total += data.JobChange;
+      }
+      if (data.PropertyRental) {
+        total += data.PropertyRental;
+      }
+      if (data.VisaApplications) {
+        total += data.VisaApplications;
+      }
+      if (data.InsuranceApplications) {
+        total += data.InsuranceApplications;
+      }
+      if (data.Other) {
+        total += data.Other;
+      }
       setTotalVerifications(total);
     };
 

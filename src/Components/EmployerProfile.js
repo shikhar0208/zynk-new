@@ -26,8 +26,8 @@ const EmployerProfile = () => {
     auto_renew: '',
   });
   const [changes, setChanges] = useState({});
-  const [states, setStates] = useState('');
-  const [cities, setCities] = useState('');
+  const [states, setStates] = useState([]);
+  const [cities, setCities] = useState([]);
   const [editForm, setEditForm] = useState(false);
   const [boolVal, setBoolVal] = useState(false);
   const [errors, setErrors] = useState(null);
@@ -39,6 +39,13 @@ const EmployerProfile = () => {
   useEffect(() => {
     if (!boolVal) {
       setFormData(employerData);
+      const allStates = State.getStatesOfCountry(employerData.business_country);
+      const allCities = City.getCitiesOfState(
+        employerData.business_country,
+        employerData.business_state
+      );
+      setStates(allStates);
+      setCities(allCities);
       setBoolVal(true);
     }
   }, [boolVal, employerData]);
@@ -115,12 +122,9 @@ const EmployerProfile = () => {
     e.preventDefault();
     var requiredFields = [];
     if (changes?.business_country) {
+      requiredFields = [...requiredFields, 'business_country'];
       if (states.length > 0) {
-        requiredFields = [
-          ...requiredFields,
-          'business_country',
-          'business_state',
-        ];
+        requiredFields = [...requiredFields, 'business_state'];
       }
       if (cities.length > 0) {
         requiredFields = [...requiredFields, 'business_city'];
@@ -137,6 +141,7 @@ const EmployerProfile = () => {
           /* complete match */
           dispatch(
             updateEmployerDetails(formData.employer_zynk_id, {
+              ...formData,
               ...changes,
               password: changes.newPassword,
             })
@@ -154,7 +159,11 @@ const EmployerProfile = () => {
         }
       } else {
         dispatch(
-          updateEmployerDetails(formData.employer_zynk_id, changes)
+          updateEmployerDetails(formData.employer_zynk_id, {
+            ...formData,
+            ...changes,
+            password: '',
+          })
         ).then(() => {
           history.push('/employer-dashboard');
           setEditForm(false);
@@ -199,11 +208,13 @@ const EmployerProfile = () => {
                     changeData.auto_renew === '' ? 'grayColor' : ''
                   }`}
                 >
-                  <option disabled selected>
-                    Select
+                  <option disabled>Select</option>
+                  <option selected={formData.auto_renew === '1'} value={'1'}>
+                    Yes
                   </option>
-                  <option value={'1'}>Yes</option>
-                  <option value={'0'}>No</option>
+                  <option selected={formData.auto_renew === '0'} value={'0'}>
+                    No
+                  </option>
                 </select>
               ) : (
                 <input
@@ -359,12 +370,13 @@ const EmployerProfile = () => {
                     changeData.business_country === '' ? 'grayColor' : ''
                   }`}
                 >
-                  <option disabled selected className='demo-select'>
+                  <option disabled className='demo-select'>
                     Select
                   </option>
                   {countries.map((country) => (
                     <option
                       id='options'
+                      selected={country.isoCode === formData.business_country}
                       key={country.isoCode}
                       value={`${country.isoCode}`}
                     >
@@ -382,7 +394,7 @@ const EmployerProfile = () => {
                 <select
                   name='business_state'
                   onChange={handleChangeState}
-                  disabled={!changeData.business_country}
+                  disabled={states.length === 0}
                   className={`${
                     changeData.business_state === '' ? 'grayColor' : ''
                   } ${
@@ -393,15 +405,22 @@ const EmployerProfile = () => {
                       : ''
                   }`}
                 >
-                  <option disabled selected className='demo-select'>
-                    Select
+                  <option
+                    disabled
+                    selected={states.length === 0}
+                    className='demo-select'
+                  >
+                    {states.length === 0 ? 'No state' : 'Select'}
                   </option>
-                  {changeData.business_country !== '' &&
-                    states.map((state) => (
-                      <option key={state.isoCode} value={`${state.isoCode}`}>
-                        {state.name}
-                      </option>
-                    ))}
+                  {states.map((state) => (
+                    <option
+                      key={state.isoCode}
+                      selected={state.isoCode === formData.business_state}
+                      value={`${state.isoCode}`}
+                    >
+                      {state.name}
+                    </option>
+                  ))}
                 </select>
               ) : (
                 <input value={location.state.name} disabled />
@@ -420,7 +439,7 @@ const EmployerProfile = () => {
                 <select
                   name='business_city'
                   onChange={handleFormChange}
-                  disabled={!changeData.business_state}
+                  disabled={states.length === 0 || cities.length === 0}
                   className={`${
                     changeData.business_city === '' ? 'grayColor' : ''
                   } ${
@@ -431,15 +450,22 @@ const EmployerProfile = () => {
                       : ''
                   }`}
                 >
-                  <option disabled selected className='demo-select'>
-                    Select
+                  <option
+                    disabled
+                    selected={cities.length === 0}
+                    className='demo-select'
+                  >
+                    {cities.length === 0 ? 'No city' : 'Select'}
                   </option>
-                  {changeData.business_state !== '' &&
-                    cities.map((city) => (
-                      <option key={city.name} value={`${city.name}`}>
-                        {city.name}
-                      </option>
-                    ))}
+                  {cities.map((city) => (
+                    <option
+                      key={city.name}
+                      selected={city.name === formData.business_city}
+                      value={`${city.name}`}
+                    >
+                      {city.name}
+                    </option>
+                  ))}
                 </select>
               ) : (
                 <input value={formData.business_city} disabled />

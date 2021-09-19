@@ -34,6 +34,8 @@ const VerifierProfile = (props) => {
   const [errors, setErrors] = useState(null);
 
   const countries = Country.getAllCountries();
+  // const allStates = State.getAllStates();
+  // const allCities = City.getAllCities();
   const [location, setLocation] = useState({ state: '', country: '' });
 
   useEffect(() => {
@@ -51,6 +53,13 @@ const VerifierProfile = (props) => {
   useEffect(() => {
     if (!boolVal) {
       setFormData(verifierData);
+      const allStates = State.getStatesOfCountry(verifierData.verifier_country);
+      const allCities = City.getCitiesOfState(
+        verifierData.verifier_country,
+        verifierData.verifier_state
+      );
+      setStates(allStates);
+      setCities(allCities);
       setBoolVal(true);
     }
   }, [verifierData, boolVal]);
@@ -114,12 +123,9 @@ const VerifierProfile = (props) => {
     e.preventDefault();
     var requiredFields = [];
     if (changes?.verifier_country) {
+      requiredFields = [...requiredFields, 'verifier_country'];
       if (states.length > 0) {
-        requiredFields = [
-          ...requiredFields,
-          'verifier_country',
-          'verifier_state',
-        ];
+        requiredFields = [...requiredFields, 'verifier_state'];
       }
       if (cities.length > 0) {
         requiredFields = [...requiredFields, 'verifier_city'];
@@ -157,7 +163,8 @@ const VerifierProfile = (props) => {
         dispatch(
           updateVerifierDetails(formData.verifier_zynk_id, {
             ...formData,
-            changes,
+            ...changes,
+            password: '',
           })
         ).then(() => {
           history.push('/verifier-dashboard');
@@ -333,12 +340,13 @@ const VerifierProfile = (props) => {
                     changeData.verifier_country === '' ? 'grayColor' : ''
                   }`}
                 >
-                  <option disabled selected className='demo-select'>
+                  <option disabled className='demo-select'>
                     Select
                   </option>
                   {countries.map((country) => (
                     <option
                       id='options'
+                      selected={country.isoCode === formData.verifier_country}
                       key={country.isoCode}
                       value={`${country.isoCode}`}
                     >
@@ -356,7 +364,7 @@ const VerifierProfile = (props) => {
                 <select
                   name='verifier_state'
                   onChange={handleChangeState}
-                  disabled={!changeData.verifier_country}
+                  disabled={states.length === 0}
                   className={`${
                     changeData.verifier_state === '' ? 'grayColor' : ''
                   } ${
@@ -367,15 +375,22 @@ const VerifierProfile = (props) => {
                       : ''
                   }`}
                 >
-                  <option disabled selected className='demo-select'>
-                    Select
+                  <option
+                    disabled
+                    selected={states.length === 0}
+                    className='demo-select'
+                  >
+                    {states.length === 0 ? 'No state' : 'Select'}
                   </option>
-                  {changeData.verifier_country !== '' &&
-                    states.map((state) => (
-                      <option key={state.isoCode} value={`${state.isoCode}`}>
-                        {state.name}
-                      </option>
-                    ))}
+                  {states.map((state) => (
+                    <option
+                      key={state.isoCode}
+                      selected={state.isoCode === formData.verifier_state}
+                      value={`${state.isoCode}`}
+                    >
+                      {state.name}
+                    </option>
+                  ))}
                 </select>
               ) : (
                 <input value={location.state.name} disabled />
@@ -393,8 +408,8 @@ const VerifierProfile = (props) => {
               {editForm ? (
                 <select
                   name='verifier_city'
+                  disabled={states.length === 0 || cities.length === 0}
                   onChange={handleFormChange}
-                  disabled={!changeData.verifier_state}
                   className={`${
                     changeData.verifier_city === '' ? 'grayColor' : ''
                   } ${
@@ -405,15 +420,22 @@ const VerifierProfile = (props) => {
                       : ''
                   }`}
                 >
-                  <option disabled selected className='demo-select'>
-                    Select
+                  <option
+                    disabled
+                    selected={cities.length === 0}
+                    className='demo-select'
+                  >
+                    {cities.length === 0 ? 'No city' : 'Select'}
                   </option>
-                  {changeData.verifier_state !== '' &&
-                    cities.map((city) => (
-                      <option key={city.name} value={`${city.name}`}>
-                        {city.name}
-                      </option>
-                    ))}
+                  {cities.map((city) => (
+                    <option
+                      key={city.name}
+                      selected={city.name === formData.verifier_city}
+                      value={`${city.name}`}
+                    >
+                      {city.name}
+                    </option>
+                  ))}
                 </select>
               ) : (
                 <input value={formData.verifier_city} disabled />

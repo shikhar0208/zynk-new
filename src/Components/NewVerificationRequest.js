@@ -65,7 +65,6 @@ const NewVerificationRequest = (props) => {
     'employee_full_name',
     'request_type',
     'verification_reason',
-    'employee_id',
   ];
 
   const displayRazorpay = async () => {
@@ -169,6 +168,16 @@ const NewVerificationRequest = (props) => {
     }
     const flag = validator(formData, requiredFields);
     if (flag === true) {
+      if (
+        formData.employee_id === '' &&
+        formData.aadhar_number === '' &&
+        formData.pan_number === ''
+      ) {
+        alert(
+          'Enter atleast one among Employee id, Aadhaar number and PAN number'
+        );
+        return;
+      }
       setErrors(null);
       // const verificationDetails = { ...formData, verifier_zynk_id };
       displayRazorpay();
@@ -213,18 +222,20 @@ const NewVerificationRequest = (props) => {
               )}
             </div>
             <div className='columnWise'>
-              <label htmlFor='employeeID'>
-                Employee id <span className='required'>*</span>
-              </label>
+              <label htmlFor='employeeID'>Employee id</label>
               <input
                 placeholder='Employee id'
                 type='text'
                 name='employee_id'
                 value={formData.employee_id}
                 onChange={handleFormChange}
-                className={errors && errors.employee_id !== '' ? 'error' : ''}
+                className={
+                  errors && errors.employee_id && errors.employee_id !== ''
+                    ? 'error'
+                    : ''
+                }
               />
-              {errors && errors.employee_id !== '' && (
+              {errors && errors.employee_id && errors.employee_id !== '' && (
                 <label className='errorMessage' htmlFor='employeeIDError'>
                   {errors.employee_id}
                 </label>
