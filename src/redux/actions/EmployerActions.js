@@ -20,6 +20,7 @@ export const employerLogin = (loginData, history) => async (dispatch) => {
       ? err.response.data.message
       : 'Something went wrong';
     console.log(message);
+    alert(message);
   }
 };
 

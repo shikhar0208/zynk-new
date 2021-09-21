@@ -14,6 +14,10 @@ light green: #A3C4BC
   align-items: center;
 }
 
+.wrapper-overflow {
+  overflow: hidden;
+}
+
 .form-wrapper {
   margin: 2rem 0;
   width: 500px;

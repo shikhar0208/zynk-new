@@ -9,6 +9,7 @@ import {
 } from '../redux/actions/api';
 
 import '../Styles/NewVerificationRequest.css';
+import SubmitVerificationPopup from './SubmitVerificationPopup';
 
 const initialData = {
   employer_zynk_id: '',
@@ -43,6 +44,7 @@ const NewVerificationRequest = (props) => {
   const [formData, setFormData] = useState(initialData);
   const [errors, setErrors] = useState(null);
   const [boolVal, setBoolVal] = useState(false);
+  const [openPopup, setOpenPopup] = useState(false);
   const [allEmployers, setAllEmployers] = useState([]);
 
   const { verifier_zynk_id, entity_type } = useSelector(
@@ -131,12 +133,12 @@ const NewVerificationRequest = (props) => {
             `Your request has been received and check mail sent to your registered email.`
           );
           // console.log(result.data);
-          props.closeModal();
+          setOpenPopup(true);
         } catch (e) {
           alert(
             'Your request has been received and check mail sent to your registered email.'
           );
-          setFormData(initialData);
+          setOpenPopup(true);
         }
       },
       prefill: {
@@ -147,6 +149,12 @@ const NewVerificationRequest = (props) => {
     };
     const paymentObject = new window.Razorpay(options);
     paymentObject.open();
+  };
+
+  const handleClosePopup = () => {
+    setOpenPopup(false);
+    props.closeModal();
+    setFormData(initialData);
   };
 
   const handleFormChange = (e) => {
@@ -553,6 +561,7 @@ const NewVerificationRequest = (props) => {
           </div>
         </form>
       </div>
+      {openPopup && <SubmitVerificationPopup closePopup={handleClosePopup} />}
     </div>
   );
 };

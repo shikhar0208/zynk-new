@@ -70,8 +70,8 @@ const VerificationRequestDetailTable = (props) => {
                 <td>{salaryRange[req.salary_range]}</td>
                 <td>{verificationReason[req.verification_reason]}</td>
                 <td>{req.employee_id}</td>
-                <td>{'content'}</td>
-                <td>{'content'}</td>
+                <td>{''}</td>
+                <td>{''}</td>
                 <td>{moment(req.last_update).format('MMM Do YYYY, h:mm a')}</td>
                 <td>{req.updated_by}</td>
                 <td>

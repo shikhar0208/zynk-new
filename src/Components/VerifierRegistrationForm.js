@@ -10,6 +10,7 @@ import { verifierSignup } from '../redux/actions/VerfierActions';
 import { uploadAttachment } from '../redux/actions/api';
 
 import '../Styles/VerifierRegistrationForm.css';
+import VerifierSignupPopup from './VerifierSignupPopup';
 
 const initialData = {
   entity_type: '',
@@ -40,6 +41,7 @@ const VerifierRegistrationForm = (props) => {
   const [cities, setCities] = useState('');
   const [errors, setErrors] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isOpenPopup, setIsOpenPopup] = useState(false);
 
   const countries = Country.getAllCountries();
 
@@ -57,6 +59,10 @@ const VerifierRegistrationForm = (props) => {
     'newPassword',
     'confirmPassword',
   ];
+
+  const handleClosePopup = () => {
+    setIsOpenPopup(false);
+  };
 
   const handleFormChange = (e) => {
     const { name } = e.target;
@@ -135,6 +141,7 @@ const VerifierRegistrationForm = (props) => {
         const signupData = { ...formData, password: formData.newPassword };
         dispatch(verifierSignup(signupData, history)).then(() => {
           setIsLoading(false);
+          setIsOpenPopup(true);
           setFormData(initialData);
         });
       } else {
@@ -152,7 +159,7 @@ const VerifierRegistrationForm = (props) => {
   };
 
   return (
-    <div className='wrapper'>
+    <div className={`wrapper ${isOpenPopup ? 'wrapper-overflow' : ''}`}>
       <div className='form-wrapper'>
         <div className='header'>
           <h1 style={{ marginBottom: '1rem' }}>Verifier sign up</h1>
@@ -448,8 +455,7 @@ const VerifierRegistrationForm = (props) => {
             </div>
             <div className='columnWise'>
               <label htmlFor='idNumber'>
-                {formData.govt_id_type === '' ? 'Id' : formData.govt_id_type}{' '}
-                number <span className='required'>*</span>
+                Id number <span className='required'>*</span>
               </label>
               <input
                 placeholder='Id number'
@@ -553,6 +559,7 @@ const VerifierRegistrationForm = (props) => {
           )}
         </form>
       </div>
+      {isOpenPopup && <VerifierSignupPopup closePopup={handleClosePopup} />}
     </div>
   );
 };

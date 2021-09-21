@@ -19,7 +19,7 @@ const VerifierProfile = (props) => {
   //   verifier_city: 'Delhi',
   // });
   const [formData, setFormData] = useState(verifierData);
-
+  const [changePass, setChangePass] = useState(false);
   const [changeData, setChangeData] = useState({
     ...formData,
     verifier_state: '',
@@ -119,6 +119,15 @@ const VerifierProfile = (props) => {
     }
   };
 
+  const handleChangePass = () => {
+    if (changePass) {
+      setChangePass(false);
+      setChanges({ ...changes, newPassword: '', confirmPassword: '' });
+    } else {
+      setChangePass(true);
+    }
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     var requiredFields = [];
@@ -193,7 +202,7 @@ const VerifierProfile = (props) => {
             {!editForm ? 'Edit' : 'Cancel'}
           </button>
         </div>
-        <form onSubmit={handleSubmit} style={{ marginTop: '1rem' }}>
+        <div style={{ marginTop: '1rem' }}>
           <div className='rowWise'>
             <div className='columnWise'>
               <label htmlFor='verifierId'>Verifier id</label>
@@ -336,8 +345,12 @@ const VerifierProfile = (props) => {
                 <select
                   name='verifier_country'
                   onChange={handleChangeCountry}
-                  className={`${
-                    changeData.verifier_country === '' ? 'grayColor' : ''
+                  className={` ${
+                    errors &&
+                    errors.verifier_country &&
+                    errors.verifier_country !== ''
+                      ? 'error'
+                      : ''
                   }`}
                 >
                   <option disabled className='demo-select'>
@@ -357,6 +370,11 @@ const VerifierProfile = (props) => {
               ) : (
                 <input value={location.country.name} disabled />
               )}
+              {errors && errors.verifier_country !== '' && (
+                <label className='errorMessage' htmlFor='countryError'>
+                  {errors.verifier_country}
+                </label>
+              )}
             </div>
             <div className='columnWise'>
               <label htmlFor='state'>State</label>
@@ -366,8 +384,6 @@ const VerifierProfile = (props) => {
                   onChange={handleChangeState}
                   disabled={states.length === 0}
                   className={`${
-                    changeData.verifier_state === '' ? 'grayColor' : ''
-                  } ${
                     errors &&
                     errors.verifier_state &&
                     errors.verifier_state !== ''
@@ -411,8 +427,6 @@ const VerifierProfile = (props) => {
                   disabled={states.length === 0 || cities.length === 0}
                   onChange={handleFormChange}
                   className={`${
-                    changeData.verifier_city === '' ? 'grayColor' : ''
-                  } ${
                     errors &&
                     errors.verifier_city &&
                     errors.verifier_city !== ''
@@ -483,7 +497,7 @@ const VerifierProfile = (props) => {
               <input value={formData.govt_id_number} disabled />
             </div>
           </div>
-          {editForm && (
+          {editForm && changePass && (
             <div className='rowWise'>
               <div className='columnWise'>
                 <label htmlFor='password'>Password</label>
@@ -533,11 +547,17 @@ const VerifierProfile = (props) => {
             </div>
           )}
           {editForm && (
-            <div className='submit-btn'>
-              <button type='submit'>Submit changes</button>
+            <div className='button-div'>
+              <button onClick={handleSubmit} className='submit-btn-btn'>
+                Submit changes
+              </button>
+              <button className='change-pass-btn' onClick={handleChangePass}>
+                {' '}
+                {changePass ? 'Cancel' : 'Change password'}
+              </button>
             </div>
           )}
-        </form>
+        </div>
       </div>
     </div>
   );

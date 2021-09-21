@@ -19,16 +19,13 @@ const VerifierDetailsTable = (props) => {
               <th>Entity type</th>
               <th>Verifier name</th>
               <th>Business contact name</th>
+              <th>Address</th>
               <th>Email id</th>
               <th>Phone number</th>
               <th>Govt. id type</th>
               <th>Govt. id number</th>
               <th>Creation date</th>
               <th>Completion date</th>
-              <th>Aadhaar number</th>
-              <th>PAN number</th>
-              <th>Employee email id</th>
-              <th>Employee phone no.</th>
             </tr>
           </thead>
           <tbody>
@@ -41,6 +38,7 @@ const VerifierDetailsTable = (props) => {
                 </td>
                 <td>{'name'}</td>
                 <td>{verifier.business_contact_name}</td>
+                <td>{`${verifier.verifier_address_line1} ${verifier.verifier_address_line2}`}</td>
                 <td>
                   {verifier.email_id.length <= 30
                     ? verifier.email_id
@@ -51,10 +49,6 @@ const VerifierDetailsTable = (props) => {
                 <td>{'id number'}</td>
                 <td>{'creation date'}</td>
                 <td>{'completion date'}</td>
-                <td>{'aadhaar number'}</td>
-                <td>{'pan number'}</td>
-                <td>{'employee email id'}</td>
-                <td>{'employee phone'}</td>
               </tr>
             ))}
           </tbody>

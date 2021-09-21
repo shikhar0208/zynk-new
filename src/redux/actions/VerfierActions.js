@@ -11,44 +11,39 @@ export const verifierSignup = (signupData, history) => async (dispatch) => {
   try {
     const { data } = await api.verifierSignup(signupData);
     console.log(data);
-    if (data?.verifier_zynk_id) {
-      const response = await api.getVerifierDetails(data.verifier_zynk_id);
-      dispatch({
-        type: VERIFIER_SIGNUP,
-        payload: { verifierDetails: response.data },
-      });
-      history.push('/verifier-dashboard');
-      // console.log(response);
-    } else {
-      console.log(data.message);
-    }
+    // if (data?.verifier_zynk_id) {
+    //   const response = await api.getVerifierDetails(data.verifier_zynk_id);
+    //   dispatch({
+    //     type: VERIFIER_SIGNUP,
+    //     payload: { verifierDetails: response.data },
+    //   });
+    //   history.push('/verifier-dashboard');
+    //   // console.log(response);
+    // }
   } catch (err) {
     const message = err?.response?.data?.message
       ? err.response.data.message
       : 'Something went wrong';
-    console.log(message);
+    alert(message);
   }
 };
 
 export const verifierLogin = (loginData, history) => async (dispatch) => {
   try {
     const { data } = await api.verifierLogin(loginData);
-    if (data.response === 1) {
-      const response = await api.getVerifierDetails(data.verifier_zynk_id);
-      dispatch({
-        type: VERIFIER_LOGIN,
-        payload: {
-          verifierDetails: response.data,
-        },
-      });
-      history.push('/verifier-dashboard');
-    } else {
-      console.log(data.message);
-    }
+    const response = await api.getVerifierDetails(data.verifier_zynk_id);
+    dispatch({
+      type: VERIFIER_LOGIN,
+      payload: {
+        verifierDetails: response.data,
+      },
+    });
+    history.push('/verifier-dashboard');
   } catch (err) {
     const message = err?.response?.data?.message
       ? err.response.data.message
       : 'Something went wrong';
+    alert(message);
     console.log(message);
   }
 };

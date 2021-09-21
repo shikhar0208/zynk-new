@@ -168,19 +168,20 @@ input.error {
   cursor: pointer;
 }
 
-.submit-btn {
+.button-div {
   width: 100%;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  justify-content: space-between;
   align-items: center;
 }
 
-.submit-btn button {
+.submit-btn-btn {
   background-color: rgb(100, 160, 255);
   color: #fff;
   border: 1px solid rgb(100, 160, 255);
   border-radius: 5px;
-  width: 100%;
+  width: 45%;
   margin-top: 1em;
   padding: 8px 0px;
   font-size: 1em;
@@ -191,8 +192,33 @@ input.error {
     0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%);
 }
 
-.submit-btn button:hover {
+.change-pass-btn {
+  background-color: #fff;
+  color: rgb(100, 160, 255);
+  border: 1px solid rgb(100, 160, 255);
+  border-radius: 5px;
+  width: 45%;
+  margin-top: 1em;
+  padding: 8px 0px;
+  font-size: 1em;
+  font-weight: lighter;
+  letter-spacing: 1px;
+  margin-bottom: 0.4em;
+  box-shadow: 0px 3px 1px -2px rgb(0 0 0 / 20%),
+    0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%);
+}
+
+.submit-btn-btn:hover {
   background-color: rgb(100, 160, 255);
+  transform: scale(1.01);
+  outline: none;
+  cursor: pointer;
+  box-shadow: 0px 2px 4px -1px rgb(0 0 0 / 20%),
+    0px 4px 5px 0px rgb(0 0 0 / 14%), 0px 1px 10px 0px rgb(0 0 0 / 12%);
+}
+
+.change-pass-btn:hover {
+  background-color: #fff;
   transform: scale(1.01);
   outline: none;
   cursor: pointer;

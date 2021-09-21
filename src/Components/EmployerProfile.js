@@ -18,6 +18,7 @@ const EmployerProfile = () => {
   //   business_country: 'IN',
   // });
   const [formData, setFormData] = useState(employerData);
+  const [changePass, setChangePass] = useState(false);
   const [changeData, setChangeData] = useState({
     ...employerData,
     business_city: '',
@@ -118,6 +119,15 @@ const EmployerProfile = () => {
     }
   };
 
+  const handleChangePass = () => {
+    if (changePass) {
+      setChangePass(false);
+      setChanges({ ...changes, newPassword: '', confirmPassword: '' });
+    } else {
+      setChangePass(true);
+    }
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     var requiredFields = [];
@@ -191,7 +201,7 @@ const EmployerProfile = () => {
             {!editForm ? 'Edit' : 'Cancel'}
           </button>
         </div>
-        <form onSubmit={handleSubmit} style={{ marginTop: '1rem' }}>
+        <div style={{ marginTop: '1rem' }}>
           <div className='rowWise'>
             <div className='columnWise'>
               <label htmlFor='employerId'>Employer id</label>
@@ -364,10 +374,14 @@ const EmployerProfile = () => {
               <label htmlFor='country'>Country</label>
               {editForm ? (
                 <select
-                  name='country'
+                  name='business_country'
                   onChange={handleChangeCountry}
-                  className={`${
-                    changeData.business_country === '' ? 'grayColor' : ''
+                  className={` ${
+                    errors &&
+                    errors.business_country &&
+                    errors.business_country !== ''
+                      ? 'error'
+                      : ''
                   }`}
                 >
                   <option disabled className='demo-select'>
@@ -387,6 +401,11 @@ const EmployerProfile = () => {
               ) : (
                 <input value={location.country.name} disabled />
               )}
+              {errors && errors.business_country !== '' && (
+                <label className='errorMessage' htmlFor='countryError'>
+                  {errors.business_country}
+                </label>
+              )}
             </div>
             <div className='columnWise'>
               <label htmlFor='state'>State</label>
@@ -395,9 +414,7 @@ const EmployerProfile = () => {
                   name='business_state'
                   onChange={handleChangeState}
                   disabled={states.length === 0}
-                  className={`${
-                    changeData.business_state === '' ? 'grayColor' : ''
-                  } ${
+                  className={` ${
                     errors &&
                     errors.business_state &&
                     errors.business_state !== ''
@@ -440,9 +457,7 @@ const EmployerProfile = () => {
                   name='business_city'
                   onChange={handleFormChange}
                   disabled={states.length === 0 || cities.length === 0}
-                  className={`${
-                    changeData.business_city === '' ? 'grayColor' : ''
-                  } ${
+                  className={` ${
                     errors &&
                     errors.business_city &&
                     errors.business_city !== ''
@@ -507,7 +522,7 @@ const EmployerProfile = () => {
             <label htmlFor='gstNumber'>GST number</label>
             <input value={formData.gst} disabled />
           </div>
-          {editForm && (
+          {editForm && changePass && (
             <div className='rowWise'>
               <div className='columnWise'>
                 <label htmlFor='password'>Password</label>
@@ -557,11 +572,17 @@ const EmployerProfile = () => {
             </div>
           )}
           {editForm && (
-            <div className='submit-btn'>
-              <button type='submit'>Submit changes</button>
+            <div className='button-div'>
+              <button onClick={handleSubmit} className='submit-btn-btn'>
+                Submit changes
+              </button>
+              <button onClick={handleChangePass} className='change-pass-btn'>
+                {' '}
+                {changePass ? 'Cancel' : 'Change password'}
+              </button>
             </div>
           )}
-        </form>
+        </div>
       </div>
     </div>
   );
