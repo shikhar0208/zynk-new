@@ -67,7 +67,7 @@ const options = {
 
 const VerifierStatusChart = (props) => {
   const { status } = props;
-
+  // console.log(status)
   const data = {
     labels: [
       'Payment pending',

@@ -55,6 +55,7 @@ const NewVerificationRequest = (props) => {
     const fetchData = async () => {
       const { data } = await getEmployers();
       setAllEmployers(data);
+      console.log(data);
     };
     if (!boolVal) {
       fetchData();
@@ -83,7 +84,7 @@ const NewVerificationRequest = (props) => {
       verifier_zynk_id: verifier_zynk_id,
       request_type: formData.request_type,
     });
-    // console.log(data);
+    setFormData(initialData);
     const options = {
       key: 'rzp_test_k2yCzup0pdGZjg',
       currency: data.currency,
@@ -129,15 +130,11 @@ const NewVerificationRequest = (props) => {
         // console.log(result);
         try {
           const result = await purchaseNewVerification(datatoserver);
-          alert(
-            `Your request has been received and check mail sent to your registered email.`
-          );
           // console.log(result.data);
+          // setFormData(initialData);
           setOpenPopup(true);
         } catch (e) {
-          alert(
-            'Your request has been received and check mail sent to your registered email.'
-          );
+          // setFormData(initialData);
           setOpenPopup(true);
         }
       },
@@ -152,9 +149,9 @@ const NewVerificationRequest = (props) => {
   };
 
   const handleClosePopup = () => {
+    props.setBoolVal(false);
     setOpenPopup(false);
     props.closeModal();
-    setFormData(initialData);
   };
 
   const handleFormChange = (e) => {
@@ -214,7 +211,11 @@ const NewVerificationRequest = (props) => {
                   formData.employer_zynk_id === '' ? 'grayColor' : ''
                 } ${errors && errors.employer_zynk_id !== '' ? 'error' : ''}`}
               >
-                <option disabled selected>
+                <option
+                  disabled
+                  selected={formData.employer_zynk_id === ''}
+                  value=''
+                >
                   Select
                 </option>
                 {allEmployers.map((employer) => (
@@ -319,7 +320,7 @@ const NewVerificationRequest = (props) => {
               </div>
               <div className='columnWise'>
                 <label htmlFor='businessContactName'>
-                  Business contact name
+                  Business contact name <span className='required'>*</span>
                 </label>
                 <input
                   placeholder='Business contact name'
@@ -413,7 +414,11 @@ const NewVerificationRequest = (props) => {
                   formData.request_type === '' ? 'grayColor' : ''
                 } ${errors && errors.request_type !== '' ? 'error' : ''}`}
               >
-                <option disabled selected>
+                <option
+                  disabled
+                  selected={formData.request_type === ''}
+                  value=''
+                >
                   Select
                 </option>
                 <option value='E'>Employment only</option>
@@ -438,7 +443,11 @@ const NewVerificationRequest = (props) => {
                   errors && errors.verification_reason !== '' ? 'error' : ''
                 }`}
               >
-                <option disabled selected className='demo-select'>
+                <option
+                  disabled
+                  selected={formData.verification_reason === ''}
+                  value=''
+                >
                   Select
                 </option>
                 <option value='1'>Credit application</option>
@@ -477,7 +486,11 @@ const NewVerificationRequest = (props) => {
                     formData.salary_range === '' ? 'grayColor' : ''
                   } ${errors && errors.salary_range !== '' ? 'error' : ''}`}
                 >
-                  <option disabled selected>
+                  <option
+                    disabled
+                    selected={formData.salary_range === ''}
+                    value=''
+                  >
                     Select
                   </option>
                   <option value='1'>1 month</option>

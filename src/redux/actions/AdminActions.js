@@ -23,14 +23,13 @@ export const adminLogin = (loginData, history) => async (dispatch) => {
         },
       });
       history.push('/admin/dashboard');
-    } else {
-      console.log(data.message);
     }
   } catch (err) {
     const message = err?.response?.data?.message
       ? err.response.data.message
       : 'Something went wrong';
     console.log(message);
+    alert(message);
   }
 };
 

@@ -6,8 +6,10 @@ const SubmitVerificationPopup = (props) => {
   return (
     <div className='verification-popup-container'>
       <div className='verification-popup-grid'>
-        <h2>Note your verification request id</h2>
-        <p>Verification request id: 46</p>
+        <p style={{ marginTop: '2rem', fontSize: '1.2rem' }}>
+          Request has been received. Response will be emailed to you.
+          Verification request id - xxxx
+        </p>
         <div className='verification-buttonDiv'>
           <button
             className='verification-submitButton activeButton'

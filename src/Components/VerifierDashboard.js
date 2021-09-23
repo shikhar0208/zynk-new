@@ -58,7 +58,10 @@ const VerifierDashboard = () => {
   return (
     <Fragment>
       {isOpen ? (
-        <NewVerificationRequest closeModal={handleCloseModal} />
+        <NewVerificationRequest
+          closeModal={handleCloseModal}
+          setBoolVal={setBoolVal}
+        />
       ) : (
         <div className='dashboard-section'>
           <div className='add-btn'>
