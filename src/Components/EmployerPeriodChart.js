@@ -65,12 +65,12 @@ const EmployerPeriodChart = (props) => {
         label: '# of requests',
         data: details,
         backgroundColor: [
-          'rgba(255, 99, 132, 0.2)',
-          'rgba(54, 162, 235, 0.2)',
-          'rgba(255, 206, 86, 0.2)',
-          'rgba(75, 192, 192, 0.2)',
-          'rgba(0,91,95,0.2)',
-          'rgba(64,65,128,0.2)',
+          'rgba(255, 99, 132, 0.6)',
+          'rgba(54, 162, 235, 0.6)',
+          'rgba(255, 206, 86, 0.6)',
+          'rgba(75, 192, 192, 0.6)',
+          'rgba(0,91,95,0.6)',
+          'rgba(64,65,128,0.6)',
         ],
         borderColor: [
           'rgba(255, 99, 132, 1)',

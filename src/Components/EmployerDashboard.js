@@ -10,6 +10,7 @@ import { getEmployerVerifications } from '../redux/actions/EmployerActions';
 
 import EmployerReasonChart from './EmployerReasonChart';
 import EmployerPeriodChart from './EmployerPeriodChart';
+import EmployerBusinessUnitWiseChart from './EmployerBusinessUnitWiseChart';
 
 const EmployerDashboard = () => {
   const history = useHistory();
@@ -112,13 +113,13 @@ const EmployerDashboard = () => {
       <div className='horizontal-line'></div>
       <div className='container'>
         <div className='employer-charts-div'>
-          {/*<PieChart1 />*/}
           <EmployerReasonChart summary={reasonSummary} />
         </div>
         <div className='employer-charts-div'>
-          {/*<PieChart2 />*/}
-
           <EmployerPeriodChart details={monthData} />
+        </div>
+        <div className='employer-piechart-div'>
+          <EmployerBusinessUnitWiseChart />
         </div>
       </div>
       <div className='horizontal-line'></div>
