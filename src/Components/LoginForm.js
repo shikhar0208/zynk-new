@@ -80,7 +80,15 @@ const LoginForm = (props) => {
       setErrors(flag);
     }
   };
-  // console.log(formData);
+
+  const handleForgotPass = () => {
+    history.push({
+      pathname: '/forgot-password',
+      state: {
+        userType,
+      },
+    });
+  };
 
   return (
     <div className='wrapper'>
@@ -147,7 +155,10 @@ const LoginForm = (props) => {
             <Loader />
           ) : (
             <Fragment>
-              <p className='forget-password'> Forgot password?</p>
+              <p className='forget-password' onClick={handleForgotPass}>
+                {' '}
+                Forgot password?
+              </p>
               <div className='createAccount'>
                 <button type='submit'>Log in</button>
                 {userType === 'verifier' && (

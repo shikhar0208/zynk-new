@@ -91,3 +91,9 @@ export const getVerificationRequestDetails = () =>
 export const getVerificationStatuses = () =>
   API.post('all-verification-statuses');
 export const getAllExtracts = () => API.post('/all-extracts');
+
+//Forgot-Password
+export const forgotPassLink = (userType, formData) =>
+  API.post(`/forgot-password/${userType}`, formData);
+
+export const resetPass = (formData) => API.post('/new-password', formData);

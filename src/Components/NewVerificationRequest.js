@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
 import { validator } from '../utils/helperFunctions';
+import Loader from '../utils/Loader';
 import {
   getEmployers,
   getVerificationOrder,
@@ -44,8 +45,10 @@ const NewVerificationRequest = (props) => {
   const [formData, setFormData] = useState(initialData);
   const [errors, setErrors] = useState(null);
   const [boolVal, setBoolVal] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [openPopup, setOpenPopup] = useState(false);
   const [allEmployers, setAllEmployers] = useState([]);
+  const [verificationId, setVerificationId] = useState('');
 
   const { verifier_zynk_id, entity_type } = useSelector(
     (store) => store.verifierReducer?.verifierData
@@ -55,7 +58,7 @@ const NewVerificationRequest = (props) => {
     const fetchData = async () => {
       const { data } = await getEmployers();
       setAllEmployers(data);
-      console.log(data);
+      // console.log(data);
     };
     if (!boolVal) {
       fetchData();
@@ -93,7 +96,7 @@ const NewVerificationRequest = (props) => {
       name: 'Donation',
       description: 'Thank you for nothing. Please give us some money',
       handler: async function (response) {
-        console.log('response of razorPay ', response);
+        // console.log('response of razorPay ', response);
         const datatoserver = {
           orderCreationId: data.id,
           razorpayPaymentId: response.razorpay_payment_id,
@@ -129,13 +132,19 @@ const NewVerificationRequest = (props) => {
         //   });
         // console.log(result);
         try {
+          setIsLoading(true);
           const result = await purchaseNewVerification(datatoserver);
           // console.log(result.data);
+          setVerificationId(result.data.verification_id);
+          setIsLoading(false);
           // setFormData(initialData);
           setOpenPopup(true);
         } catch (e) {
           // setFormData(initialData);
-          setOpenPopup(true);
+          // console.log(e.response.data);
+          // setVerificationId(result.data.verification_id);
+          // setOpenPopup(true);
+          alert('Something went wrong, please try later.');
         }
       },
       prefill: {
@@ -561,20 +570,29 @@ const NewVerificationRequest = (props) => {
             </div>
           )}
 
-          <div className='buttonDiv'>
-            <button type='submit' className='submitButton activeButton'>
-              Submit
-            </button>
-            <button
-              className='submitButton nonActiveButton'
-              onClick={props.closeModal}
-            >
-              Cancel
-            </button>
-          </div>
+          {isLoading ? (
+            <Loader />
+          ) : (
+            <div className='buttonDiv'>
+              <button type='submit' className='submitButton activeButton'>
+                Submit
+              </button>
+              <button
+                className='submitButton nonActiveButton'
+                onClick={props.closeModal}
+              >
+                Cancel
+              </button>
+            </div>
+          )}
         </form>
       </div>
-      {openPopup && <SubmitVerificationPopup closePopup={handleClosePopup} />}
+      {openPopup && (
+        <SubmitVerificationPopup
+          closePopup={handleClosePopup}
+          verification_id={verificationId}
+        />
+      )}
     </div>
   );
 };

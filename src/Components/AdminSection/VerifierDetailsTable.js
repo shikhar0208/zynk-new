@@ -36,7 +36,7 @@ const VerifierDetailsTable = (props) => {
                 <td>
                   {verifier.entity_type === 'I' ? 'Individual' : 'Business'}
                 </td>
-                <td>{'name'}</td>
+                <td>{verifier.verifier_name}</td>
                 <td>{verifier.business_contact_name}</td>
                 <td>{`${verifier.verifier_address_line1} ${verifier.verifier_address_line2}`}</td>
                 <td>

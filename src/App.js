@@ -15,6 +15,8 @@ import UploadVerificationDetails from './Components/UploadVerificationDetails';
 import AdminLogin from './Components/AdminSection/AdminLogin';
 import AdminDashboard from './Components/AdminSection/AdminDashboard';
 import NewEmployerForm from './Components/AdminSection/NewEmployerForm';
+import ForgotPasswordPage from './Components/ForgotPasswordPage';
+import ResetPasswordPage from './Components/ResetPasswordPage';
 
 const App = () => {
   return (
@@ -30,7 +32,7 @@ const App = () => {
           component={VerifierRegistrationForm}
         />
         <Route path='/verifier-dashboard' exact component={VerifierDashboard} />
-
+        <Route path='/verifier-profile' exact component={VerifierProfile} />
         <Route path='/verifier-profile' exact component={VerifierProfile} />
         <Route
           path='/verification-details'
@@ -55,6 +57,12 @@ const App = () => {
           path='/admin/create-employer'
           exact
           component={NewEmployerForm}
+        />
+        <Route path='/forgot-password' exact component={ForgotPasswordPage} />
+        <Route
+          path='/forgot-password/:token'
+          exact
+          component={ResetPasswordPage}
         />
       </Switch>
     </Router>
