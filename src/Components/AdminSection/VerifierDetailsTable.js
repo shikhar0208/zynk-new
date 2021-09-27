@@ -1,6 +1,6 @@
 import React from 'react';
-
 import moment from 'moment';
+import { idType } from '../../utils/helperFunctions';
 import '../../Styles/AdminSection/VerifierDetailsTable.css';
 
 const VerifierDetailsTable = (props) => {
@@ -45,8 +45,8 @@ const VerifierDetailsTable = (props) => {
                     : `${verifier.email_id.substring(0, 25)}...`}
                 </td>
                 <td>{'phone_number'}</td>
-                <td>{verifier.govt_id_type}</td>
-                <td>{'id number'}</td>
+                <td>{idType[verifier.govt_id_type]}</td>
+                <td>{verifier.govt_id_number}</td>
                 <td>{'creation date'}</td>
                 <td>{'completion date'}</td>
               </tr>

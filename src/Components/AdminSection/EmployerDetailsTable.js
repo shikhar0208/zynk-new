@@ -67,8 +67,8 @@ const EmployerDetailsTable = (props) => {
                 <td>{employer.business_name}</td>
                 <td>{employer.business_contact_name}</td>
                 <td>{employer.business_email_id}</td>
-                <td>{'phone'}</td>
-                <td>{'gst'}</td>
+                <td>{employer.phone_number}</td>
+                <td>{employer.gst}</td>
                 <td>{`${employer.business_address_line1} ${employer.business_address_line2}`}</td>
                 <td>{findCountryAndState(employer)?.state?.name}</td>
                 <td>{employer.business_city}</td>

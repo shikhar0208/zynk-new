@@ -26,8 +26,8 @@ const VerificationRequestDetailTable = (props) => {
               <th>Employee full name</th>
               <th>Aadhaar number</th>
               <th>PAN number</th>
-              <th>Employee email</th>
-              <th>Employee phone</th>
+              {/**<th>Employee email</th>
+              <th>Employee phone</th> */}
               <th>Internal reference</th>
               <th>Request type</th>
               <th>Salary range</th>
@@ -63,8 +63,8 @@ const VerificationRequestDetailTable = (props) => {
                 <td>{req.employee_full_name}</td>
                 <td>{req.aadhar_number}</td>
                 <td>{req.pan_number}</td>
-                <td>{req.employee_email_id}</td>
-                <td>{req.employee_phone}</td>
+                {/**<td>{req.employee_email_id}</td>
+                <td>{req.employee_phone}</td> */}
                 <td>{req.internal_reference}</td>
                 <td>{requestType[req.request_type]}</td>
                 <td>{salaryRange[req.salary_range]}</td>

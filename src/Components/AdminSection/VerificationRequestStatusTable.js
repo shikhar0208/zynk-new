@@ -1,5 +1,6 @@
 import React from 'react';
 import moment from 'moment';
+import { verificationStatus } from '../../utils/helperFunctions';
 import '../../Styles/AdminSection/VerifierDetailsTable.css';
 
 const VerificationRequestStatusTable = (props) => {
@@ -24,7 +25,7 @@ const VerificationRequestStatusTable = (props) => {
             {requestStatus.map((req) => (
               <tr key={req.verification_request_id}>
                 <td>{req.verification_request_id}</td>
-                <td>{req.status}</td>
+                <td>{verificationStatus[req.status]}</td>
                 <td>
                   {req.employee_rejection_reason
                     ? req.employee_rejection_reason

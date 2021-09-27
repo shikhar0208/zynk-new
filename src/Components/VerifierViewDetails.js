@@ -51,8 +51,8 @@ const VerifierViewDetails = () => {
         : 'NA',
       data.aadhar_number,
       data.pan_number,
-      data.employee_email_id,
-      data.employee_phone,
+      // data.employee_email_id,
+      // data.employee_phone,
     ];
     setFieldValues(values);
     setIsPopup(true);
@@ -76,8 +76,8 @@ const VerifierViewDetails = () => {
     'Completion date',
     'Aadhaar number',
     'PAN number',
-    'Employee email id',
-    'Employee phone no.',
+    // 'Employee email id',
+    // 'Employee phone no.',
   ];
 
   return (
@@ -105,8 +105,8 @@ const VerifierViewDetails = () => {
               <th>Completion date</th>
               <th>Aadhaar number</th>
               <th>PAN number</th>
-              <th>Employee email id</th>
-              <th>Employee phone no.</th>
+              {/*<th>Employee email id</th>
+              <th>Employee phone no.</th> */}
             </tr>
           </thead>
           <tbody>
@@ -117,7 +117,7 @@ const VerifierViewDetails = () => {
               >
                 <td>{row.verification_request_id}</td>
                 <td>{row.internal_reference}</td>
-                <td>{'content'}</td>
+                <td>{row.employer_name}</td>
                 <td>{row.employee_full_name}</td>
                 <td>{verificationReason[row.verification_reason]}</td>
                 <td>{requestType[row.request_type]}</td>
@@ -136,8 +136,8 @@ const VerifierViewDetails = () => {
                 </td>
                 <td>{row.aadhar_number}</td>
                 <td>{row.pan_number}</td>
-                <td>{row.employee_email_id}</td>
-                <td>{row.employee_phone}</td>
+                {/**<td>{row.employee_email_id}</td>
+                <td>{row.employee_phone}</td> */}
               </tr>
             ))}
           </tbody>

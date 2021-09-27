@@ -116,7 +116,7 @@ const EmployerViewDetails = (props) => {
             {verificationDetails.map((row) => (
               <tr onClick={() => handleOpenPopup(row)}>
                 <td>{row.verification_request_id}</td>
-                <td>{'content'}</td>
+                <td>{row.verifier_name}</td>
                 <td>{row.employee_id}</td>
                 <td>{row.employee_full_name}</td>
                 <td>{salaryRange[row.salary_range]}</td>

@@ -167,3 +167,14 @@ export const idType = {
   G: 'GST',
   A: 'Aadhaar',
 };
+
+export const verificationStatus = {
+  1: 'Payment pending',
+  2: 'Under processing',
+  3: 'Employee record not found',
+  4: 'Pending approval',
+  5: 'Request declined',
+  6: 'On hold',
+  7: 'Shared',
+  8: 'Error',
+};
