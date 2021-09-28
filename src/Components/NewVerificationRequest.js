@@ -115,6 +115,7 @@ const NewVerificationRequest = (props) => {
           salary_range: formData.salary_range,
           verification_reason: formData.verification_reason,
           verifying_employer: formData.verifying_employer,
+          timeStamp: new Date(),
         };
 
         // purchaseNewVerification(datatoserver)

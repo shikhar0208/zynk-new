@@ -62,9 +62,10 @@ export const uploadVerificationDetails =
   (fileData, category) => async (dispatch) => {
     try {
       const { data } = await api.uploadVerificationDetails(fileData, category);
-      console.log(data);
+      return data;
     } catch (err) {
       console.log('something went wrong');
+      return err;
     }
   };
 

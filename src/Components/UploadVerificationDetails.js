@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import Loader from '../utils/Loader';
 
-import { uploadVerificationDetails } from '../redux/actions/EmployerActions';
+import { uploadVerificationDetails } from '../redux/actions/api';
 import { validator } from '../utils/helperFunctions';
 import '../Styles/UploadVerificationDetails.css';
 
@@ -49,14 +49,14 @@ const UploadVerificationDetails = (props) => {
     setData(file);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
 
     const flag = validator(formData, requiredFields);
     if (flag === true) {
       setErrors(null);
-      fileData.append('state', '1');
+      fileData.append('status', '1');
       fileData.append('submission_type', 'N');
       fileData.append('employer_zynk_id', employer_zynk_id);
       fileData.append('extract_type', formData.extract_type);
@@ -65,16 +65,20 @@ const UploadVerificationDetails = (props) => {
         'employer_extract_date',
         new Date(formData.employer_extract_date)
       );
-      dispatch(uploadVerificationDetails(fileData, formData.extract_type))
-        .then(() => {
+      fileData.append('timeStamp', new Date());
+      await uploadVerificationDetails(fileData, formData.extract_type)
+        .then((res) => {
           setIsLoading(false);
           setFormData(initialData);
           alert('Detail uploaded successfully');
         })
-        .catch(() => {
+        .catch((err) => {
           setIsLoading(false);
           setFormData(initialData);
-          alert('Error in uploading');
+          console.log(err.response.data);
+          alert(
+            'Something went wrong, please ensure that the structure of file is correct.'
+          );
         });
     } else {
       setErrors(flag);
@@ -104,7 +108,7 @@ const UploadVerificationDetails = (props) => {
                 errors && errors.extract_type !== '' ? 'error' : ''
               }`}
             >
-              <option disabled selected>
+              <option disabled selected={formData.extract_type === ''} value=''>
                 Select
               </option>
               <option value='E'>Employee Master</option>

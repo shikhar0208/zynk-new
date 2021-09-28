@@ -6,6 +6,7 @@ import {
   verificationReason,
   requestType,
   salaryRange,
+  verificationStatus,
 } from '../utils/helperFunctions';
 import { getVerificationDetails } from '../redux/actions/VerfierActions';
 import Popup from './Popup';
@@ -43,7 +44,7 @@ const VerifierViewDetails = () => {
       verificationReason[data.verification_reason],
       requestType[data.request_type],
       salaryRange[data.salary_range],
-      'status',
+      verificationStatus[data.status],
       'rejectionReason',
       moment(data.verification_creation_date).format('DD/MM/YYYY'),
       data.verification_completion_date
@@ -122,7 +123,7 @@ const VerifierViewDetails = () => {
                 <td>{verificationReason[row.verification_reason]}</td>
                 <td>{requestType[row.request_type]}</td>
                 <td>{salaryRange[row.salary_range]}</td>
-                <td>{'content'}</td>
+                <td>{verificationStatus[row.status]}</td>
                 <td>{'content'}</td>
                 <td>
                   {moment(row.verification_creation_date).format('DD/MM/YYYY')}

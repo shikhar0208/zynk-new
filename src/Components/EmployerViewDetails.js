@@ -6,6 +6,7 @@ import {
   verificationReason,
   requestType,
   salaryRange,
+  verificationStatus,
 } from '../utils/helperFunctions';
 import { getEmployerVerifications } from '../redux/actions/EmployerActions';
 import { getAllVerifiers } from '../redux/actions/api';
@@ -19,18 +20,12 @@ const EmployerViewDetails = (props) => {
 
   const history = useHistory();
   const dispatch = useDispatch();
-  const [verifiers, setVerifiers] = useState([]);
   const [isPopup, setIsPopup] = useState(false);
   const [boolVal, setBoolVal] = useState(false);
   const [fieldValues, setFieldValues] = useState([]);
   useEffect(() => {
-    const getVerifiers = async () => {
-      const res = await getAllVerifiers();
-      setVerifiers(res.data);
-    };
     if (!boolVal) {
       dispatch(getEmployerVerifications(employer_zynk_id));
-      getVerifiers();
       setBoolVal(true);
     }
   }, [boolVal, dispatch, employer_zynk_id]);
@@ -50,7 +45,7 @@ const EmployerViewDetails = (props) => {
       salaryRange[data.salary_range],
       data.verifying_employer,
       verificationReason[data.verification_reason],
-      'status',
+      data.status ? verificationStatus[data.status] : 'Null',
       'employee rejection',
       requestType[data.request_type],
       moment(data.verification_creation_date).format('DD/MM/YYYY'),
@@ -64,11 +59,6 @@ const EmployerViewDetails = (props) => {
 
   const handleClosePopup = () => {
     setIsPopup(false);
-  };
-
-  const findVerifierName = (verifierId) => {
-    const verifier = verifiers.filter((v) => v.verifier_zynk_id === verifierId);
-    return verifier.verifier_name;
   };
 
   const fields = [
@@ -124,7 +114,7 @@ const EmployerViewDetails = (props) => {
                   {row.verifying_employer ? row.verifying_employer : 'Null'}
                 </td>
                 <td>{verificationReason[row.verification_reason]}</td>
-                <td>{'content'}</td>
+                <td>{row.status ? verificationStatus[row.status] : 'Null'}</td>
                 <td>{'content'}</td>
                 <td>{requestType[row.request_type]}</td>
                 <td>

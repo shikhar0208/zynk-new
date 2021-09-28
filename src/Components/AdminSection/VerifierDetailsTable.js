@@ -24,6 +24,7 @@ const VerifierDetailsTable = (props) => {
               <th>Phone number</th>
               <th>Govt. id type</th>
               <th>Govt. id number</th>
+              <th>Govt. id attachment</th>
               <th>Creation date</th>
               <th>Completion date</th>
             </tr>
@@ -47,6 +48,15 @@ const VerifierDetailsTable = (props) => {
                 <td>{'phone_number'}</td>
                 <td>{idType[verifier.govt_id_type]}</td>
                 <td>{verifier.govt_id_number}</td>
+                <td>
+                  <a
+                    href={`https://zyncbackend.herokuapp.com/download-attachment/${verifier.govt_id_attachment}`}
+                    target='_blank'
+                    rel='noopener noreferrer'
+                  >
+                    Click to view
+                  </a>
+                </td>
                 <td>{'creation date'}</td>
                 <td>{'completion date'}</td>
               </tr>

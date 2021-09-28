@@ -23,6 +23,7 @@ const VerificationRequestDetailTable = (props) => {
               <th>Employer id</th>
               <th>Creation date</th>
               <th>Completion date</th>
+              <th>Employee id</th>
               <th>Employee full name</th>
               <th>Aadhaar number</th>
               <th>PAN number</th>
@@ -32,7 +33,7 @@ const VerificationRequestDetailTable = (props) => {
               <th>Request type</th>
               <th>Salary range</th>
               <th>Verification reason</th>
-              <th>Employee id</th>
+
               <th>Tentative employment start date</th>
               <th>Tentative employment end date</th>
               <th>Last updated date and time</th>
@@ -60,6 +61,7 @@ const VerificationRequestDetailTable = (props) => {
                       )
                     : 'NA'}
                 </td>
+                <td>{req.employee_id}</td>
                 <td>{req.employee_full_name}</td>
                 <td>{req.aadhar_number}</td>
                 <td>{req.pan_number}</td>
@@ -69,7 +71,7 @@ const VerificationRequestDetailTable = (props) => {
                 <td>{requestType[req.request_type]}</td>
                 <td>{salaryRange[req.salary_range]}</td>
                 <td>{verificationReason[req.verification_reason]}</td>
-                <td>{req.employee_id}</td>
+
                 <td>{''}</td>
                 <td>{''}</td>
                 <td>{moment(req.last_update).format('MMM Do YYYY, h:mm a')}</td>
