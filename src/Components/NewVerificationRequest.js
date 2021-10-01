@@ -25,6 +25,7 @@ const initialData = {
   salary_range: '',
   verification_reason: '',
   business_contact_name: '',
+  verifying_employer: '',
 };
 
 function loadScript(src) {
@@ -181,6 +182,11 @@ const NewVerificationRequest = (props) => {
     if (entity_type === 'B') {
       requiredFields = [...requiredFields, 'business_contact_name'];
     }
+
+    if (formData.verification_reason === '3') {
+      requiredFields = [...requiredFields, 'verifying_employer'];
+    }
+
     const flag = validator(formData, requiredFields);
     if (flag === true) {
       if (
@@ -549,23 +555,23 @@ const NewVerificationRequest = (props) => {
               <input
                 placeholder='Verifying employer'
                 type='text'
-                name='verifyingEmployer'
-                value={formData.verifyingEmployer}
+                name='verifying_employer'
+                value={formData.verifying_employer}
                 onChange={handleFormChange}
                 className={
                   errors &&
-                  errors.verifyingEmployer &&
-                  errors.verifyingEmployer !== ''
+                  errors.verifying_employer &&
+                  errors.verifying_employer !== ''
                     ? 'error'
                     : ''
                 }
               />
-              {errors && errors.verifyingEmployer !== '' && (
+              {errors && errors.verifying_employer !== '' && (
                 <label
                   className='errorMessage'
                   htmlFor='verifyingEmployerError'
                 >
-                  {errors.verifyingEmployer}
+                  {errors.verifying_employer}
                 </label>
               )}
             </div>

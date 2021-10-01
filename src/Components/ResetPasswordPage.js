@@ -44,7 +44,7 @@ const ResetPasswordPage = (props) => {
             alert('Password changed successfull!');
             setIsLoading(false);
             setFormData(initialData);
-            history.push('/');
+            history.push('/login');
           })
           .catch((error) => {
             alert(error.response.data.message);
@@ -87,7 +87,7 @@ const ResetPasswordPage = (props) => {
         )}
         <div className='columnWise'>
           <input
-            placeholder='confirm password'
+            placeholder='Confirm password'
             type='password'
             name='confirmPassword'
             value={formData.confirmPassword}

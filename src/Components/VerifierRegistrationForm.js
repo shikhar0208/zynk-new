@@ -6,8 +6,8 @@ import { useDispatch } from 'react-redux';
 
 import Loader from '../utils/Loader';
 
-import { verifierSignup } from '../redux/actions/VerfierActions';
-import { uploadAttachment } from '../redux/actions/api';
+// import { verifierSignup } from '../redux/actions/VerfierActions';
+import { uploadAttachment, verifierSignup } from '../redux/actions/api';
 
 import '../Styles/VerifierRegistrationForm.css';
 import VerifierSignupPopup from './VerifierSignupPopup';
@@ -116,7 +116,7 @@ const VerifierRegistrationForm = (props) => {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     setIsLoading(true);
@@ -139,11 +139,20 @@ const VerifierRegistrationForm = (props) => {
       setErrors(null);
       if (formData.newPassword === formData.confirmPassword) {
         const signupData = { ...formData, password: formData.newPassword };
-        dispatch(verifierSignup(signupData, history)).then(() => {
+        try {
+          await verifierSignup(signupData);
           setIsLoading(false);
           setIsOpenPopup(true);
           setFormData(initialData);
-        });
+        } catch (err) {
+          setIsLoading(false);
+          setFormData(initialData);
+          const message = err?.response?.data?.error
+            ? err.response.data.error
+            : 'Something went wrong';
+          alert(message);
+          console.log(err?.response?.data);
+        }
       } else {
         setIsLoading(false);
         setErrors({

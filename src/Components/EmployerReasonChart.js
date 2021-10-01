@@ -37,8 +37,9 @@ const EmployerReasonChart = (props) => {
     //   'Other',
     // ],
     labels: [
-      'Loan application',
-      'Job change',
+      'Credit application',
+      'Credit - Re-verification',
+      'Pre-employment screening',
       'Property rental',
       'Visa application',
       'Insurance application',
@@ -48,21 +49,22 @@ const EmployerReasonChart = (props) => {
       {
         label: '# of requests',
         data: [
-          summary.LoanApplications,
-          summary.JobChange,
+          summary.CreditApplication,
+          summary.CreditReverification,
+          summary.PreEmploymentScreening,
           summary.PropertyRental,
-          summary.VisaApplications,
-          summary.InsuranceApplications,
+          summary.VisaApplication,
+          summary.InsuranceApplication,
           summary.Other,
         ],
         backgroundColor: [
           'rgba(255, 99, 132, 0.6)',
           'rgba(54, 162, 235, 0.6)',
-
           'rgba(153, 102, 255, 0.6)',
           'rgba(255, 159, 64, 0.6)',
-          'rgba(0,91,95,0.6)',
+          'rgba(75, 192, 192, 0.6)',
           'rgba(64,65,128,0.6)',
+          'rgba(0,91,95,0.6)',
         ],
         borderColor: [
           'rgba(255, 99, 132, 1)',
@@ -70,8 +72,9 @@ const EmployerReasonChart = (props) => {
 
           'rgba(153, 102, 255, 1)',
           'rgba(255, 159, 64, 1)',
-          'rgba(0,91,95,1)',
+          'rgba(75, 192, 192, 1)',
           'rgba(64,65,128,1.0)',
+          'rgba(0,91,95,1)',
         ],
         borderWidth: 1,
       },

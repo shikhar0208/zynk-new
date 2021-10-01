@@ -22,27 +22,32 @@ const EmployerDashboard = () => {
 
   const [boolVal, setBoolVal] = useState(false);
   const [reasonSummary, setReasonSummary] = useState({});
+  // const [allReasonSummary, setAllReasonSummary] = useState({});
   const [monthData, setMonthData] = useState([]);
+  const [monthsArray, setMonthsArray] = useState([]);
 
   const [totalVerifications, setTotalVerifications] = useState(0);
 
   useEffect(() => {
     const countVerifications = (data) => {
       var total = 0;
-      if (data.LoanApplications) {
-        total += data.LoanApplications;
+      if (data.CreditApplication) {
+        total += data.CreditApplication;
       }
-      if (data.JobChange) {
-        total += data.JobChange;
+      if (data.CreditReverification) {
+        total += data.CreditReverification;
+      }
+      if (data.PreEmploymentScreening) {
+        total += data.PreEmploymentScreening;
       }
       if (data.PropertyRental) {
         total += data.PropertyRental;
       }
-      if (data.VisaApplications) {
-        total += data.VisaApplications;
+      if (data.VisaApplication) {
+        total += data.VisaApplication;
       }
-      if (data.InsuranceApplications) {
-        total += data.InsuranceApplications;
+      if (data.InsuranceApplication) {
+        total += data.InsuranceApplication;
       }
       if (data.Other) {
         total += data.Other;
@@ -52,18 +57,67 @@ const EmployerDashboard = () => {
 
     const countMonthly = (res) => {
       let months = new Array(12).fill(0);
+      // res.forEach((ele) => {
+      //   months[new Date(ele.verification_creation_date).getMonth()] += 1;
+      // });
+
+      let temp = new Array(12).fill(0);
+      var left = new Date().getMonth() + 1;
+      var right = 0;
+
+      for (let i = 0; i < 12; i++) {
+        if (left <= 11) {
+          temp[i] = left;
+          left++;
+        } else {
+          temp[i] = right;
+          right++;
+        }
+      }
+
+      setMonthsArray(temp);
+
       res.forEach((ele) => {
-        months[new Date(ele.verification_creation_date).getMonth()] += 1;
+        let index;
+        if (
+          new Date(ele.verification_creation_date).getFullYear() <
+          new Date().getFullYear()
+        ) {
+          if (
+            new Date(ele.verification_creation_date).getMonth() >
+            new Date().getMonth()
+          ) {
+            index = temp.indexOf(
+              new Date(ele.verification_creation_date).getMonth()
+            );
+            months[index] += 1;
+          }
+        } else if (
+          new Date(ele.verification_creation_date).getFullYear() ===
+          new Date().getFullYear()
+        ) {
+          if (
+            new Date(ele.verification_creation_date).getMonth() <=
+            new Date().getMonth()
+          ) {
+            index = temp.indexOf(
+              new Date(ele.verification_creation_date).getMonth()
+            );
+            months[index] += 1;
+          }
+        }
       });
+
       setMonthData(months);
+
       // console.log(res);
     };
 
     const fetchData = async () => {
       const { data } = await getVerificationSummaryByReason(employer_zynk_id);
-
+      console.log(data);
       setReasonSummary(data);
-
+      // setAllReasonSummary(data);
       countVerifications(data);
     };
     if (!boolVal) {
@@ -83,12 +137,26 @@ const EmployerDashboard = () => {
     history.push('/upload-details');
   };
 
+  // const filterDataAsDate = () => {
+  //   var filteredData = allReasonSummary.filter(
+  //     (d) =>
+  //       d.verification_creation_date >= dateRange.startDate &&
+  //       d.verification_creation_date <= dateRange.endDate
+  //   );
+  //   setReasonSummary(filteredData);
+  //   // console.log('start', dateRange.startDate);
+  //   // console.log('end', dateRange.endDate);
+  // };
+
   const handleDateChange = ({ startDate, endDate }) => {
+    // console.log(startDate, endDate);
     setDateRange({ startDate, endDate });
+    // filterDataAsDate();
   };
 
   const handleClearDate = () => {
     setDateRange({ startDate: '', endDate: '' });
+    // setReasonSummary(allReasonSummary);
   };
 
   return (
@@ -116,7 +184,7 @@ const EmployerDashboard = () => {
           <EmployerReasonChart summary={reasonSummary} />
         </div>
         <div className='employer-charts-div'>
-          <EmployerPeriodChart details={monthData} />
+          <EmployerPeriodChart details={monthData} monthsArray={monthsArray} />
         </div>
         <div className='employer-piechart-div'>
           <EmployerBusinessUnitWiseChart />

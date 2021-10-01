@@ -110,7 +110,9 @@ const EmployerProfile = () => {
     });
     setChanges({ ...changes, business_state: e.target.value });
     const allCities = City.getCitiesOfState(
-      changeData.business_country,
+      changeData.business_country === ''
+        ? formData.business_country
+        : changeData.business_country,
       e.target.value
     );
     setCities(allCities);

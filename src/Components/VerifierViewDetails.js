@@ -39,7 +39,8 @@ const VerifierViewDetails = () => {
     const values = [
       data.verification_request_id,
       data.internal_reference,
-      'employerName',
+      data.employer_name,
+      data.employee_id,
       data.employee_full_name,
       verificationReason[data.verification_reason],
       requestType[data.request_type],
@@ -67,6 +68,7 @@ const VerifierViewDetails = () => {
     'Request id',
     'Internal reference',
     'Employer name',
+    'Employee id',
     'Employee name',
     'Verification reason',
     'Request type',
@@ -96,8 +98,10 @@ const VerifierViewDetails = () => {
               <th>Request id</th>
               <th>Internal reference</th>
               <th>Employer name</th>
+              <th>Employee id</th>
               <th>Employee name</th>
               <th>Verification reason</th>
+              <th>Verifying employer</th>
               <th>Request type</th>
               <th>Salary range</th>
               <th>Status</th>
@@ -119,8 +123,10 @@ const VerifierViewDetails = () => {
                 <td>{row.verification_request_id}</td>
                 <td>{row.internal_reference}</td>
                 <td>{row.employer_name}</td>
+                <td>{row.employee_id}</td>
                 <td>{row.employee_full_name}</td>
                 <td>{verificationReason[row.verification_reason]}</td>
+                <td>{row.verifying_employer}</td>
                 <td>{requestType[row.request_type]}</td>
                 <td>{salaryRange[row.salary_range]}</td>
                 <td>{verificationStatus[row.status]}</td>

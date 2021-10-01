@@ -29,7 +29,7 @@ const VerificationRequestStatusTable = (props) => {
                 <td>
                   {req.employee_rejection_reason
                     ? req.employee_rejection_reason
-                    : 'NA'}
+                    : 'NULL'}
                 </td>
                 <td>{moment(req.last_update).format('MMM Do YYYY, h:mm a')}</td>
                 <td>{req.updated_by}</td>

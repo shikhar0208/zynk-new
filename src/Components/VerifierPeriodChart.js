@@ -1,4 +1,5 @@
 import React, { Fragment, useEffect, useState } from 'react';
+import { allMonths } from '../utils/helperFunctions';
 import { Bar } from 'react-chartjs-2';
 
 import '../Styles/Charts.css';
@@ -26,7 +27,7 @@ const options = {
 };
 
 const VerifierPeriodChart = (props) => {
-  const { details } = props;
+  const { details, monthsArray } = props;
   const [boolVal, setBoolVal] = useState(false);
   const [label, setLabel] = useState([
     'Jan',
@@ -46,17 +47,17 @@ const VerifierPeriodChart = (props) => {
   useEffect(() => {
     const initialiseLabels = () => {
       let fetchLabel = [];
-      let currentMonth = new Date().getMonth();
-      for (var i = 0; i <= currentMonth; i++) {
-        fetchLabel.push(label[i]);
+      // let currentMonth = new Date().getMonth();
+      for (var i = 0; i < 12; i++) {
+        fetchLabel.push(allMonths[monthsArray[i]]);
       }
       setLabel(fetchLabel);
     };
-    if (!boolVal) {
+    if (!boolVal && monthsArray.length != 0) {
       initialiseLabels();
       setBoolVal(true);
     }
-  }, [boolVal, label]);
+  }, [boolVal, label, monthsArray.length]);
 
   const data = {
     labels: label,

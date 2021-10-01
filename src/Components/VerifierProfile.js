@@ -19,6 +19,7 @@ const VerifierProfile = (props) => {
   //   verifier_city: 'Delhi',
   // });
   const [formData, setFormData] = useState(verifierData);
+  console.log(formData);
   const [changePass, setChangePass] = useState(false);
   const [changeData, setChangeData] = useState({
     ...formData,
@@ -110,7 +111,9 @@ const VerifierProfile = (props) => {
     });
     setChanges({ ...changes, verifier_state: e.target.value });
     const allCities = City.getCitiesOfState(
-      changeData.verifier_country,
+      changeData.verifier_country === ''
+        ? formData.verifier_country
+        : changeData.verifier_country,
       e.target.value
     );
     setCities(allCities);

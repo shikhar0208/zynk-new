@@ -21,6 +21,7 @@ const VerifierDashboard = () => {
   const [boolVal, setBoolVal] = useState(false);
   const [statusSummary, setStatusSummary] = useState({});
   const [monthData, setMonthData] = useState([]);
+  const [monthsArray, setMonthsArray] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -29,11 +30,56 @@ const VerifierDashboard = () => {
     };
     const countMonthly = (res) => {
       let months = new Array(12).fill(0);
+      let temp = new Array(12).fill(0);
+      var left = new Date().getMonth() + 1;
+      var right = 0;
+
+      for (let i = 0; i < 12; i++) {
+        if (left <= 11) {
+          temp[i] = left;
+          left++;
+        } else {
+          temp[i] = right;
+          right++;
+        }
+      }
+
+      setMonthsArray(temp);
+
       res.forEach((ele) => {
-        months[new Date(ele.verification_creation_date).getMonth()] += 1;
+        let index;
+        if (
+          new Date(ele.verification_creation_date).getFullYear() <
+          new Date().getFullYear()
+        ) {
+          if (
+            new Date(ele.verification_creation_date).getMonth() >
+            new Date().getMonth()
+          ) {
+            index = temp.indexOf(
+              new Date(ele.verification_creation_date).getMonth()
+            );
+            months[index] += 1;
+          }
+        } else if (
+          new Date(ele.verification_creation_date).getFullYear() ===
+          new Date().getFullYear()
+        ) {
+          if (
+            new Date(ele.verification_creation_date).getMonth() <=
+            new Date().getMonth()
+          ) {
+            index = temp.indexOf(
+              new Date(ele.verification_creation_date).getMonth()
+            );
+            months[index] += 1;
+          }
+        }
       });
+
       setMonthData(months);
     };
+
     if (!boolVal) {
       fetchData();
       dispatch(getVerificationDetails(verifier_zynk_id)).then((res) =>
@@ -75,7 +121,10 @@ const VerifierDashboard = () => {
             <div className='verifier-charts-div'>
               {/*<PieChart2 />*/}
 
-              <VerifierPeriodChart details={monthData} />
+              <VerifierPeriodChart
+                details={monthData}
+                monthsArray={monthsArray}
+              />
             </div>
           </div>
           <div className='view-btn'>
