@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Country, State, City } from 'country-state-city';
 import { validator } from '../utils/helperFunctions';
-import { useDispatch } from 'react-redux';
 
 import Loader from '../utils/Loader';
 
@@ -33,8 +32,6 @@ const initialData = {
 
 const VerifierRegistrationForm = (props) => {
   const history = useHistory();
-  const dispatch = useDispatch();
-
   const [formData, setFormData] = useState(initialData);
   const [image, setImage] = useState({ govt_id_attachment: '' });
   const [states, setStates] = useState('');

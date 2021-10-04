@@ -5,7 +5,10 @@ import { useSelector, useDispatch } from 'react-redux';
 import { DateRangePickerComponent } from '@syncfusion/ej2-react-calendars';
 import '../Styles/EmployerDashboard.css';
 
-import { getVerificationSummaryByReason } from '../redux/actions/api';
+import {
+  getVerificationSummaryByReason,
+  getBusinessUnitSummary,
+} from '../redux/actions/api';
 import { getEmployerVerifications } from '../redux/actions/EmployerActions';
 
 import EmployerReasonChart from './EmployerReasonChart';
@@ -15,13 +18,15 @@ import EmployerBusinessUnitWiseChart from './EmployerBusinessUnitWiseChart';
 const EmployerDashboard = () => {
   const history = useHistory();
   const dispatch = useDispatch();
-  const { employer_zynk_id } = useSelector(
-    (store) => store.employerReducer?.employerData
+  const employer_zynk_id = useSelector(
+    (store) => store.employerReducer?.employerData?.employer_zynk_id
   );
   const [dateRange, setDateRange] = useState({ startDate: '', endDate: '' });
 
   const [boolVal, setBoolVal] = useState(false);
   const [reasonSummary, setReasonSummary] = useState({});
+  const [businessUnitLabels, setBusinessUnitLabel] = useState([]);
+  const [businessUnit, setBusinessUnit] = useState({});
   // const [allReasonSummary, setAllReasonSummary] = useState({});
   const [monthData, setMonthData] = useState([]);
   const [monthsArray, setMonthsArray] = useState([]);
@@ -115,12 +120,15 @@ const EmployerDashboard = () => {
 
     const fetchData = async () => {
       const { data } = await getVerificationSummaryByReason(employer_zynk_id);
-      console.log(data);
+      const response = await getBusinessUnitSummary(employer_zynk_id);
+      const bLabels = Object.keys(response.data);
+      setBusinessUnitLabel(bLabels);
+      setBusinessUnit(response.data);
       setReasonSummary(data);
       // setAllReasonSummary(data);
       countVerifications(data);
     };
-    if (!boolVal) {
+    if (!boolVal && employer_zynk_id) {
       fetchData();
       dispatch(getEmployerVerifications(employer_zynk_id)).then((res) =>
         countMonthly(res)
@@ -187,7 +195,10 @@ const EmployerDashboard = () => {
           <EmployerPeriodChart details={monthData} monthsArray={monthsArray} />
         </div>
         <div className='employer-piechart-div'>
-          <EmployerBusinessUnitWiseChart />
+          <EmployerBusinessUnitWiseChart
+            businessSummary={businessUnit}
+            businessLabel={businessUnitLabels}
+          />
         </div>
       </div>
       <div className='horizontal-line'></div>

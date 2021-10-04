@@ -6,6 +6,8 @@ import {
   SET_VERIFIER_PROFILE_DETAILS,
 } from '../actionTypes';
 
+import Cookies from 'js-cookie';
+
 const initialState = {
   verifierData: null,
   verificationDetails: [],
@@ -15,9 +17,9 @@ const initialState = {
 const verifierReducer = (state = initialState, action) => {
   switch (action.type) {
     case VERIFIER_LOGIN:
-      // Cookies.set('userJWT', action?.payload?.token, {
-      //   expires: 7,
-      // });
+      Cookies.set('verifier_zynk_id', action?.payload?.verifier_zynk_id, {
+        expires: 7,
+      });
       return {
         ...state,
         verifierData: action?.payload?.verifierDetails,
@@ -25,9 +27,6 @@ const verifierReducer = (state = initialState, action) => {
       };
 
     case VERIFIER_SIGNUP:
-      // Cookies.set('userJWT', action?.payload?.token, {
-      //   expires: 7,
-      // });
       return {
         ...state,
         verifierData: action?.payload?.verifierDetails,
@@ -45,7 +44,7 @@ const verifierReducer = (state = initialState, action) => {
         verifierData: action?.payload,
       };
     case VERIFIER_LOGOUT:
-      // Cookies.remove('userJWT');
+      Cookies.remove('verifier_zynk_id');
       return initialState;
 
     default:

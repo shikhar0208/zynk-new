@@ -1,4 +1,5 @@
 import * as api from './api';
+
 import {
   VERIFIER_LOGIN,
   VERIFIER_LOGOUT,
@@ -36,9 +37,31 @@ export const verifierLogin = (loginData, history) => async (dispatch) => {
       type: VERIFIER_LOGIN,
       payload: {
         verifierDetails: response.data,
+        verifier_zynk_id: data.verifier_zynk_id,
       },
     });
     history.push('/verifier-dashboard');
+  } catch (err) {
+    const message = err?.response?.data?.message
+      ? err.response.data.message
+      : 'Something went wrong';
+    alert(message);
+    console.log(message);
+  }
+};
+
+export const setVerifierDetails = (verifierId, history) => async (dispatch) => {
+  try {
+    // console.log(verifierId);
+    const response = await api.getVerifierDetails(verifierId);
+    dispatch({
+      type: VERIFIER_LOGIN,
+      payload: {
+        verifierDetails: response.data,
+        verifier_zynk_id: verifierId,
+      },
+    });
+    return history.push('/verifier-dashboard');
   } catch (err) {
     const message = err?.response?.data?.message
       ? err.response.data.message

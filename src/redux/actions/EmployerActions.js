@@ -12,9 +12,30 @@ export const employerLogin = (loginData, history) => async (dispatch) => {
     const response = await api.getEmployerDetails(data.employer_zynk_id);
     dispatch({
       type: EMPLOYER_LOGIN,
-      payload: { employerDetails: response.data },
+      payload: {
+        employerDetails: response.data,
+        employer_zynk_id: data.employer_zynk_id,
+      },
     });
     history.push('/employer-dashboard');
+  } catch (err) {
+    const message = err?.response?.data?.message
+      ? err.response.data.message
+      : 'Something went wrong';
+    console.log(message);
+    alert(message);
+  }
+};
+
+export const setEmployerDetails = (employerId, history) => async (dispatch) => {
+  try {
+    // const { data } = await api.employerLogin(loginData);
+    const response = await api.getEmployerDetails(employerId);
+    dispatch({
+      type: EMPLOYER_LOGIN,
+      payload: { employerDetails: response.data, employer_zynk_id: employerId },
+    });
+    return history.push('/employer-dashboard');
   } catch (err) {
     const message = err?.response?.data?.message
       ? err.response.data.message

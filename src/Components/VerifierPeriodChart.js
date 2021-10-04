@@ -53,11 +53,11 @@ const VerifierPeriodChart = (props) => {
       }
       setLabel(fetchLabel);
     };
-    if (!boolVal && monthsArray.length != 0) {
+    if (!boolVal && monthsArray.length !== 0) {
       initialiseLabels();
       setBoolVal(true);
     }
-  }, [boolVal, label, monthsArray.length]);
+  }, [boolVal, label, monthsArray.length, monthsArray]);
 
   const data = {
     labels: label,

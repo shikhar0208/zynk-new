@@ -1,27 +1,46 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import { Pie } from 'react-chartjs-2';
 import '../Styles/Charts.css';
-const data = {
-  labels: ['Dept 1', 'Dept 2', 'Dept 3', 'Dept 4', 'Dept 5', 'Dept 6'],
-  datasets: [
-    {
-      label: '# of requests',
-      data: [12, 19, 3, 5, 2, 3],
-      backgroundColor: [
-        'rgba(255, 99, 132, 0.7)',
-        'rgba(54, 162, 235, 0.7)',
-        'rgba(255, 206, 86, 0.7)',
-        'rgba(75, 192, 192, 0.7)',
-        'rgba(153, 102, 255, 0.7)',
-        'rgba(255, 159, 64, 0.7)',
-      ],
-      borderColor: ['#fff', '#fff', '#fff', '#fff', '#fff', '#fff'],
-      borderWidth: 1,
-    },
-  ],
-};
 
-const EmployerBusinessUnitWiseChart = () => {
+const EmployerBusinessUnitWiseChart = (props) => {
+  const { businessSummary, businessLabel } = props;
+  const [businessData, setBusinessData] = useState([]);
+  const [boolVal, setBoolVal] = useState(false);
+
+  useEffect(() => {
+    const fetchData = () => {
+      let summaryData = [];
+      businessLabel?.forEach((element) => {
+        summaryData.push(businessSummary[element]);
+        // console.log(toString(element));
+      });
+      setBusinessData(summaryData);
+    };
+    if (!boolVal) {
+      fetchData();
+    }
+  }, [boolVal, businessLabel, businessSummary]);
+
+  const data = {
+    labels: businessLabel,
+    datasets: [
+      {
+        label: '# of requests',
+        data: businessData,
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.7)',
+          'rgba(54, 162, 235, 0.7)',
+          'rgba(255, 206, 86, 0.7)',
+          'rgba(75, 192, 192, 0.7)',
+          'rgba(153, 102, 255, 0.7)',
+          'rgba(255, 159, 64, 0.7)',
+        ],
+        borderColor: ['#fff', '#fff', '#fff', '#fff', '#fff', '#fff'],
+        borderWidth: 1,
+      },
+    ],
+  };
+
   return (
     <Fragment>
       <div className='chart-header'>

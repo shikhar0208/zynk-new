@@ -4,6 +4,7 @@ import {
   GET_ALL_EMPLOYER_VERIFICATION,
   SET_EMPLOYER_PROFILE_DETAILS,
 } from '../actionTypes';
+import Cookies from 'js-cookie';
 
 const initialState = {
   employerData: null,
@@ -14,9 +15,9 @@ const initialState = {
 const employerReducer = (state = initialState, action) => {
   switch (action.type) {
     case EMPLOYER_LOGIN:
-      // Cookies.set('userJWT', action?.payload?.token, {
-      //   expires: 7,
-      // });
+      Cookies.set('employer_zynk_id', action?.payload?.employer_zynk_id, {
+        expires: 7,
+      });
       return {
         ...state,
         employerData: action?.payload?.employerDetails,
@@ -40,7 +41,7 @@ const employerReducer = (state = initialState, action) => {
         employerData: action?.payload,
       };
     case EMPLOYER_LOGOUT:
-      // Cookies.remove('userJWT');
+      Cookies.remove('employer_zynk_id');
       return initialState;
 
     default:

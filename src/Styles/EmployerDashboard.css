@@ -190,11 +190,11 @@
 /*Date Picker Styles*/
 
 .date-picker {
-  width: 35%;
+  width: 30%;
 }
 
 .date-picker .e-input-group {
-  width: 65%;
+  width: 40%;
   padding: 0px 10px;
 }
 

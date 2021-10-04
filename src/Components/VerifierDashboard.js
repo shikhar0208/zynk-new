@@ -13,8 +13,8 @@ const VerifierDashboard = () => {
   const history = useHistory();
   const dispatch = useDispatch();
 
-  const { verifier_zynk_id } = useSelector(
-    (store) => store.verifierReducer?.verifierData
+  const verifier_zynk_id = useSelector(
+    (store) => store.verifierReducer?.verifierData?.verifier_zynk_id
   );
 
   const [isOpen, setIsOpen] = useState(false);
@@ -80,7 +80,7 @@ const VerifierDashboard = () => {
       setMonthData(months);
     };
 
-    if (!boolVal) {
+    if (!boolVal && verifier_zynk_id) {
       fetchData();
       dispatch(getVerificationDetails(verifier_zynk_id)).then((res) =>
         countMonthly(res)

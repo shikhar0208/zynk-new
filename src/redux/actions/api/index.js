@@ -70,6 +70,11 @@ export const updateEmployerDetails = (id, changes) =>
     ...changes,
   });
 
+export const getBusinessUnitSummary = (id) =>
+  API.post('/get-business-summary-employer', {
+    employer_zynk_id: id,
+  });
+
 export const getVerificationSummaryByReason = (id) =>
   API.post('/get-verification-summary-employer', {
     employer_zynk_id: id,

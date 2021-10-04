@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import Loader from '../utils/Loader';
 
@@ -17,7 +17,6 @@ const initialData = {
 const UploadVerificationDetails = (props) => {
   var fileData = new FormData();
   const history = useHistory();
-  const dispatch = useDispatch();
   const [formData, setFormData] = useState(initialData);
   const [data, setData] = useState(null);
   const [errors, setErrors] = useState(null);
