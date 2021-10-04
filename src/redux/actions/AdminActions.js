@@ -20,6 +20,7 @@ export const adminLogin = (loginData, history) => async (dispatch) => {
           allRequests: requestDetails.data,
           allStatuses: statuses.data,
           allExtracts: extracts.data,
+          adminLogin: true,
         },
       });
       history.push('/admin/dashboard');

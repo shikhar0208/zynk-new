@@ -1,4 +1,5 @@
 import { ADMIN_LOGIN, ADMIN_LOGOUT, GET_ALL_EMPLOYERS } from '../actionTypes';
+import Cookies from 'js-cookie';
 
 const initialState = {
   adminStats: null,
@@ -13,9 +14,9 @@ const initialState = {
 const adminReducer = (state = initialState, action) => {
   switch (action.type) {
     case ADMIN_LOGIN:
-      // Cookies.set('userJWT', action?.payload?.token, {
-      //   expires: 7,
-      // });
+      Cookies.set('adminLogin', action?.payload?.adminLogin, {
+        expires: 7,
+      });
       return {
         ...state,
         adminStats: action?.payload?.adminStats,
@@ -33,7 +34,7 @@ const adminReducer = (state = initialState, action) => {
         employersData: action?.payload?.allEmployers,
       };
     case ADMIN_LOGOUT:
-      // Cookies.remove('userJWT');
+      Cookies.remove('adminLogin');
       return initialState;
 
     default:

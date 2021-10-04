@@ -17,6 +17,8 @@ import {
   employerLogout,
 } from './redux/actions/EmployerActions';
 
+import { adminLogin, adminLogout } from './redux/actions/AdminActions';
+
 const jsx = (
   <Provider store={store}>
     <App />
@@ -42,6 +44,17 @@ const findUser = () => {
       .then(() => renderApp());
   } else {
     store.dispatch(employerLogout()).then(() => renderApp());
+  }
+
+  if (Cookies.get('adminLogin')) {
+    const formData = {
+      email_id: 'admin@gmail.com',
+      password: 'Admin123',
+    };
+
+    store.dispatch(adminLogin(formData, history)).then(() => renderApp());
+  } else {
+    store.dispatch(adminLogout()).then(() => renderApp());
   }
 };
 
