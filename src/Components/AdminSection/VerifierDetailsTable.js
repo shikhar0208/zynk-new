@@ -1,6 +1,8 @@
 import React from 'react';
 import moment from 'moment';
+import { Country, State, City } from 'country-state-city';
 import { idType } from '../../utils/helperFunctions';
+
 import '../../Styles/AdminSection/VerifierDetailsTable.css';
 
 const VerifierDetailsTable = (props) => {
@@ -18,6 +20,7 @@ const VerifierDetailsTable = (props) => {
               <th>Date of registration</th>
               <th>Entity type</th>
               <th>Verifier name</th>
+              <th>Account Validation</th>
               <th>Business contact name</th>
               <th>Address</th>
               <th>Email id</th>
@@ -38,14 +41,31 @@ const VerifierDetailsTable = (props) => {
                   {verifier.entity_type === 'I' ? 'Individual' : 'Business'}
                 </td>
                 <td>{verifier.verifier_name}</td>
+                <td>{verifier.isapproved === 1 ? 'Approved' : 'Pending'}</td>
                 <td>{verifier.business_contact_name}</td>
-                <td>{`${verifier.verifier_address_line1} ${verifier.verifier_address_line2}`}</td>
+                <td>{`${verifier.verifier_address_line1} ${
+                  verifier.verifier_address_line2
+                }, ${
+                  Country.getCountryByCode(verifier.verifier_country).name
+                    ? Country.getCountryByCode(verifier.verifier_country).name
+                    : verifier.verifier_country
+                }, ${
+                  State.getStateByCodeAndCountry(
+                    verifier.verifier_state,
+                    verifier.verifier_country
+                  ).name
+                    ? State.getStateByCodeAndCountry(
+                        verifier.verifier_state,
+                        verifier.verifier_country
+                      ).name
+                    : verifier.verifier_state
+                }, ${verifier.verifier_city} ${verifier.verifier_pincode}`}</td>
                 <td>
                   {verifier.email_id.length <= 30
                     ? verifier.email_id
                     : `${verifier.email_id.substring(0, 25)}...`}
                 </td>
-                <td>{'phone_number'}</td>
+                <td>{verifier.phone_number}</td>
                 <td>{idType[verifier.govt_id_type]}</td>
                 <td>{verifier.govt_id_number}</td>
                 <td>

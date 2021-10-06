@@ -184,7 +184,11 @@ const VerifierRegistrationForm = (props) => {
                   errors && errors.entity_type !== '' ? 'error' : ''
                 }`}
               >
-                <option disabled value='' selected>
+                <option
+                  disabled
+                  selected={formData.entity_type === ''}
+                  value=''
+                >
                   Select
                 </option>
                 <option value='B'>Business</option>
@@ -322,7 +326,12 @@ const VerifierRegistrationForm = (props) => {
                   formData.verifier_country === '' ? 'grayColor' : ''
                 } ${errors && errors.verifier_country !== '' ? 'error' : ''}`}
               >
-                <option disabled selected className='demo-select'>
+                <option
+                  disabled
+                  selected={formData.verifier_country === ''}
+                  value=''
+                  className='demo-select'
+                >
                   Select
                 </option>
                 {countries.map((country) => (
@@ -446,7 +455,11 @@ const VerifierRegistrationForm = (props) => {
                     : ''
                 }`}
               >
-                <option disabled value='' selected>
+                <option
+                  disabled
+                  selected={formData.govt_id_type === ''}
+                  value=''
+                >
                   Select
                 </option>
                 <option value='P'>PAN</option>

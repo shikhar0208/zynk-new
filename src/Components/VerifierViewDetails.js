@@ -130,7 +130,11 @@ const VerifierViewDetails = () => {
                 <td>{requestType[row.request_type]}</td>
                 <td>{salaryRange[row.salary_range]}</td>
                 <td>{verificationStatus[row.status]}</td>
-                <td>{'content'}</td>
+                <td>
+                  {row.employee_rejection_reason
+                    ? row.employee_rejection_reason
+                    : 'NULL'}
+                </td>
                 <td>
                   {moment(row.verification_creation_date).format('DD/MM/YYYY')}
                 </td>
