@@ -77,8 +77,8 @@ const VerifierDetailsTable = (props) => {
                     Click to view
                   </a>
                 </td>
-                <td>{'creation date'}</td>
-                <td>{'completion date'}</td>
+                <td>{moment(verifier.date_of_reg).format('DD/MM/YYYY')}</td>
+                <td>{moment(verifier.last_update).format('DD/MM/YYYY')}</td>
               </tr>
             ))}
           </tbody>
