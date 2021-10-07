@@ -190,14 +190,53 @@
 /*Date Picker Styles*/
 
 .date-picker {
-  width: 30%;
+  width: 35%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
 }
 
-.date-picker .e-input-group {
-  width: 40%;
-  padding: 0px 10px;
+.date-picker-input-div {
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
 }
 
+.date-picker-input-div label {
+  text-align: left;
+  padding-left: 5px;
+  font-size: 12px;
+  color: #555;
+}
+
+.date-picker-input-div input {
+  padding: 5px 10px;
+  border: none;
+  border-radius: 0;
+  border-bottom: 1px solid #555;
+}
+
+.date-picker-input-div input:hover {
+  box-shadow: none;
+  border-bottom: 1px solid #555;
+}
+
+.date-picker-close {
+  border: none;
+  padding: 0;
+  /* font-size: 0.8rem; */
+  margin-left: 5px;
+  margin-top: 10px;
+  background-color: #fff;
+  cursor: pointer;
+  padding: 5px;
+}
+.date-picker-close img {
+  width: 15px;
+  height: 15px;
+}
+/* 
 .e-input-group:not(.e-float-icon-left):not(.e-float-input)::before,
 .e-input-group:not(.e-float-icon-left):not(.e-float-input)::after,
 .e-input-group.e-float-icon-left:not(.e-float-input) .e-input-in-wrap::before,
@@ -285,4 +324,4 @@
   background-color: #daddde;
   border-color: transparent;
   color: rgb(100, 160, 255);
-}
+} */

@@ -75,6 +75,12 @@ export const getBusinessUnitSummary = (id) =>
     employer_zynk_id: id,
   });
 
+export const getBusinessUnitSummaryByDate = (formData) =>
+  API.post('/get-business-summary-employer-bydates', formData);
+
+export const getVerificationSummaryByDate = (formData) =>
+  API.post('/get-verification-summary-employer-bydates', formData);
+
 export const getVerificationSummaryByReason = (id) =>
   API.post('/get-verification-summary-employer', {
     employer_zynk_id: id,
