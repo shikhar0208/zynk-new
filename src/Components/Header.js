@@ -23,7 +23,9 @@ const Header = () => {
   const [isActive, setIsActive] = useState(false);
 
   const goToHome = () => {
-    history.push('/');
+    // window.open('www.zynktech.com')
+    window.location.assign('https://www.zynktech.com/');
+
   };
 
   const handleVerfierLogout = () => {
@@ -45,30 +47,7 @@ const Header = () => {
         </h2>
       </div>
       <div className='functions'>
-        {!verifierLoggedIn && !employerLoggedIn && !adminLoggedIn && (
-          <div className='dropdown'>
-            <div
-              className='dropdown-btn'
-              onClick={() => setIsActive(!isActive)}
-            >
-              Use Cases
-            </div>
-            {isActive && (
-              <div className='dropdown-content'>
-                <div className='dropdown-item'>HR Verification Automation</div>
-                <div className='dropdown-item'>Lending (Consumer)</div>
-                <div className='dropdown-item'>Employment Screening</div>
-                <div className='dropdown-item'>Lending (Business)</div>
-              </div>
-            )}
-          </div>
-        )}
-        {!verifierLoggedIn && !employerLoggedIn && !adminLoggedIn && (
-          <div className='nav-btn'>FAQs</div>
-        )}
-        {!verifierLoggedIn && !employerLoggedIn && !adminLoggedIn && (
-          <div className='nav-btn'>Contact Us</div>
-        )}
+        
 
         {verifierLoggedIn && (
           <NavLink
