@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, memo } from 'react';
 import { Bar } from 'react-chartjs-2';
 
 import '../Styles/Charts.css';
@@ -91,4 +91,4 @@ const EmployerReasonChart = (props) => {
   );
 };
 
-export default EmployerReasonChart;
+export default memo(EmployerReasonChart);

@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, memo } from 'react';
 import { Pie } from 'react-chartjs-2';
 import '../Styles/Charts.css';
 
@@ -55,4 +55,4 @@ const EmployerBusinessUnitWiseChart = (props) => {
   );
 };
 
-export default EmployerBusinessUnitWiseChart;
+export default memo(EmployerBusinessUnitWiseChart);

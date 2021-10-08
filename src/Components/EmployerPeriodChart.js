@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState, memo } from 'react';
 import { allMonths } from '../utils/helperFunctions';
 import { Bar } from 'react-chartjs-2';
 
@@ -98,4 +98,4 @@ const EmployerPeriodChart = (props) => {
   );
 };
 
-export default EmployerPeriodChart;
+export default memo(EmployerPeriodChart);
