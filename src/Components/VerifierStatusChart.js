@@ -55,13 +55,10 @@ const options = {
     },
   },
   scales: {
-    yAxes: [
-      {
-        ticks: {
-          beginAtZero: true,
-        },
-      },
-    ],
+    y: {
+                suggestedMin: 5,
+                suggestedMax: 10
+            },
   },
 };
 
