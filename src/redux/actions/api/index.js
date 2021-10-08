@@ -1,8 +1,12 @@
 import axios from 'axios';
 // import Cookies from 'js-cookie';
 
+// const API = axios.create({
+//   baseURL: 'https://zyncbackend.herokuapp.com/',
+// });
+
 const API = axios.create({
-  baseURL: 'https://zyncbackend.herokuapp.com/',
+  baseURL: 'http://65.2.123.240:2811/',
 });
 
 // API.interceptors.request.use((req) => {

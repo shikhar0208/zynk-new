@@ -70,7 +70,7 @@ const VerifierDetailsTable = (props) => {
                 <td>{verifier.govt_id_number}</td>
                 <td>
                   <a
-                    href={`https://zyncbackend.herokuapp.com/download-attachment/${verifier.govt_id_attachment}`}
+                    href={`http://65.2.123.240:2811/download-attachment/${verifier.govt_id_attachment}`}
                     target='_blank'
                     rel='noopener noreferrer'
                   >
