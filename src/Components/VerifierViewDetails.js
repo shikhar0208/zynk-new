@@ -46,7 +46,7 @@ const VerifierViewDetails = () => {
       requestType[data.request_type],
       salaryRange[data.salary_range],
       verificationStatus[data.status],
-      data.employee_rejection_reason ? data.employee_rejection_reason : 'NULL',
+      data.employee_rejection_reason ? data.employee_rejection_reason : '',
       moment(data.verification_creation_date).format('DD/MM/YYYY'),
       data.verification_completion_date
         ? moment(data.verification_completion_date).format('DD/MM/YYYY')
@@ -133,7 +133,7 @@ const VerifierViewDetails = () => {
                 <td>
                   {row.employee_rejection_reason
                     ? row.employee_rejection_reason
-                    : 'NULL'}
+                    : ''}
                 </td>
                 <td>
                   {moment(row.verification_creation_date).format('DD/MM/YYYY')}

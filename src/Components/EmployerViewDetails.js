@@ -39,11 +39,11 @@ const EmployerViewDetails = (props) => {
   const handleOpenPopup = (data) => {
     const values = [
       data.verification_request_id,
-      'verifier name',
+      data.verifier_name,
       data.employee_id,
       data.employee_full_name,
       salaryRange[data.salary_range],
-      data.verifying_employer,
+      data.verifying_employer ? data.verifying_employer : '',
       verificationReason[data.verification_reason],
       data.status ? verificationStatus[data.status] : 'Null',
       'employee rejection',
@@ -110,12 +110,10 @@ const EmployerViewDetails = (props) => {
                 <td>{row.employee_id}</td>
                 <td>{row.employee_full_name}</td>
                 <td>{salaryRange[row.salary_range]}</td>
-                <td>
-                  {row.verifying_employer ? row.verifying_employer : 'Null'}
-                </td>
+                <td>{row.verifying_employer ? row.verifying_employer : ''}</td>
                 <td>{verificationReason[row.verification_reason]}</td>
                 <td>{row.status ? verificationStatus[row.status] : 'Null'}</td>
-                <td>{'content'}</td>
+                <td>{''}</td>
                 <td>{requestType[row.request_type]}</td>
                 <td>
                   {moment(row.verification_creation_date).format('DD/MM/YYYY')}

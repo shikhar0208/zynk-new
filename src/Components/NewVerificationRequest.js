@@ -51,7 +51,7 @@ const NewVerificationRequest = (props) => {
   const [allEmployers, setAllEmployers] = useState([]);
   const [verificationId, setVerificationId] = useState('');
 
-  const { verifier_zynk_id, entity_type } = useSelector(
+  const { verifier_zynk_id } = useSelector(
     (store) => store.verifierReducer?.verifierData
   );
 
@@ -156,10 +156,6 @@ const NewVerificationRequest = (props) => {
     e.preventDefault();
     if (formData.requestType === 'I') {
       requiredFields = [...requiredFields, 'salary_range'];
-    }
-
-    if (entity_type === 'B') {
-      requiredFields = [...requiredFields, 'business_contact_name'];
     }
 
     if (formData.verification_reason === '3') {
@@ -288,78 +284,26 @@ const NewVerificationRequest = (props) => {
               )}
             </div>
           </div>
-          {entity_type === 'B' ? (
-            <div className='rowWise'>
-              <div className='columnWise'>
-                <label htmlFor='employeeName'>
-                  Employee full name <span className='required'>*</span>
-                </label>
-                <input
-                  placeholder='Employee full name'
-                  type='text'
-                  name='employee_full_name'
-                  value={formData.employee_full_name}
-                  onChange={handleFormChange}
-                  className={
-                    errors && errors.employee_full_name !== '' ? 'error' : ''
-                  }
-                />
-                {errors && errors.employee_full_name !== '' && (
-                  <label
-                    className='errorMessage'
-                    htmlFor='employeeFullNameError'
-                  >
-                    {errors.employee_full_name}
-                  </label>
-                )}
-              </div>
-              <div className='columnWise'>
-                <label htmlFor='businessContactName'>
-                  Business contact name <span className='required'>*</span>
-                </label>
-                <input
-                  placeholder='Business contact name'
-                  type='text'
-                  name='business_contact_name'
-                  value={formData.business_contact_name}
-                  onChange={handleFormChange}
-                  className={
-                    errors &&
-                    errors.business_contact_name &&
-                    errors.business_contact_name !== ''
-                      ? 'error'
-                      : ''
-                  }
-                />
-                {errors && errors.business_contact_name !== '' && (
-                  <label className='errorMessage' htmlFor='aadhaarNumberError'>
-                    {errors.business_contact_name}
-                  </label>
-                )}
-              </div>
-            </div>
-          ) : (
-            <div className='columnWise'>
-              <label htmlFor='employeeName'>
-                Employee full name <span className='required'>*</span>
+          <div className='columnWise'>
+            <label htmlFor='employeeName'>
+              Employee full name <span className='required'>*</span>
+            </label>
+            <input
+              placeholder='Employee full name'
+              type='text'
+              name='employee_full_name'
+              value={formData.employee_full_name}
+              onChange={handleFormChange}
+              className={
+                errors && errors.employee_full_name !== '' ? 'error' : ''
+              }
+            />
+            {errors && errors.employee_full_name !== '' && (
+              <label className='errorMessage' htmlFor='employeeFullNameError'>
+                {errors.employee_full_name}
               </label>
-              <input
-                placeholder='Employee full name'
-                type='text'
-                name='employee_full_name'
-                value={formData.employee_full_name}
-                onChange={handleFormChange}
-                className={
-                  errors && errors.employee_full_name !== '' ? 'error' : ''
-                }
-              />
-              {errors && errors.employee_full_name !== '' && (
-                <label className='errorMessage' htmlFor='employeeFullNameError'>
-                  {errors.employee_full_name}
-                </label>
-              )}
-            </div>
-          )}
+            )}
+          </div>
 
           {/*
           <div className='rowWise'>
