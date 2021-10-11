@@ -1,13 +1,13 @@
 import axios from 'axios';
 // import Cookies from 'js-cookie';
 
-const API = axios.create({
-  baseURL: 'https://zyncbackend.herokuapp.com/',
-});
-
 // const API = axios.create({
-//   baseURL: 'http://65.2.123.240:2811/',
+//   baseURL: 'https://zyncbackend.herokuapp.com/',
 // });
+
+const API = axios.create({
+  baseURL: 'http://65.2.123.240:2811/',
+});
 
 // API.interceptors.request.use((req) => {
 //   if (Cookies.get('userJWT')) {
