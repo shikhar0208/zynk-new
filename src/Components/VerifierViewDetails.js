@@ -13,8 +13,8 @@ import Popup from './Popup';
 import '../Styles/VerifierViewDetails.css';
 
 const VerifierViewDetails = () => {
-  const { verifier_zynk_id } = useSelector(
-    (store) => store.verifierReducer?.verifierData
+  const verifier_zynk_id = useSelector(
+    (store) => store.verifierReducer?.verifierData?.verifier_zynk_id
   );
 
   const dispatch = useDispatch();
@@ -23,7 +23,7 @@ const VerifierViewDetails = () => {
   const [boolVal, setBoolVal] = useState(false);
   const [fieldValues, setFieldValues] = useState([]);
   useEffect(() => {
-    if (!boolVal) {
+    if (!boolVal && verifier_zynk_id) {
       dispatch(getVerificationDetails(verifier_zynk_id));
       setBoolVal(true);
     }
@@ -46,7 +46,7 @@ const VerifierViewDetails = () => {
       requestType[data.request_type],
       salaryRange[data.salary_range],
       verificationStatus[data.status],
-      'rejectionReason',
+      data.employee_rejection_reason ? data.employee_rejection_reason : 'NULL',
       moment(data.verification_creation_date).format('DD/MM/YYYY'),
       data.verification_completion_date
         ? moment(data.verification_completion_date).format('DD/MM/YYYY')

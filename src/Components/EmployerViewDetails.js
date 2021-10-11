@@ -14,8 +14,8 @@ import '../Styles/VerifierViewDetails.css';
 import moment from 'moment';
 
 const EmployerViewDetails = (props) => {
-  const { employer_zynk_id } = useSelector(
-    (store) => store.employerReducer?.employerData
+  const employer_zynk_id = useSelector(
+    (store) => store.employerReducer?.employerData?.employer_zynk_id
   );
 
   const history = useHistory();
@@ -24,7 +24,7 @@ const EmployerViewDetails = (props) => {
   const [boolVal, setBoolVal] = useState(false);
   const [fieldValues, setFieldValues] = useState([]);
   useEffect(() => {
-    if (!boolVal) {
+    if (!boolVal && employer_zynk_id) {
       dispatch(getEmployerVerifications(employer_zynk_id));
       setBoolVal(true);
     }

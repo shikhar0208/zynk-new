@@ -88,7 +88,6 @@ const NewVerificationRequest = (props) => {
       verifier_zynk_id: verifier_zynk_id,
       request_type: formData.request_type,
     });
-    setFormData(initialData);
     const options = {
       key: 'rzp_test_k2yCzup0pdGZjg',
       currency: data.currency,
@@ -118,34 +117,14 @@ const NewVerificationRequest = (props) => {
           verifying_employer: formData.verifying_employer,
           timeStamp: new Date(),
         };
-
-        // purchaseNewVerification(datatoserver)
-        //   .then((res) => {
-        //     setFormData(initialData);
-        //     if (res.response.message === 'Mail Sent succesfully') {
-        //       alert(res.response.message);
-        //       props.closeModal();
-        //     }
-        //   })
-        //   .catch((err) => {
-        //     setFormData(initialData);
-        //     // console.log('err', err.response);
-        //     alert('E');
-        //   });
-        // console.log(result);
         try {
           setIsLoading(true);
           const result = await purchaseNewVerification(datatoserver);
-          // console.log(result.data);
-          setVerificationId(result.data.verification_id);
+          setFormData(initialData);
+          setVerificationId(result?.data?.verification_id);
           setIsLoading(false);
-          // setFormData(initialData);
           setOpenPopup(true);
         } catch (e) {
-          // setFormData(initialData);
-          // console.log(e.response.data);
-          // setVerificationId(result.data.verification_id);
-          // setOpenPopup(true);
           alert('Something went wrong, please try later.');
         }
       },
