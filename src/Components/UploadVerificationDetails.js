@@ -74,7 +74,7 @@ const UploadVerificationDetails = (props) => {
         .catch((err) => {
           setIsLoading(false);
           setFormData(initialData);
-          console.log(err.response.data);
+          // console.log(err);
           alert(
             'Something went wrong, please ensure that the structure of file is correct.'
           );
